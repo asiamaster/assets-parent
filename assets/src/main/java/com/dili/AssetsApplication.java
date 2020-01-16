@@ -21,7 +21,7 @@ import tk.mybatis.spring.annotation.MapperScan;
 @DTOScan(value={"com.dili.ss", "com.dili.assets.domain"})
 @EnableDiscoveryClient
 @EnableFeignClients
-public class Application extends SpringBootServletInitializer {
+public class AssetsApplication extends SpringBootServletInitializer {
 
     @LoadBalanced
     @Bean
@@ -30,7 +30,8 @@ public class Application extends SpringBootServletInitializer {
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+    	System.setProperty("org.jooq.no-logo", "true");
+        SpringApplication.run(AssetsApplication.class, args);
     }
 
 
