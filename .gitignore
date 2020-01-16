@@ -2,3 +2,8 @@
 */target/
 *.iml
 *.log
+..project
+**/.project
+**/.settings
+**/.classpath
+**/bin
