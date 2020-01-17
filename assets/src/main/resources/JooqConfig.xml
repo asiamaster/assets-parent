@@ -94,7 +94,7 @@
 		<generate>
 			<!--生成dao和pojo -->
 			<daos>true</daos>
-			<records>false</records>
+			<records>true</records>
 			<recordsImplementingRecordN>false</recordsImplementingRecordN>
 			<globalTableReferences>false</globalTableReferences>
 			<globalKeyReferences>false</globalKeyReferences>
@@ -105,7 +105,7 @@
 			<pojos>true</pojos>
 			<serializablePojos>false</serializablePojos>
 			<fluentSetters>true</fluentSetters>
-			<jpaAnnotations>false</jpaAnnotations>
+			<jpaAnnotations>true</jpaAnnotations>
 			<!--把数据库时间类型映射到java 8时间类型 -->
 			<javaTimeTypes>true</javaTimeTypes>
 			

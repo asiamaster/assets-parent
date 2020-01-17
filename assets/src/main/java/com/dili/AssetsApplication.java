@@ -33,7 +33,8 @@ public class AssetsApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
     	System.setProperty("org.jooq.no-logo", "true");
-        SpringApplication.run(AssetsApplication.class, args);
+    	SpringApplication springApplication=new SpringApplication(AssetsApplication.class);
+    	springApplication.run(args);
     }
 
 
