@@ -1,7 +1,10 @@
 package com.dili.assets;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.HashMap;
+
+import javax.sql.DataSource;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,6 +35,8 @@ public class AppTest {
 	ErrorAttributes attributes;
 	@Autowired
 	MappingJackson2HttpMessageConverter converter;
+	@Autowired
+	DataSource ds;
 
 	protected String toJson(Object value) {
 		if (value == null) {
@@ -49,6 +54,8 @@ public class AppTest {
 
 	@BeforeAll
 	public void beforeAll() {
+    	System.setProperty("org.jooq.no-logo", "true");
+    	System.setProperty("decorator.datasource.enabled", "true");
 		logger.info("beforeAll");
 
 	}
@@ -59,8 +66,9 @@ public class AppTest {
 	}
 
 	@Test
-	public void test() {
+	public void test() throws SQLException {
 		logger.info("test");
+		this.ds.getConnection().createStatement().execute("select 1");
 	}
 
 	@Test
