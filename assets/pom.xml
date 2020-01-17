@@ -117,8 +117,53 @@
                         <nonFilteredFileExtension>xls</nonFilteredFileExtension>
                         <nonFilteredFileExtension>xlsx</nonFilteredFileExtension>
                     </nonFilteredFileExtensions>
+                    <skip>true</skip>
                 </configuration>
             </plugin>
+            
+             <plugin>
+				<groupId>pl.project13.maven</groupId>
+				<artifactId>git-commit-id-plugin</artifactId>
+				<version>2.2.5</version>
+				<executions>
+					<execution>
+						<id>get-the-git-infos</id>
+						<goals>
+							<goal>revision</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>validate-the-git-infos</id>
+						<goals>
+							<goal>validateRevision</goal>
+						</goals>
+					</execution>
+				</executions>
+
+				<configuration>
+					<dotGitDirectory>${project.parent.basedir}/.git</dotGitDirectory>
+					<generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>
+					<failOnNoGitDirectory>false</failOnNoGitDirectory>
+					<generateGitPropertiesFile>true</generateGitPropertiesFile>
+				</configuration>
+			</plugin>
+			<!-- jooq-codegen:generate -->
+			<plugin>
+				<groupId>org.jooq</groupId>
+				<artifactId>jooq-codegen-maven</artifactId>
+				<!--executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+					</execution>
+				</executions-->
+				
+				<configuration>
+					<configurationFile>src/main/resources/JooqConfig.xml</configurationFile>
+				</configuration>
+			</plugin>
         </plugins>
     </build>
 
@@ -138,6 +183,10 @@
                 <exclusion>
                     <groupId>com.sun</groupId>
                     <artifactId>tools</artifactId>
+                </exclusion>
+                <exclusion>
+                	<groupId>javax.persistence</groupId>
+  					<artifactId>persistence-api</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -175,6 +224,12 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
+        <!-- jooq starter -->
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-jooq</artifactId>
+		</dependency>
+        
 
         <!-- 内部包  -->
         <dependency>
@@ -187,6 +242,32 @@
             <artifactId>uap-sdk</artifactId>
             <version>2.6.0-SNAPSHOT</version>
         </dependency>
+        
+        <!-- 验证框架 -->
+        <dependency>
+			<groupId>com.baidu.unbiz</groupId>
+			<artifactId>fluent-validator-spring</artifactId>
+			<version>1.0.9</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-context-support</artifactId>
+				</exclusion>
+				<exclusion>
+				    <groupId>org.hibernate</groupId>
+					<artifactId>hibernate-validator</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-log4j12</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+		    <groupId>org.eclipse.persistence</groupId>
+		    <artifactId>javax.persistence</artifactId>
+		    <version>2.2.1</version>
+		</dependency>
 
     </dependencies>
 
