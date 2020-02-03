@@ -4,7 +4,7 @@
 	<!-- Configure the database connection here -->
 	<jdbc>
 		<driver>com.mysql.cj.jdbc.Driver</driver>
-		<url>jdbc:mysql://127.0.0.1:3306/?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=GMT%2B8
+		<url>jdbc:mysql://10.28.10.116:3306/dili-assets?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=GMT%2B8
 		</url>
 		<user>root</user>
 		<password>123456</password>
@@ -24,7 +24,7 @@
 						<!-- Expression is omitted. This will make this rule apply to all tables -->
 						<tableIdentifier>
 							<transform>UPPER</transform>
-							<expression>$0</expression>
+							<expression>T_$0</expression>
 						</tableIdentifier>
 						<tableClass>
 							<transform>PASCAL</transform>
@@ -67,13 +67,14 @@
 				Depending on your database, this might be important! You can create case-insensitive 
 				regular expressions using this syntax: (?i:expr) Whitespace is ignored and 
 				comments are possible. -->
+			<!-- 填写要生成代码的表的名字  (.* 表示所有的表都生成，通常用于第一次生成代码)-->
 			<includes>.*</includes>
 
 			<!-- All elements that are excluded from your schema (A Java regular expression. 
 				Use the pipe to separate several expressions). Excludes match before includes, 
 				i.e. excludes have a higher priority -->
 			<excludes>
-
+PDMAN_DB_VERSION
 			</excludes>
 			<!--下面这两行是为view也生成代码的关键 -->
 			<!--force generating id'sfor everything in public schema, that has an 
@@ -86,7 +87,7 @@
 				cannot be combined with the schemata element. If left empty, jOOQ will generate 
 				all available schemata. See the manual's next section to learn how to generate 
 				several schemata -->
-			<inputSchema>test</inputSchema>
+			<inputSchema>dili-assets</inputSchema>
 			<outputSchemaToDefault>true</outputSchemaToDefault>
       		<outputCatalogToDefault>true</outputCatalogToDefault>
 		</database>
