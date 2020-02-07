@@ -18,7 +18,7 @@ import tk.mybatis.spring.annotation.MapperScan;
  * 由MyBatis Generator工具自动生成
  */
 @SpringBootApplication
-@MapperScan(basePackages = {"com.dili.assets.mapper", "com.dili.ss.dao"})
+@MapperScan(basePackages = {"com.dili.assets.mapper", "com.dili.ss"})
 @ComponentScan(basePackages={"com.dili.ss","com.dili.assets"})
 @DTOScan(value={"com.dili.ss", "com.dili.assets.domain"})
 @EnableDiscoveryClient
