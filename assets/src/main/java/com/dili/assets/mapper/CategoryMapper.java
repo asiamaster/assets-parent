@@ -1,4 +1,4 @@
-package com.dili.assets.dao;
+package com.dili.assets.mapper;
 
 import com.dili.assets.domain.Category;
 import com.dili.ss.base.MyMapper;

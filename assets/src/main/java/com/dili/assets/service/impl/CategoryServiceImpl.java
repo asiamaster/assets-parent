@@ -1,6 +1,6 @@
 package com.dili.assets.service.impl;
 
-import com.dili.assets.dao.CategoryMapper;
+import com.dili.assets.mapper.CategoryMapper;
 import com.dili.assets.domain.Category;
 import com.dili.assets.service.CategoryService;
 import com.dili.ss.base.BaseServiceImpl;

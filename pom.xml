@@ -11,6 +11,12 @@
 	<description>父项目</description>
 	<packaging>pom</packaging>
 
+	<parent>
+		<artifactId>dili-parent</artifactId>
+		<groupId>com.dili</groupId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+
 	<modules>
 		<module>assets</module>
 		<module>assets-sdk</module>
@@ -22,7 +28,7 @@
 		<!-- MyBatis Generator -->
 		<!-- Java接口和实体类 -->
 		<targetJavaProject>${basedir}/src/main/java</targetJavaProject>
-		<targetMapperPackage>com.dili.assets.dao</targetMapperPackage>
+		<targetMapperPackage>com.dili.assets.mapper</targetMapperPackage>
 		<targetModelPackage>com.dili.assets.domain</targetModelPackage>
 		<targetServicePackage>com.dili.assets.service</targetServicePackage>
 		<targetProviderPackage>com.dili.assets.provider</targetProviderPackage>
@@ -36,56 +42,8 @@
 		<targetXMLPackage>mapper</targetXMLPackage>
 		<!-- 依赖版本 -->
 		<springloaded.version>1.2.8.RELEASE</springloaded.version>
-		<sharp-sword.version>3.6.1-SNAPSHOT</sharp-sword.version>
+		<sharp-sword.version>3.6.3-SNAPSHOT</sharp-sword.version>
 	</properties>
-
-	<!--地利 -->
-	<distributionManagement>
-		<repository>
-			<id>central</id>
-			<name>Artifactory Release Repository</name>
-			<url>
-                http://mvn2.diligrp.com/artifactory/libs-release-local
-            </url>
-		</repository>
-		<snapshotRepository>
-			<id>central</id>
-			<name>Artifactory Snapshot Repository</name>
-			<url>
-                http://mvn2.diligrp.com/artifactory/libs-snapshot-local
-            </url>
-		</snapshotRepository>
-	</distributionManagement>
-
-	<profiles>
-		<profile>
-			<id>local</id>
-			<properties>
-				<build.profile.id>local</build.profile.id>
-			</properties>
-		</profile>
-		<profile>
-			<id>dev</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<properties>
-				<build.profile.id>dev</build.profile.id>
-			</properties>
-		</profile>
-		<profile>
-			<id>test</id>
-			<properties>
-				<build.profile.id>test</build.profile.id>
-			</properties>
-		</profile>
-		<profile>
-			<id>prod</id>
-			<properties>
-				<build.profile.id>prod</build.profile.id>
-			</properties>
-		</profile>
-	</profiles>
 
 	<build>
 		<!-- 资源文件过滤 -->
@@ -96,24 +54,6 @@
 			</resource>
 		</resources>
 		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.1</version>
-				<!-- 编译JDK版本 -->
-				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
-					<encoding>UTF-8</encoding>
-					<compilerArgs>
-						<arg>--add-exports=jdk.compiler/com.sun.tools.javac.model=ALL-UNNAMED</arg>
-						<arg>--add-exports=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</arg>
-						<arg>--add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED</arg>
-						<arg>--add-exports=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED</arg>
-						<arg>--add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED</arg>
-					</compilerArgs>
-				</configuration>
-			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
@@ -147,26 +87,5 @@
 			</plugin>
 		</plugins>
 	</build>
-
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<!-- Import dependency management from Spring Boot -->
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-dependencies</artifactId>
-				<version>2.2.2.RELEASE</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-dependencies</artifactId>
-				<version>Hoxton.RELEASE</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
-
 
 </project>

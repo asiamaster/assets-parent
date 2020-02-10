@@ -2,10 +2,7 @@ package com.dili.assets.domain;
 
 import com.dili.ss.domain.BaseDomain;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -17,7 +14,7 @@ import java.util.Date;
 public class Category extends BaseDomain {
     /** id */
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "`id`")
     private Long id ;
     /** 品类名称 */
