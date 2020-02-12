@@ -1,6 +1,8 @@
 package com.dili.assets.domain;
 
 import com.dili.ss.domain.BaseDomain;
+import com.dili.ss.domain.annotation.Like;
+import com.dili.ss.domain.annotation.Operator;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -12,128 +14,270 @@ import java.util.Date;
  */
 @Table(name = "`category`")
 public class Category extends BaseDomain {
-    /** id */
+    /**
+     * id
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "`id`")
-    private Long id ;
-    /** 品类名称 */
+    private Long id;
+    /**
+     * 品类名称
+     */
     @Column(name = "`name`")
-    private String name ;
-    /** 拼音 */
+    private String name;
+    /**
+     * 拼音
+     */
     @Column(name = "`pingying`")
-    private String pingying ;
-    /** 拼音缩写 */
+    private String pingying;
+    /**
+     * 拼音缩写
+     */
     @Column(name = "`py_initials`")
-    private String pyInitials ;
-    /** 状态 */
+    private String pyInitials;
+    /**
+     * 状态
+     */
     @Column(name = "`is_delete`")
-    private Integer isDelete ;
-    /** 父品类 */
+    private Integer isDelete;
+    /**
+     * 父品类
+     */
     @Column(name = "`parent`")
-    private Long parent ;
-    /** 路劲 */
+    private Long parent;
+    /**
+     * 路劲
+     */
     @Column(name = "`path`")
-    private String path ;
-    /** 编码 */
+    private String path;
+    /**
+     * 编码
+     */
     @Column(name = "`code`")
-    private String code ;
-    /** 创建人 */
+    private String code;
+    /**
+     * 创建人
+     */
     @Column(name = "`creator_id`")
-    private Long creatorId ;
-    /** 创建时间 */
+    private Long creatorId;
+    /**
+     * 创建时间
+     */
     @Column(name = "`create_time`")
-    private Date createTime ;
-    /** 更新时间 */
+    private Date createTime;
+    /**
+     * 更新时间
+     */
     @Column(name = "`modify_time`")
-    private Date modifyTime ;
+    private Date modifyTime;
+    /**
+     * 状态
+     */
+    @Column(name = "`state`")
+    private Integer state;
 
-    /** id */
-    public Long getId(){
+    /**
+     * id
+     */
+    public Long getId() {
         return this.id;
     }
-    /** id */
-    public void setId(Long id){
+
+    /**
+     * id
+     */
+    public void setId(Long id) {
         this.id = id;
     }
-    /** 品类名称 */
-    public String getName(){
+
+    /**
+     * 品类名称
+     */
+    public String getName() {
         return this.name;
     }
-    /** 品类名称 */
-    public void setName(String name){
+
+    /**
+     * 品类名称
+     */
+    public void setName(String name) {
         this.name = name;
     }
-    /** 拼音 */
-    public String getPingying(){
+
+    /**
+     * 拼音
+     */
+    public String getPingying() {
         return this.pingying;
     }
-    /** 拼音 */
-    public void setPingying(String pingying){
+
+    /**
+     * 拼音
+     */
+    public void setPingying(String pingying) {
         this.pingying = pingying;
     }
-    /** 拼音缩写 */
-    public String getPyInitials(){
+
+    /**
+     * 拼音缩写
+     */
+    public String getPyInitials() {
         return this.pyInitials;
     }
-    /** 拼音缩写 */
-    public void setPyInitials(String pyInitials){
+
+    /**
+     * 拼音缩写
+     */
+    public void setPyInitials(String pyInitials) {
         this.pyInitials = pyInitials;
     }
-    /** 状态 */
-    public Integer getIsDelete(){
+
+    /**
+     * 状态
+     */
+    public Integer getIsDelete() {
         return this.isDelete;
     }
-    /** 状态 */
-    public void setIsDelete(Integer isDelete){
+
+    /**
+     * 状态
+     */
+    public void setIsDelete(Integer isDelete) {
         this.isDelete = isDelete;
     }
-    /** 父品类 */
-    public Long getParent(){
+
+    /**
+     * 父品类
+     */
+    public Long getParent() {
         return this.parent;
     }
-    /** 父品类 */
-    public void setParent(Long parent){
+
+    /**
+     * 父品类
+     */
+    public void setParent(Long parent) {
         this.parent = parent;
     }
-    /** 路劲 */
-    public String getPath(){
+
+    /**
+     * 路劲
+     */
+    public String getPath() {
         return this.path;
     }
-    /** 路劲 */
-    public void setPath(String path){
+
+    /**
+     * 路劲
+     */
+    public void setPath(String path) {
         this.path = path;
     }
-    /** 编码 */
-    public String getCode(){
+
+    /**
+     * 编码
+     */
+    public String getCode() {
         return this.code;
     }
-    /** 编码 */
-    public void setCode(String code){
+
+    /**
+     * 编码
+     */
+    public void setCode(String code) {
         this.code = code;
     }
-    /** 创建人 */
-    public Long getCreatorId(){
+
+    /**
+     * 创建人
+     */
+    public Long getCreatorId() {
         return this.creatorId;
     }
-    /** 创建人 */
-    public void setCreatorId(Long creatorId){
+
+    /**
+     * 创建人
+     */
+    public void setCreatorId(Long creatorId) {
         this.creatorId = creatorId;
     }
-    /** 创建时间 */
-    public Date getCreateTime(){
+
+    /**
+     * 创建时间
+     */
+    public Date getCreateTime() {
         return this.createTime;
     }
-    /** 创建时间 */
-    public void setCreateTime(Date createTime){
+
+    /**
+     * 创建时间
+     */
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
-    /** 更新时间 */
-    public Date getModifyTime(){
+
+    /**
+     * 更新时间
+     */
+    public Date getModifyTime() {
         return this.modifyTime;
     }
-    /** 更新时间 */
-    public void setModifyTime(Date modifyTime){
+
+    /**
+     * 更新时间
+     */
+    public void setModifyTime(Date modifyTime) {
         this.modifyTime = modifyTime;
     }
+
+    /**
+     * 状态
+     */
+    public Integer getState() {
+        return this.state;
+    }
+
+    /**
+     * 状态
+     */
+    public void setState(Integer state) {
+        this.state = state;
+    }
+
+    // ==========================动态SQL过滤字段==================================== //
+
+    /**
+     * 用于快速查找整棵品类树 where path like '1,2,3,%'
+     */
+    @Transient
+    @Like(Like.LEFT)
+    @Column(name = "`path`")
+    private String queryPath;
+
+    /**
+     * 状态过滤字段 where state <> ?
+     */
+    @Transient
+    @Operator(Operator.NOT_EQUAL)
+    @Column(name = "`state`")
+    private Integer stateFilter;
+
+    public String getQueryPath() {
+        return queryPath;
+    }
+
+    public void setQueryPath(String queryPath) {
+        this.queryPath = queryPath;
+    }
+
+    public Integer getStateFilter() {
+        return stateFilter;
+    }
+
+    public void setStateFilter(Integer stateFilter) {
+        this.stateFilter = stateFilter;
+    }
+
+    // ==========================动态SQL过滤字段==================================== //
 }

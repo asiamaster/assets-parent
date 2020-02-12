@@ -52,6 +52,11 @@ public class CategoryDTO {
     private Date modifyTime;
 
     /**
+     * 状态
+     */
+    private Integer state ;
+
+    /**
      * id
      */
     public Long getId() {
@@ -203,5 +208,18 @@ public class CategoryDTO {
      */
     public void setModifyTime(Date modifyTime) {
         this.modifyTime = modifyTime;
+    }
+
+    /**
+     * 状态
+     */
+    public Integer getState(){
+        return this.state;
+    }
+    /**
+     * 状态
+     */
+    public void setState(Integer state){
+        this.state = state;
     }
 }
