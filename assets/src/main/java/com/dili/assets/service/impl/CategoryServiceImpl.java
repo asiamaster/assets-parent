@@ -2,6 +2,7 @@ package com.dili.assets.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import com.dili.assets.domain.Category;
+import com.dili.assets.domain.query.CategoryQuery;
 import com.dili.assets.mapper.CategoryMapper;
 import com.dili.assets.service.CategoryService;
 import com.dili.ss.base.BaseServiceImpl;
@@ -77,7 +78,7 @@ public class CategoryServiceImpl extends BaseServiceImpl<Category, Long> impleme
     @Override
     public void batchUpdate(Long id, Integer value) {
         List<Long> ids = new ArrayList<>();
-        Category condition = new Category();
+        CategoryQuery condition = new CategoryQuery();
         condition.setQueryPath(id + ",");
         List<Category> byExample = this.listByExample(condition);
         if (CollUtil.isNotEmpty(byExample)) {
