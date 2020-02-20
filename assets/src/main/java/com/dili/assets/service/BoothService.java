@@ -8,4 +8,13 @@ import com.dili.ss.base.BaseService;
  * This file was generated on 2020-02-17 13:21:57.
  */
 public interface BoothService extends BaseService<Booth, Long> {
+    /**
+     * 新增摊位
+     */
+    void saveBooth(Booth booth);
+
+    /**
+     * 获取摊位列表
+     */
+    String listForPage(Booth booth);
 }

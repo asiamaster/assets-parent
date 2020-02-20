@@ -8,4 +8,19 @@ import com.dili.ss.base.BaseService;
  * This file was generated on 2020-02-17 11:17:18.
  */
 public interface DistrictService extends BaseService<District, Long> {
+
+    /**
+     * 添加区域
+     */
+    void saveDistrict(District input);
+
+    /**
+     * 需改区域
+     */
+    void editDistrict(District input);
+
+    /**
+     * 拆分区域
+     */
+    void division(Long parentId, String[] names, String[] notes, String[] numbers);
 }

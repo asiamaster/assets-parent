@@ -3,97 +3,86 @@ package com.dili.assets.controller;
 import com.dili.assets.domain.District;
 import com.dili.assets.service.DistrictService;
 import com.dili.ss.domain.BaseOutput;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
-import java.util.List;
+import com.dili.ss.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 由MyBatis Generator工具自动生成
  * This file was generated on 2020-02-17 11:17:18.
  */
-@Api("/district")
-@Controller
-@RequestMapping("/district")
+@RestController
+@RequestMapping("/api/district")
 public class DistrictController {
     @Autowired
     DistrictService districtService;
 
     /**
-     * 跳转到District页面
-     * @param modelMap
-     * @return String
+     * 新增区域
      */
-    @ApiOperation("跳转到District页面")
-    @RequestMapping(value="/index.html", method = RequestMethod.GET)
-    public String index(ModelMap modelMap) {
-        return "district/index";
+    @RequestMapping("save")
+    public BaseOutput save(@RequestBody District input) {
+        try {
+            districtService.saveDistrict(input);
+        } catch (BusinessException e) {
+            return BaseOutput.failure(e.getErrorMsg());
+        }
+        return BaseOutput.success();
     }
 
     /**
-     * 分页查询District，返回easyui分页信息
-     * @param district
-     * @return String
-     * @throws Exception
+     * 新增区域
      */
-    @ApiOperation(value="分页查询District", notes = "分页查询District，返回easyui分页信息")
-    @ApiImplicitParams({
-		@ApiImplicitParam(name="District", paramType="form", value = "District的form信息", required = false, dataType = "string")
-	})
-    @RequestMapping(value="/listPage.action", method = {RequestMethod.GET, RequestMethod.POST})
-    public @ResponseBody String listPage(District district) throws Exception {
-        return districtService.listEasyuiPageByExample(district, true).toString();
+    @RequestMapping("edit")
+    public BaseOutput edit(@RequestBody District input) {
+        try {
+            districtService.editDistrict(input);
+        } catch (BusinessException e) {
+            return BaseOutput.failure(e.getErrorMsg());
+        }
+        return BaseOutput.success();
     }
 
     /**
-     * 新增District
-     * @param district
-     * @return BaseOutput
+     * 获取单个区域
      */
-    @ApiOperation("新增District")
-    @ApiImplicitParams({
-		@ApiImplicitParam(name="District", paramType="form", value = "District的form信息", required = true, dataType = "string")
-	})
-    @RequestMapping(value="/insert.action", method = {RequestMethod.GET, RequestMethod.POST})
-    public @ResponseBody BaseOutput insert(District district) {
-        districtService.insertSelective(district);
-        return BaseOutput.success("新增成功");
+    @RequestMapping("get")
+    public BaseOutput<District> get(@RequestBody Long id) {
+        District district = districtService.get(id);
+        return BaseOutput.success().setData(district);
     }
 
     /**
-     * 修改District
-     * @param district
-     * @return BaseOutput
+     * 获取区域列表
+     *
+     * @param input
+     * @return
      */
-    @ApiOperation("修改District")
-    @ApiImplicitParams({
-		@ApiImplicitParam(name="District", paramType="form", value = "District的form信息", required = true, dataType = "string")
-	})
-    @RequestMapping(value="/update.action", method = {RequestMethod.GET, RequestMethod.POST})
-    public @ResponseBody BaseOutput update(District district) {
-        districtService.updateSelective(district);
-        return BaseOutput.success("修改成功");
+    @RequestMapping("list")
+    public String list(@RequestBody District input) {
+        try {
+            return districtService.listEasyuiPageByExample(input, true).toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     /**
-     * 删除District
-     * @param id
-     * @return BaseOutput
+     * 区域拆分
+     *
+     * @param parentId
+     * @param names
+     * @param notes
+     * @param numbers
+     * @return
      */
-    @ApiOperation("删除District")
-    @ApiImplicitParams({
-		@ApiImplicitParam(name="id", paramType="form", value = "District的主键", required = true, dataType = "long")
-	})
-    @RequestMapping(value="/delete.action", method = {RequestMethod.GET, RequestMethod.POST})
-    public @ResponseBody BaseOutput delete(Long id) {
-        districtService.delete(id);
-        return BaseOutput.success("删除成功");
+    @RequestMapping(value = "/divisionSave", method = RequestMethod.POST)
+    public BaseOutput divisionSave(Long parentId, String[] names, String[] notes, String[] numbers) {
+        districtService.division(parentId, names, notes, numbers);
+        return BaseOutput.success();
     }
 }

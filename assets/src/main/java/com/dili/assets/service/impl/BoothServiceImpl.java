@@ -14,6 +14,21 @@ import org.springframework.stereotype.Service;
 public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements BoothService {
 
     public BoothMapper getActualDao() {
-        return (BoothMapper)getDao();
+        return (BoothMapper) getDao();
+    }
+
+    @Override
+    public void saveBooth(Booth booth) {
+        this.saveOrUpdate(booth);
+    }
+
+    @Override
+    public String listForPage(Booth input) {
+        try {
+            return this.listEasyuiPageByExample(input, true).toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 }
