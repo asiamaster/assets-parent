@@ -67,7 +67,7 @@ public class DistrictServiceImpl extends BaseServiceImpl<District, Long> impleme
         if (CollUtil.isNotEmpty(districts) && !districts.get(0).getId().equals(input.getId())) {
             throw new BusinessException("1", "该部门下区域已存在");
         }
-        this.update(input);
+        this.updateSelective(input);
     }
 
     @Override
@@ -96,5 +96,26 @@ public class DistrictServiceImpl extends BaseServiceImpl<District, Long> impleme
                 this.saveOrUpdate(district);
             }
         }
+    }
+
+    @Override
+    public void delDistrict(Long id) {
+        District condition = new District();
+        condition.setId(id);
+        condition.setIsDelete(StateEnum.YES.getCode());
+        updateSelective(condition);
+
+        District district = get(id);
+        if (district != null && district.getParentId() == 0) {
+            condition = new District();
+            condition.setIsDelete(StateEnum.YES.getCode());
+            condition.setParentId(id);
+            childrenUpdateByPid(condition);
+        }
+    }
+
+    @Override
+    public void childrenUpdateByPid(District update) {
+        getActualDao().childrenUpdateByPid(update);
     }
 }

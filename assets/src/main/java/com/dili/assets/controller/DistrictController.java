@@ -1,6 +1,7 @@
 package com.dili.assets.controller;
 
 import com.dili.assets.domain.District;
+import com.dili.assets.glossary.StateEnum;
 import com.dili.assets.service.DistrictService;
 import com.dili.ss.domain.BaseOutput;
 import com.dili.ss.exception.BusinessException;
@@ -56,6 +57,15 @@ public class DistrictController {
     }
 
     /**
+     * 删除区域
+     */
+    @RequestMapping("delete")
+    public BaseOutput<District> delete(@RequestBody Long id) {
+        districtService.delDistrict(id);
+        return BaseOutput.success();
+    }
+
+    /**
      * 获取区域列表
      *
      * @param input
@@ -64,6 +74,9 @@ public class DistrictController {
     @RequestMapping("list")
     public String list(@RequestBody District input) {
         try {
+            if (input != null && input.getIsDelete() == null) {
+                input.setIsDelete(StateEnum.NO.getCode());
+            }
             return districtService.listEasyuiPageByExample(input, true).toString();
         } catch (Exception e) {
             e.printStackTrace();

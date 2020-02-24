@@ -23,4 +23,14 @@ public interface DistrictService extends BaseService<District, Long> {
      * 拆分区域
      */
     void division(Long parentId, String[] names, String[] notes, String[] numbers);
+
+    /**
+     * 删除区域
+     */
+    void delDistrict(Long id);
+
+    /**
+     * 批量更新
+     */
+    void childrenUpdateByPid(District update);
 }
