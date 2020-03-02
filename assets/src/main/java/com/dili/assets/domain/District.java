@@ -65,11 +65,6 @@ public class District extends BaseDomain {
     @Column(name = "`parent_id`")
     private Long parentId;
     /**
-     * 排序
-     */
-    @Column(name = "`sort`")
-    private String sort;
-    /**
      * 编号
      */
     @Column(name = "`number`")
@@ -218,20 +213,6 @@ public class District extends BaseDomain {
      */
     public void setParentId(Long parentId) {
         this.parentId = parentId;
-    }
-
-    /**
-     * 排序
-     */
-    public String getSort() {
-        return this.sort;
-    }
-
-    /**
-     * 排序
-     */
-    public void setSort(String sort) {
-        this.sort = sort;
     }
 
     /**

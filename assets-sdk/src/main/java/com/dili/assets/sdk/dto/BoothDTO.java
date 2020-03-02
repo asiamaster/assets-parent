@@ -31,6 +31,10 @@ public class BoothDTO extends BaseDomain {
      */
     private Integer area;
     /**
+     * 区域
+     */
+    private Integer secondArea;
+    /**
      * 摊位类型
      */
     private Integer type;
@@ -62,10 +66,6 @@ public class BoothDTO extends BaseDomain {
      * 拆分备注
      */
     private String splitNotes;
-    /**
-     * 排序
-     */
-    private String sort;
     /**
      * 创建人
      */
@@ -262,20 +262,6 @@ public class BoothDTO extends BaseDomain {
     }
 
     /**
-     * 排序
-     */
-    public String getSort() {
-        return this.sort;
-    }
-
-    /**
-     * 排序
-     */
-    public void setSort(String sort) {
-        this.sort = sort;
-    }
-
-    /**
      * 创建人
      */
     public Long getCreatorId() {
@@ -316,4 +302,52 @@ public class BoothDTO extends BaseDomain {
     public void setModifyTime(Date modifyTime) {
         this.modifyTime = modifyTime;
     }
+
+    public Integer getSecondArea() {
+        return secondArea;
+    }
+
+    public void setSecondArea(Integer secondArea) {
+        this.secondArea = secondArea;
+    }
+
+    // ==========================字段转义==================================== //
+    private String unitName;
+    private String areaName;
+    private String secondAreaName;
+    private String departmentName;
+
+    public String getUnitName() {
+        return unitName;
+    }
+
+    public void setUnitName(String unitName) {
+        this.unitName = unitName;
+    }
+
+    public String getAreaName() {
+        return areaName;
+    }
+
+    public void setAreaName(String areaName) {
+        this.areaName = areaName;
+    }
+
+    public String getSecondAreaName() {
+        return secondAreaName;
+    }
+
+    public void setSecondAreaName(String secondAreaName) {
+        this.secondAreaName = secondAreaName;
+    }
+
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
+    }
+
+    // ==========================字段转义==================================== //
 }

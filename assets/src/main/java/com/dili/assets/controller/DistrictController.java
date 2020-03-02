@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * 由MyBatis Generator工具自动生成
  * This file was generated on 2020-02-17 11:17:18.
@@ -82,6 +84,22 @@ public class DistrictController {
             e.printStackTrace();
         }
         return "";
+    }
+
+    /**
+     * 区域搜索
+     */
+    @RequestMapping("search")
+    public BaseOutput<List<District>> search(@RequestBody District input) {
+        try {
+            if (input != null && input.getIsDelete() == null) {
+                input.setIsDelete(StateEnum.NO.getCode());
+            }
+            return BaseOutput.success().setData(districtService.listByExample(input));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return BaseOutput.success();
     }
 
     /**
