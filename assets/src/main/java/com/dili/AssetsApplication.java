@@ -1,6 +1,7 @@
 package com.dili;
 
 import com.dili.ss.dto.DTOScan;
+import com.dili.ss.retrofitful.annotation.RestfulScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
@@ -19,7 +20,7 @@ import tk.mybatis.spring.annotation.MapperScan;
 @ComponentScan(basePackages={"com.dili.ss","com.dili.assets"})
 @DTOScan(value={"com.dili.ss", "com.dili.assets.domain"})
 @EnableDiscoveryClient
-//@EnableFeignClients
+@RestfulScan({"com.dili.assets.rpc","com.dili.uap.sdk.rpc"})
 public class AssetsApplication extends SpringBootServletInitializer {
 
     @LoadBalanced

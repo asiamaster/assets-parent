@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dili.assets.mapper.BoothRentMapper">
+  <resultMap id="BaseResultMap" type="com.dili.assets.domain.BoothRent">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="order_id" jdbcType="VARCHAR" property="orderId" />
+    <result column="booth_id" jdbcType="BIGINT" property="boothId" />
+    <result column="start" jdbcType="TIMESTAMP" property="start" />
+    <result column="end" jdbcType="TIMESTAMP" property="end" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, order_id, booth_id, start, end
+  </sql>
+  <select id="selectBy" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    select 
+    <include refid="Base_Column_List" />
+    from booth_rent
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <update id="updateBy" parameterType="com.dili.assets.domain.BoothRent">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    update booth_rent
+    <set>
+      <if test="orderId != null">
+        order_id = #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="boothId != null">
+        booth_id = #{boothId,jdbcType=BIGINT},
+      </if>
+      <if test="start != null">
+        start = #{start,jdbcType=TIMESTAMP},
+      </if>
+      <if test="end != null">
+        end = #{end,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

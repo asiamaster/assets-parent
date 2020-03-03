@@ -7,9 +7,11 @@
     -->
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="number" jdbcType="INTEGER" property="number" />
+    <result column="number" jdbcType="DECIMAL" property="number" />
     <result column="unit" jdbcType="VARCHAR" property="unit" />
     <result column="area" jdbcType="INTEGER" property="area" />
+    <result column="second_area" jdbcType="INTEGER" property="secondArea" />
+    <result column="corner" jdbcType="TINYINT" property="corner" />
     <result column="type" jdbcType="TINYINT" property="type" />
     <result column="department_id" jdbcType="INTEGER" property="departmentId" />
     <result column="market_id" jdbcType="BIGINT" property="marketId" />
@@ -27,7 +29,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, name, number, unit, area, type, department_id, market_id, parent_id, notes, state, 
+    id, name, number, unit, area, second_area, type, corner, department_id, market_id, parent_id, notes, state,
     is_delete, split_notes, sort, creator_id, create_time, modify_time
   </sql>
   <select id="selectBy" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -49,7 +51,7 @@
         name = #{name,jdbcType=VARCHAR},
       </if>
       <if test="number != null">
-        number = #{number,jdbcType=INTEGER},
+        number = #{number,jdbcType=DOUBLE},
       </if>
       <if test="unit != null">
         unit = #{unit,jdbcType=VARCHAR},
@@ -57,8 +59,14 @@
       <if test="area != null">
         area = #{area,jdbcType=INTEGER},
       </if>
+       <if test="area != null">
+         second_area = #{secondArea,jdbcType=INTEGER},
+      </if>
       <if test="type != null">
         type = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="corner != null">
+        corner = #{corner,jdbcType=TINYINT},
       </if>
       <if test="departmentId != null">
         department_id = #{departmentId,jdbcType=INTEGER},

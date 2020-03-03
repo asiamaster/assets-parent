@@ -53,10 +53,7 @@ public class DistrictDTO extends BaseDomain {
      * 父区域
      */
     private Long parentId;
-    /**
-     * 排序
-     */
-    private String sort;
+
     /**
      * 编号
      */
@@ -204,20 +201,6 @@ public class DistrictDTO extends BaseDomain {
      */
     public void setParentId(Long parentId) {
         this.parentId = parentId;
-    }
-
-    /**
-     * 排序
-     */
-    public String getSort() {
-        return this.sort;
-    }
-
-    /**
-     * 排序
-     */
-    public void setSort(String sort) {
-        this.sort = sort;
     }
 
     /**

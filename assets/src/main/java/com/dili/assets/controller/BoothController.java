@@ -1,12 +1,16 @@
 package com.dili.assets.controller;
 
 import com.dili.assets.domain.Booth;
+import com.dili.assets.domain.query.BoothQuery;
 import com.dili.assets.service.BoothService;
 import com.dili.ss.domain.BaseOutput;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * 由MyBatis Generator工具自动生成
@@ -31,13 +35,70 @@ public class BoothController {
     }
 
     /**
+     * 搜索摊位
+     */
+    @RequestMapping("search")
+    public BaseOutput<List<Booth>> search(@RequestBody BoothQuery query) {
+        return BaseOutput.success().setData(boothService.listByExample(query));
+    }
+
+    /**
+     * 获取
+     *
+     * @param id
+     * @return
+     */
+    @RequestMapping("get")
+    public BaseOutput<Booth> get(@RequestBody Long id) {
+        return BaseOutput.success().setData(boothService.get(id));
+    }
+
+    /**
+     * 新增摊位
+     *
+     * @param booth
+     * @return
+     */
+    @RequestMapping("update")
+    public BaseOutput update(@RequestBody Booth booth) {
+        boothService.updateSelective(booth);
+        return BaseOutput.success();
+    }
+
+    /**
      * 获取摊位列表
      *
      * @param booth
      * @return
      */
     @RequestMapping("list")
-    public String list(Booth booth) {
+    public String list(@RequestBody Booth booth) {
         return boothService.listForPage(booth);
+    }
+
+    /**
+     * 获取摊位剩余面积
+     */
+    @RequestMapping("getBoothBalance")
+    public BaseOutput<Double> getBoothBalance(@RequestBody Long id) {
+        return BaseOutput.success().setData(boothService.getBoothBalance(id));
+    }
+
+    /**
+     * 删除摊位
+     */
+    @RequestMapping("delete")
+    public BaseOutput delete(@RequestBody Long id) {
+        boothService.deleteBooth(id);
+        return BaseOutput.success();
+    }
+
+    /**
+     * 摊位拆分
+     */
+    @RequestMapping(value = "/split", method = RequestMethod.POST)
+    public BaseOutput boothSplit(Long parentId, String[] names, String notes, String[] numbers) {
+        boothService.boothSplit(parentId, names, notes, numbers);
+        return BaseOutput.success();
     }
 }

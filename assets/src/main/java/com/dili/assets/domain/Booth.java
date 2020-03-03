@@ -28,7 +28,7 @@ public class Booth extends BaseDomain {
      * 数量
      */
     @Column(name = "`number`")
-    private Integer number;
+    private Double number;
     /**
      * 单位
      */
@@ -39,6 +39,11 @@ public class Booth extends BaseDomain {
      */
     @Column(name = "`area`")
     private Integer area;
+    /**
+     * 区域
+     */
+    @Column(name = "`second_area`")
+    private Integer secondArea;
     /**
      * 摊位类型
      */
@@ -70,6 +75,11 @@ public class Booth extends BaseDomain {
     @Column(name = "`state`")
     private Integer state;
     /**
+     * 是否转角
+     */
+    @Column(name = "`corner`")
+    private Integer corner;
+    /**
      * 是否删除
      */
     @Column(name = "`is_delete`")
@@ -79,11 +89,6 @@ public class Booth extends BaseDomain {
      */
     @Column(name = "`split_notes`")
     private String splitNotes;
-    /**
-     * 排序
-     */
-    @Column(name = "`sort`")
-    private String sort;
     /**
      * 创建人
      */
@@ -131,14 +136,14 @@ public class Booth extends BaseDomain {
     /**
      * 数量
      */
-    public Integer getNumber() {
+    public Double getNumber() {
         return this.number;
     }
 
     /**
      * 数量
      */
-    public void setNumber(Integer number) {
+    public void setNumber(Double number) {
         this.number = number;
     }
 
@@ -168,6 +173,20 @@ public class Booth extends BaseDomain {
      */
     public void setArea(Integer area) {
         this.area = area;
+    }
+
+    /**
+     * 区域
+     */
+    public Integer getSecondArea() {
+        return this.secondArea;
+    }
+
+    /**
+     * 区域
+     */
+    public void setSecondArea(Integer secondArea) {
+        this.secondArea = secondArea;
     }
 
     /**
@@ -255,6 +274,20 @@ public class Booth extends BaseDomain {
     }
 
     /**
+     * 是否转角
+     */
+    public Integer getCorner() {
+        return this.corner;
+    }
+
+    /**
+     * 是否转角
+     */
+    public void setCorner(Integer corner) {
+        this.corner = corner;
+    }
+
+    /**
      * 是否删除
      */
     public Integer getIsDelete() {
@@ -282,19 +315,6 @@ public class Booth extends BaseDomain {
         this.splitNotes = splitNotes;
     }
 
-    /**
-     * 排序
-     */
-    public String getSort() {
-        return this.sort;
-    }
-
-    /**
-     * 排序
-     */
-    public void setSort(String sort) {
-        this.sort = sort;
-    }
 
     /**
      * 创建人

@@ -1,6 +1,7 @@
 package com.dili.assets.sdk.dto;
 
 import com.dili.ss.domain.BaseDomain;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
 
@@ -21,7 +22,7 @@ public class BoothDTO extends BaseDomain {
     /**
      * 数量
      */
-    private Integer number;
+    private Double number;
     /**
      * 单位
      */
@@ -73,10 +74,12 @@ public class BoothDTO extends BaseDomain {
     /**
      * 创建时间
      */
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
     private Date createTime;
     /**
      * 更新时间
      */
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
     private Date modifyTime;
 
     /**
@@ -110,14 +113,14 @@ public class BoothDTO extends BaseDomain {
     /**
      * 数量
      */
-    public Integer getNumber() {
+    public Double getNumber() {
         return this.number;
     }
 
     /**
      * 数量
      */
-    public void setNumber(Integer number) {
+    public void setNumber(Double number) {
         this.number = number;
     }
 
