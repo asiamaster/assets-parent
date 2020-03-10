@@ -35,6 +35,8 @@ public class BoothRentDTO extends BaseDomain {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
     private Date end;
 
+    private Integer freeze;
+
     /**
      * 主键
      */
@@ -103,5 +105,13 @@ public class BoothRentDTO extends BaseDomain {
      */
     public void setEnd(Date end) {
         this.end = end;
+    }
+
+    public Integer getFreeze() {
+        return freeze;
+    }
+
+    public void setFreeze(Integer freeze) {
+        this.freeze = freeze;
     }
 }

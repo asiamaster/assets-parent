@@ -42,6 +42,12 @@ public class BoothRent extends BaseDomain {
     private Date end;
 
     /**
+     * 冻结状态
+     */
+    @Column(name = "`freeze`")
+    private Integer freeze;
+
+    /**
      * 主键
      */
     public Long getId() {
@@ -109,5 +115,13 @@ public class BoothRent extends BaseDomain {
      */
     public void setEnd(Date end) {
         this.end = end;
+    }
+
+    public Integer getFreeze() {
+        return freeze;
+    }
+
+    public void setFreeze(Integer freeze) {
+        this.freeze = freeze;
     }
 }

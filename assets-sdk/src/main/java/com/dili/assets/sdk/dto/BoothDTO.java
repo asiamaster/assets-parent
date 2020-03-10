@@ -82,6 +82,13 @@ public class BoothDTO extends BaseDomain {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
     private Date modifyTime;
 
+    private Integer corner;
+
+    private Date startTime;
+    private Date endTime;
+    private Double startNumber;
+    private Double endNumber;
+
     /**
      * id
      */
@@ -312,6 +319,46 @@ public class BoothDTO extends BaseDomain {
 
     public void setSecondArea(Integer secondArea) {
         this.secondArea = secondArea;
+    }
+
+    public Integer getCorner() {
+        return corner;
+    }
+
+    public void setCorner(Integer corner) {
+        this.corner = corner;
+    }
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
+    public Double getStartNumber() {
+        return startNumber;
+    }
+
+    public void setStartNumber(Double startNumber) {
+        this.startNumber = startNumber;
+    }
+
+    public Double getEndNumber() {
+        return endNumber;
+    }
+
+    public void setEndNumber(Double endNumber) {
+        this.endNumber = endNumber;
     }
 
     // ==========================字段转义==================================== //

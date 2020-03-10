@@ -19,10 +19,28 @@ public class BoothRentController {
     @Autowired
     BoothRentService boothRentService;
 
+    /**
+     * 新增摊位租赁时间接口
+     */
     @RequestMapping("add")
     public BaseOutput add(@RequestBody BoothRent input) {
         try {
             boothRentService.add(input);
+        } catch (BusinessException be) {
+            return BaseOutput.failure(be.getErrorMsg());
+        } catch (Exception e) {
+            return BaseOutput.failure("系统错误");
+        }
+        return BaseOutput.success();
+    }
+
+    /**
+     * 修改
+     */
+    @RequestMapping("update")
+    public BaseOutput update(@RequestBody BoothRent input) {
+        try {
+            boothRentService.updateSelective(input);
         } catch (BusinessException be) {
             return BaseOutput.failure(be.getErrorMsg());
         } catch (Exception e) {
