@@ -2,8 +2,10 @@ package com.dili.assets.controller;
 
 import com.dili.assets.domain.Booth;
 import com.dili.assets.domain.query.BoothQuery;
+import com.dili.assets.sdk.dto.BoothDTO;
 import com.dili.assets.service.BoothService;
 import com.dili.ss.domain.BaseOutput;
+import com.dili.ss.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,8 +40,8 @@ public class BoothController {
      * 搜索摊位
      */
     @RequestMapping("search")
-    public BaseOutput<List<Booth>> search(@RequestBody BoothQuery query) {
-        return BaseOutput.success().setData(boothService.listByExample(query));
+    public BaseOutput<List<BoothDTO>> search(@RequestBody BoothQuery query) {
+        return BaseOutput.success().setData(boothService.search(query));
     }
 
     /**
@@ -72,7 +74,7 @@ public class BoothController {
      * @return
      */
     @RequestMapping("list")
-    public String list(@RequestBody Booth booth) {
+    public String list(@RequestBody BoothQuery booth) {
         return boothService.listForPage(booth);
     }
 
@@ -89,7 +91,11 @@ public class BoothController {
      */
     @RequestMapping("delete")
     public BaseOutput delete(@RequestBody Long id) {
-        boothService.deleteBooth(id);
+        try {
+            boothService.deleteBooth(id);
+        } catch (BusinessException be) {
+            return BaseOutput.failure(be.getErrorMsg());
+        }
         return BaseOutput.success();
     }
 

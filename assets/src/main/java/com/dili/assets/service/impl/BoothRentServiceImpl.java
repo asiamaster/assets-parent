@@ -3,6 +3,7 @@ package com.dili.assets.service.impl;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateUtil;
 import com.dili.assets.domain.BoothRent;
+import com.dili.assets.glossary.RentEnum;
 import com.dili.assets.mapper.BoothRentMapper;
 import com.dili.assets.service.BoothRentService;
 import com.dili.ss.base.BaseServiceImpl;
@@ -36,6 +37,7 @@ public class BoothRentServiceImpl extends BaseServiceImpl<BoothRent, Long> imple
                 BoothRent query = new BoothRent();
                 query.setBoothId(input.getBoothId());
                 List<BoothRent> boothRents = this.listByExample(query);
+                input.setFreeze(RentEnum.freeze.getCode());
                 if (CollUtil.isEmpty(boothRents)) {
                     saveOrUpdate(input);
                 } else {
@@ -54,7 +56,7 @@ public class BoothRentServiceImpl extends BaseServiceImpl<BoothRent, Long> imple
                     if (canSave) {
                         saveOrUpdate(input);
                     } else {
-                        throw new BusinessException("0", "此时间段已有租赁");
+                        throw new BusinessException("2500", "此时间段已有租赁");
                     }
                 }
             } finally {

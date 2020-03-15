@@ -1,14 +1,27 @@
 package com.dili.assets.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
 import com.dili.assets.domain.Booth;
+import com.dili.assets.domain.District;
 import com.dili.assets.domain.query.BoothQuery;
 import com.dili.assets.glossary.StateEnum;
 import com.dili.assets.mapper.BoothMapper;
 import com.dili.assets.sdk.dto.BoothDTO;
 import com.dili.assets.service.BoothService;
+import com.dili.assets.service.DistrictService;
 import com.dili.ss.base.BaseServiceImpl;
+import com.dili.ss.domain.BaseOutput;
+import com.dili.ss.dto.DTOUtils;
+import com.dili.ss.exception.BusinessException;
+import com.dili.uap.sdk.domain.DataDictionaryValue;
+import com.dili.uap.sdk.domain.Department;
+import com.dili.uap.sdk.rpc.DataDictionaryRpc;
+import com.dili.uap.sdk.rpc.DepartmentRpc;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -18,6 +31,15 @@ import java.util.List;
  */
 @Service
 public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements BoothService {
+
+    @Autowired
+    DataDictionaryRpc dataDictionaryRpc;
+
+    @Autowired
+    private DepartmentRpc departmentRpc;
+
+    @Autowired
+    private DistrictService districtService;
 
     public BoothMapper getActualDao() {
         return (BoothMapper) getDao();
@@ -32,10 +54,10 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
     }
 
     @Override
-    public String listForPage(Booth input) {
+    public String listForPage(BoothQuery input) {
         try {
             if (input == null) {
-                input = new Booth();
+                input = new BoothQuery();
             }
             input.setIsDelete(StateEnum.NO.getCode());
             return this.listEasyuiPageByExample(input, true).toString();
@@ -49,11 +71,20 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
     public void deleteBooth(Long id) {
         Booth booth = get(id);
         booth.setIsDelete(StateEnum.YES.getCode());
+        Booth input = new Booth();
+        input.setParentId(id);
+        List<Booth> booths = this.listByExample(input);
+        if (CollUtil.isNotEmpty(booths)) {
+            throw new BusinessException("500", "不能删除父摊位");
+        }
         this.updateSelective(booth);
     }
 
     @Override
     public void boothSplit(Long parentId, String[] names, String notes, String[] numbers) {
+        if (names == null || numbers == null) {
+            return;
+        }
         if (names.length == numbers.length) {
             Booth parent = get(parentId);
             for (int i = 0; i < names.length; i++) {
@@ -70,14 +101,44 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
                 booth.setIsDelete(StateEnum.NO.getCode());
                 saveBooth(booth);
             }
-        } else {
-
         }
     }
 
     @Override
     public List<BoothDTO> search(BoothQuery query) {
-        return null;
+        List<BoothDTO> result = new ArrayList<>();
+        List<Booth> list = listByExample(query);
+        if (CollUtil.isNotEmpty(list)) {
+            list.forEach(obj -> {
+                BoothDTO dto = new BoothDTO();
+                BeanUtil.copyProperties(obj, dto);
+                // 转换单位
+                DataDictionaryValue dataDictionaryValue = DTOUtils.newDTO(DataDictionaryValue.class);
+                dataDictionaryValue.setCode(obj.getUnit());
+
+                BaseOutput<List<DataDictionaryValue>> listBaseOutput = dataDictionaryRpc.listDataDictionaryValue(dataDictionaryValue);
+                List<DataDictionaryValue> data = listBaseOutput.getData();
+                for (DataDictionaryValue datum : data) {
+                    if (datum.getCode().equals(obj.getUnit())) {
+                        dto.setUnitName(datum.getName());
+                    }
+                }
+                // 转换部门
+                BaseOutput<Department> departmentBaseOutput = departmentRpc.get(obj.getDepartmentId().longValue());
+                dto.setDepartmentName(departmentBaseOutput.getData().getName());
+                // 转换一级区域
+                District district = districtService.get(obj.getArea().longValue());
+                dto.setAreaName(district.getName());
+                // 转换二级区域
+                District districtSecond = districtService.get(obj.getSecondArea().longValue());
+                dto.setAreaName(districtSecond.getName());
+                if (obj.getCorner() != null) {
+                    dto.setCornerName(obj.getCorner() == 1 ? "是" : "否");
+                }
+                result.add(dto);
+            });
+        }
+        return result;
     }
 
     @Override

@@ -366,6 +366,7 @@ public class BoothDTO extends BaseDomain {
     private String areaName;
     private String secondAreaName;
     private String departmentName;
+    private String cornerName;
 
     public String getUnitName() {
         return unitName;
@@ -397,6 +398,14 @@ public class BoothDTO extends BaseDomain {
 
     public void setDepartmentName(String departmentName) {
         this.departmentName = departmentName;
+    }
+
+    public String getCornerName() {
+        return cornerName;
+    }
+
+    public void setCornerName(String cornerName) {
+        this.cornerName = cornerName;
     }
 
     // ==========================字段转义==================================== //

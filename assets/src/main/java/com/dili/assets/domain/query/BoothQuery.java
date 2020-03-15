@@ -2,8 +2,10 @@ package com.dili.assets.domain.query;
 
 import com.dili.assets.domain.Booth;
 import com.dili.ss.domain.annotation.Like;
+import com.dili.ss.domain.annotation.Operator;
 
 import javax.persistence.Column;
+import java.util.Date;
 
 /**
  * @author shaofan
@@ -19,6 +21,18 @@ public class BoothQuery extends Booth {
     @Like(Like.BOTH)
     @Column(name = "`name`")
     private String keyword;
+   @Operator(Operator.GREAT_EQUAL_THAN)
+    @Column(name = "`create_time`")
+    private Date startTime;
+    @Operator(Operator.LITTLE_EQUAL_THAN)
+    @Column(name = "`create_time`")
+    private Date endTime;
+    @Operator(Operator.GREAT_EQUAL_THAN)
+    @Column(name = "`number`")
+    private Double startNumber;
+    @Operator(Operator.LITTLE_EQUAL_THAN)
+    @Column(name = "`number`")
+    private Double endNumber;
 
     public String getKeyword() {
         return keyword;

@@ -1,6 +1,7 @@
 package com.dili.assets.controller;
 
 import com.dili.assets.domain.BoothRent;
+import com.dili.assets.glossary.RentEnum;
 import com.dili.assets.service.BoothRentService;
 import com.dili.ss.domain.BaseOutput;
 import com.dili.ss.exception.BusinessException;
@@ -35,10 +36,35 @@ public class BoothRentController {
     }
 
     /**
-     * 修改
+     * 修改成出粗状态
      */
-    @RequestMapping("update")
+    @RequestMapping("rent")
     public BaseOutput update(@RequestBody BoothRent input) {
+        try {
+            input.setFreeze(RentEnum.rent.getCode());
+            boothRentService.updateSelective(input);
+        } catch (BusinessException be) {
+            return BaseOutput.failure(be.getErrorMsg());
+        } catch (Exception e) {
+            return BaseOutput.failure("系统错误");
+        }
+        return BaseOutput.success();
+    }
+
+    /**
+     * 删除租赁
+     */
+    @RequestMapping("delete")
+    public BaseOutput delete(@RequestBody BoothRent input){
+        boothRentService.deleteByExample(input);
+        return BaseOutput.success();
+    }
+
+    /**
+     * 删除租赁
+     */
+    @RequestMapping("updateEnd")
+    public BaseOutput updateEnd(@RequestBody BoothRent input){
         try {
             boothRentService.updateSelective(input);
         } catch (BusinessException be) {
@@ -48,4 +74,6 @@ public class BoothRentController {
         }
         return BaseOutput.success();
     }
+
+
 }

@@ -20,7 +20,7 @@ public interface BoothService extends BaseService<Booth, Long> {
     /**
      * 获取摊位列表
      */
-    String listForPage(Booth booth);
+    String listForPage(BoothQuery booth);
 
     /**
      * 删除摊位
