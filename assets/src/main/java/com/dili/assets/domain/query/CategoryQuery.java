@@ -3,8 +3,10 @@ package com.dili.assets.domain.query;
 import com.dili.assets.domain.Category;
 import com.dili.ss.domain.annotation.Like;
 import com.dili.ss.domain.annotation.Operator;
+import com.dili.ss.domain.annotation.SqlOperator;
 
 import javax.persistence.Column;
+import javax.persistence.Transient;
 
 /**
  * 用于构造查询条件的实体
@@ -26,6 +28,43 @@ public class CategoryQuery extends Category {
     @Operator(Operator.NOT_EQUAL)
     @Column(name = "`state`")
     private Integer stateFilter;
+
+    @Transient
+    private String keyword;
+
+    @Like
+    @SqlOperator(SqlOperator.OR)
+    @Column(name = "`name`")
+    private String orName;
+
+    @Like
+    @SqlOperator(SqlOperator.OR)
+    @Column(name = "`name`")
+    private String orCode;
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
+    public String getOrName() {
+        return orName;
+    }
+
+    public void setOrName(String orName) {
+        this.orName = orName;
+    }
+
+    public String getOrCode() {
+        return orCode;
+    }
+
+    public void setOrCode(String orCode) {
+        this.orCode = orCode;
+    }
 
     public String getQueryPath() {
         return queryPath;

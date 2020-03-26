@@ -11,6 +11,7 @@ import com.dili.ss.exception.BusinessException;
 import com.dili.ss.redis.service.RedisDistributedLock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -31,6 +32,7 @@ public class BoothRentServiceImpl extends BaseServiceImpl<BoothRent, Long> imple
     RedisDistributedLock redisDistributedLock;
 
     @Override
+    @Transactional
     public void add(BoothRent input) {
         if (redisDistributedLock.tryGetLock(key, key, 180L)) {
             try {

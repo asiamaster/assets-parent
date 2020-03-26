@@ -130,8 +130,10 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
                 District district = districtService.get(obj.getArea().longValue());
                 dto.setAreaName(district.getName());
                 // 转换二级区域
-                District districtSecond = districtService.get(obj.getSecondArea().longValue());
-                dto.setAreaName(districtSecond.getName());
+                if(obj.getSecondArea()!=null) {
+                    District districtSecond = districtService.get(obj.getSecondArea().longValue());
+                    dto.setSecondAreaName(districtSecond.getName());
+                }
                 if (obj.getCorner() != null) {
                     dto.setCornerName(obj.getCorner() == 1 ? "是" : "否");
                 }

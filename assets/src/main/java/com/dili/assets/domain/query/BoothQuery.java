@@ -18,7 +18,7 @@ public class BoothQuery extends Booth {
     /**
      * 用于快速查找整棵品类树 where path like '1,2,3,%'
      */
-    @Like(Like.BOTH)
+    @Like()
     @Column(name = "`name`")
     private String keyword;
    @Operator(Operator.GREAT_EQUAL_THAN)
@@ -42,5 +42,38 @@ public class BoothQuery extends Booth {
         this.keyword = keyword;
     }
 
-    // ==========================动态SQL过滤字段==================================== //
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
+    public Double getStartNumber() {
+        return startNumber;
+    }
+
+    public void setStartNumber(Double startNumber) {
+        this.startNumber = startNumber;
+    }
+
+    public Double getEndNumber() {
+        return endNumber;
+    }
+
+    public void setEndNumber(Double endNumber) {
+        this.endNumber = endNumber;
+    }
+
+
+// ==========================动态SQL过滤字段==================================== //
 }
