@@ -39,7 +39,7 @@ public class CategoryQuery extends Category {
 
     @Like
     @SqlOperator(SqlOperator.OR)
-    @Column(name = "`name`")
+    @Column(name = "`code`")
     private String orCode;
 
     public String getKeyword() {

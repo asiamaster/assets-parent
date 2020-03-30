@@ -1,6 +1,6 @@
 package com.dili.assets.provider;
 
-import com.dili.assets.glossary.BoothStateEnum;
+import com.dili.commons.glossary.EnabledStateEnum;
 import com.dili.ss.metadata.FieldMeta;
 import com.dili.ss.metadata.ValuePair;
 import com.dili.ss.metadata.ValuePairImpl;
@@ -26,7 +26,7 @@ public class BoothStateProvider implements ValueProvider {
     private static final List<ValuePair<?>> BUFFER = new ArrayList<>();
 
     static {
-        BUFFER.addAll(Stream.of(BoothStateEnum.values())
+        BUFFER.addAll(Stream.of(EnabledStateEnum.values())
                 .map(e -> new ValuePairImpl<>(e.getName(), e.getCode().toString()))
                 .collect(Collectors.toList()));
     }

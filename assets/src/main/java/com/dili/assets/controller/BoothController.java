@@ -4,6 +4,8 @@ import com.dili.assets.domain.Booth;
 import com.dili.assets.domain.query.BoothQuery;
 import com.dili.assets.sdk.dto.BoothDTO;
 import com.dili.assets.service.BoothService;
+import com.dili.commons.glossary.EnabledStateEnum;
+import com.dili.commons.glossary.YesOrNoEnum;
 import com.dili.ss.domain.BaseOutput;
 import com.dili.ss.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +43,8 @@ public class BoothController {
      */
     @RequestMapping("search")
     public BaseOutput<List<BoothDTO>> search(@RequestBody BoothQuery query) {
+        query.setIsDelete(YesOrNoEnum.NO.getCode());
+        query.setState(EnabledStateEnum.ENABLED.getCode());
         return BaseOutput.success().setData(boothService.search(query));
     }
 

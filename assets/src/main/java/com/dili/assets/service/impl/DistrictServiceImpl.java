@@ -29,6 +29,7 @@ public class DistrictServiceImpl extends BaseServiceImpl<District, Long> impleme
         District cond = new District();
         cond.setNumber(input.getNumber());
         cond.setIsDelete(StateEnum.NO.getCode());
+        cond.setMarketId(input.getMarketId());
         List<District> districts = this.listByExample(cond);
         if (CollUtil.isNotEmpty(districts)) {
             throw new BusinessException("1", "编号已存在");
@@ -39,6 +40,7 @@ public class DistrictServiceImpl extends BaseServiceImpl<District, Long> impleme
         cond.setDepartmentId(input.getDepartmentId());
         cond.setName(input.getName());
         cond.setIsDelete(StateEnum.NO.getCode());
+        cond.setMarketId(input.getMarketId());
         districts = this.listByExample(cond);
 
         if (CollUtil.isNotEmpty(districts)) {
@@ -53,6 +55,7 @@ public class DistrictServiceImpl extends BaseServiceImpl<District, Long> impleme
         District cond = new District();
         cond.setNumber(input.getNumber());
         cond.setIsDelete(StateEnum.NO.getCode());
+        cond.setMarketId(input.getMarketId());
         List<District> districts = this.listByExample(cond);
         if (CollUtil.isNotEmpty(districts) && !districts.get(0).getId().equals(input.getId())) {
             throw new BusinessException("1", "编号已存在");
@@ -62,6 +65,7 @@ public class DistrictServiceImpl extends BaseServiceImpl<District, Long> impleme
         cond.setDepartmentId(input.getDepartmentId());
         cond.setName(input.getName());
         cond.setIsDelete(StateEnum.NO.getCode());
+        cond.setMarketId(input.getMarketId());
         districts = this.listByExample(cond);
 
         if (CollUtil.isNotEmpty(districts) && !districts.get(0).getId().equals(input.getId())) {

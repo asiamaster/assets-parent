@@ -36,7 +36,7 @@ public class CategoryController {
         input.setStateFilter(3);
         if (StrUtil.isNotBlank(input.getKeyword())) {
             input.setOrName(input.getKeyword());
-            input.setOrCode(input.getKeyword());
+//            input.setOrCode(input.getKeyword());
         }
         List<Category> list = categoryService.listByExample(input);
         return BaseOutput.success().setData(list);

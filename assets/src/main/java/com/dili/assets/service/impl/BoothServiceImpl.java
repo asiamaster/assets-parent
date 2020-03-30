@@ -10,6 +10,8 @@ import com.dili.assets.mapper.BoothMapper;
 import com.dili.assets.sdk.dto.BoothDTO;
 import com.dili.assets.service.BoothService;
 import com.dili.assets.service.DistrictService;
+import com.dili.commons.glossary.EnabledStateEnum;
+import com.dili.commons.glossary.YesOrNoEnum;
 import com.dili.ss.base.BaseServiceImpl;
 import com.dili.ss.domain.BaseOutput;
 import com.dili.ss.dto.DTOUtils;
@@ -47,9 +49,9 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
 
     @Override
     public void saveBooth(Booth booth) {
-        booth.setIsDelete(StateEnum.NO.getCode());
+        booth.setIsDelete(YesOrNoEnum.NO.getCode());
         booth.setCreateTime(new Date());
-        booth.setState(0);
+        booth.setState(EnabledStateEnum.DISABLED.getCode());
         this.saveOrUpdate(booth);
     }
 
@@ -70,7 +72,7 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
     @Override
     public void deleteBooth(Long id) {
         Booth booth = get(id);
-        booth.setIsDelete(StateEnum.YES.getCode());
+        booth.setIsDelete(YesOrNoEnum.YES.getCode());
         Booth input = new Booth();
         input.setParentId(id);
         List<Booth> booths = this.listByExample(input);
@@ -98,7 +100,11 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
                 booth.setDepartmentId(parent.getDepartmentId());
                 booth.setUnit(parent.getUnit());
                 booth.setType(parent.getType());
+                booth.setMarketId(parent.getMarketId());
                 booth.setIsDelete(StateEnum.NO.getCode());
+                booth.setCreateTime(new Date());
+                booth.setModifyTime(new Date());
+                booth.setCreatorId(parent.getCreatorId());
                 saveBooth(booth);
             }
         }

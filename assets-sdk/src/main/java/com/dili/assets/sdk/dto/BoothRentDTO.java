@@ -27,12 +27,10 @@ public class BoothRentDTO extends BaseDomain {
     /**
      * 开始日期
      */
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
     private Date start;
     /**
      * 结束时间
      */
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
     private Date end;
 
     private Integer freeze;

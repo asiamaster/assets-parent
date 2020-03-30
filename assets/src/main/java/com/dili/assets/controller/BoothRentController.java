@@ -30,6 +30,7 @@ public class BoothRentController {
         } catch (BusinessException be) {
             return BaseOutput.failure(be.getErrorMsg());
         } catch (Exception e) {
+            e.printStackTrace();
             return BaseOutput.failure("系统错误");
         }
         return BaseOutput.success();
@@ -41,8 +42,9 @@ public class BoothRentController {
     @RequestMapping("rent")
     public BaseOutput update(@RequestBody BoothRent input) {
         try {
-            input.setFreeze(RentEnum.rent.getCode());
-            boothRentService.updateSelective(input);
+            BoothRent boothRent = new BoothRent();
+            boothRent.setFreeze(RentEnum.rent.getCode());
+            boothRentService.updateSelectiveByExample(boothRent, input);
         } catch (BusinessException be) {
             return BaseOutput.failure(be.getErrorMsg());
         } catch (Exception e) {
@@ -55,7 +57,7 @@ public class BoothRentController {
      * 删除租赁
      */
     @RequestMapping("delete")
-    public BaseOutput delete(@RequestBody BoothRent input){
+    public BaseOutput delete(@RequestBody BoothRent input) {
         boothRentService.deleteByExample(input);
         return BaseOutput.success();
     }
@@ -64,9 +66,12 @@ public class BoothRentController {
      * 删除租赁
      */
     @RequestMapping("updateEnd")
-    public BaseOutput updateEnd(@RequestBody BoothRent input){
+    public BaseOutput updateEnd(@RequestBody BoothRent input) {
         try {
-            boothRentService.updateSelective(input);
+            BoothRent boothRent = new BoothRent();
+            boothRent.setEnd(input.getEnd());
+            input.setEnd(null);
+            boothRentService.updateSelectiveByExample(boothRent, input);
         } catch (BusinessException be) {
             return BaseOutput.failure(be.getErrorMsg());
         } catch (Exception e) {

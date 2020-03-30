@@ -34,7 +34,7 @@ public class BoothRentServiceImpl extends BaseServiceImpl<BoothRent, Long> imple
     @Override
     @Transactional
     public void add(BoothRent input) {
-        if (redisDistributedLock.tryGetLock(key, key, 180L)) {
+        if (true) {
             try {
                 BoothRent query = new BoothRent();
                 query.setBoothId(input.getBoothId());
@@ -45,12 +45,13 @@ public class BoothRentServiceImpl extends BaseServiceImpl<BoothRent, Long> imple
                 } else {
                     boolean canSave = true;
                     for (BoothRent boothRent : boothRents) {
-                        if (DateUtil.compare(input.getEnd(), boothRent.getStart()) > 0) {
+                        //
+                        if (DateUtil.compare(input.getEnd(), boothRent.getStart()) > 0 && DateUtil.compare(input.getEnd(), boothRent.getEnd()) < 0) {
                             canSave = false;
                             break;
                         }
 
-                        if (DateUtil.compare(input.getStart(), boothRent.getEnd()) < 0) {
+                        if (DateUtil.compare(input.getStart(), boothRent.getEnd()) < 0 && DateUtil.compare(input.getStart(), boothRent.getStart()) > 0) {
                             canSave = false;
                             break;
                         }
@@ -68,6 +69,8 @@ public class BoothRentServiceImpl extends BaseServiceImpl<BoothRent, Long> imple
                 }
             }
 
+        } else {
+            throw new BusinessException("5000", "系统错误");
         }
     }
 }
