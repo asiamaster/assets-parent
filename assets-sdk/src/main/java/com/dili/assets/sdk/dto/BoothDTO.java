@@ -367,6 +367,15 @@ public class BoothDTO extends BaseDomain {
     private String secondAreaName;
     private String departmentName;
     private String cornerName;
+    private String creatorUser;
+
+    public String getCreatorUser() {
+        return creatorUser;
+    }
+
+    public void setCreatorUser(String creatorUser) {
+        this.creatorUser = creatorUser;
+    }
 
     public String getUnitName() {
         return unitName;

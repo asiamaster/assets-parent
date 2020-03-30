@@ -51,7 +51,7 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
     public void saveBooth(Booth booth) {
         booth.setIsDelete(YesOrNoEnum.NO.getCode());
         booth.setCreateTime(new Date());
-        booth.setState(EnabledStateEnum.DISABLED.getCode());
+        booth.setState(EnabledStateEnum.ENABLED.getCode());
         this.saveOrUpdate(booth);
     }
 
