@@ -34,7 +34,7 @@ public class BoothRentServiceImpl extends BaseServiceImpl<BoothRent, Long> imple
     @Override
     @Transactional
     public void add(BoothRent input) {
-        if (true) {
+        if (redisDistributedLock.tryGetLock(key, key, 180L)) {
             try {
                 BoothRent query = new BoothRent();
                 query.setBoothId(input.getBoothId());
