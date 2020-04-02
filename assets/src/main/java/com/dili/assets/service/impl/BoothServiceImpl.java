@@ -105,6 +105,7 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
                 booth.setCreateTime(new Date());
                 booth.setModifyTime(new Date());
                 booth.setCreatorId(parent.getCreatorId());
+                booth.setCorner(parent.getCorner());
                 saveBooth(booth);
             }
         }
