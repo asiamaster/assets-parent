@@ -49,6 +49,14 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
 
     @Override
     public void saveBooth(Booth booth) {
+        Booth query = new Booth();
+        query.setName(booth.getName());
+        query.setIsDelete(YesOrNoEnum.NO.getCode());
+        List<Booth> check = this.listByExample(query);
+        if (CollUtil.isNotEmpty(check)) {
+            throw new BusinessException("5000", "摊位编号重复");
+        }
+
         booth.setIsDelete(YesOrNoEnum.NO.getCode());
         booth.setCreateTime(new Date());
         booth.setState(EnabledStateEnum.ENABLED.getCode());
@@ -89,6 +97,9 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
         }
         if (names.length == numbers.length) {
             Booth parent = get(parentId);
+            if (parent.getState().equals(EnabledStateEnum.DISABLED.getCode()) || parent.getIsDelete().equals(YesOrNoEnum.YES.getCode())) {
+                throw new BusinessException("5000", "摊位禁用或删除，不能拆分");
+            }
             for (int i = 0; i < names.length; i++) {
                 Booth booth = new Booth();
                 booth.setArea(parent.getArea());
@@ -137,7 +148,7 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
                 District district = districtService.get(obj.getArea().longValue());
                 dto.setAreaName(district.getName());
                 // 转换二级区域
-                if(obj.getSecondArea()!=null) {
+                if (obj.getSecondArea() != null) {
                     District districtSecond = districtService.get(obj.getSecondArea().longValue());
                     dto.setSecondAreaName(districtSecond.getName());
                 }

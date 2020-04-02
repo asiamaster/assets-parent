@@ -34,7 +34,11 @@ public class BoothController {
      */
     @RequestMapping("save")
     public BaseOutput save(@RequestBody Booth booth) {
-        boothService.saveBooth(booth);
+        try {
+            boothService.saveBooth(booth);
+        }catch (BusinessException be){
+            return BaseOutput.failure(be.getErrorMsg());
+        }
         return BaseOutput.success();
     }
 
@@ -108,7 +112,11 @@ public class BoothController {
      */
     @RequestMapping(value = "/split", method = RequestMethod.POST)
     public BaseOutput boothSplit(Long parentId, String[] names, String notes, String[] numbers) {
-        boothService.boothSplit(parentId, names, notes, numbers);
+        try {
+            boothService.boothSplit(parentId, names, notes, numbers);
+        } catch (BusinessException be) {
+            return BaseOutput.failure(be.getErrorMsg());
+        }
         return BaseOutput.success();
     }
 }
