@@ -16,6 +16,7 @@ import com.dili.ss.base.BaseServiceImpl;
 import com.dili.ss.domain.BaseOutput;
 import com.dili.ss.dto.DTOUtils;
 import com.dili.ss.exception.BusinessException;
+import com.dili.ss.util.DateUtils;
 import com.dili.uap.sdk.domain.DataDictionaryValue;
 import com.dili.uap.sdk.domain.Department;
 import com.dili.uap.sdk.rpc.DataDictionaryRpc;
@@ -70,6 +71,12 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
                 input = new BoothQuery();
             }
             input.setIsDelete(StateEnum.NO.getCode());
+            if (input.getStartTime() != null) {
+                input.setStartTime(DateUtils.formatDate2DateTimeStart(input.getStartTime()));
+            }
+            if (input.getEndTime() != null) {
+                input.setEndTime(DateUtils.formatDate2DateTimeEnd(input.getEndTime()));
+            }
             return this.listEasyuiPageByExample(input, true).toString();
         } catch (Exception e) {
             e.printStackTrace();

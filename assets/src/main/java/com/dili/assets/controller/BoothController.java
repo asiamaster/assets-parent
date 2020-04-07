@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -35,6 +36,8 @@ public class BoothController {
     @RequestMapping("save")
     public BaseOutput save(@RequestBody Booth booth) {
         try {
+            booth.setCreateTime(new Date());
+            booth.setModifyTime(new Date());
             boothService.saveBooth(booth);
         }catch (BusinessException be){
             return BaseOutput.failure(be.getErrorMsg());
@@ -48,7 +51,6 @@ public class BoothController {
     @RequestMapping("search")
     public BaseOutput<List<BoothDTO>> search(@RequestBody BoothQuery query) {
         query.setIsDelete(YesOrNoEnum.NO.getCode());
-        query.setState(EnabledStateEnum.ENABLED.getCode());
         return BaseOutput.success().setData(boothService.search(query));
     }
 
