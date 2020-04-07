@@ -1,7 +1,10 @@
 package com.dili.assets.service;
 
 import com.dili.assets.domain.Category;
+import com.dili.assets.domain.query.CategoryQuery;
 import com.dili.ss.base.BaseService;
+
+import java.util.List;
 
 /**
  * 由MyBatis Generator工具自动生成
@@ -28,4 +31,5 @@ public interface CategoryService extends BaseService<Category, Long> {
      * @param id 主键
      */
     void batchUpdate(Long id, Integer value);
+
 }

@@ -3,6 +3,7 @@ package com.dili.assets.controller;
 import cn.hutool.core.util.StrUtil;
 import com.dili.assets.domain.Category;
 import com.dili.assets.domain.query.CategoryQuery;
+import com.dili.assets.mapper.CategoryMapper;
 import com.dili.assets.service.CategoryService;
 import com.dili.ss.domain.BaseOutput;
 import com.dili.ss.exception.BusinessException;
@@ -24,21 +25,15 @@ public class CategoryController {
     @Autowired
     CategoryService categoryService;
 
+    @Autowired
+    CategoryMapper categoryMapper;
+
     /**
      * 获取品类列表
      */
     @RequestMapping(value = "/getTree")
     public BaseOutput<List<Category>> getTree(@RequestBody(required = false) CategoryQuery input) {
-        if (input == null) {
-            input = new CategoryQuery();
-        }
-        // 过滤删除的品类
-        input.setStateFilter(3);
-        if (StrUtil.isNotBlank(input.getKeyword())) {
-            input.setOrName(input.getKeyword());
-//            input.setOrCode(input.getKeyword());
-        }
-        List<Category> list = categoryService.listByExample(input);
+        List<Category> list = categoryMapper.listCategory(input);
         return BaseOutput.success().setData(list);
     }
 

@@ -92,4 +92,18 @@
             #{item, jdbcType=BIGINT}
         </foreach>
     </update>
+
+
+    <select id="listCategory" parameterType="com.dili.assets.domain.query.CategoryQuery" resultMap="BaseResultMap">
+        select * from category
+        <where>
+            `state`!=3
+            <if test="keyword !=null and keyword !=''">
+                and (`name`=#{keyword} or `code`=#{keyword})
+            </if>
+            <if test="state !=null and state !=''">
+                and `state`=#{state}
+            </if>
+        </where>
+    </select>
 </mapper>

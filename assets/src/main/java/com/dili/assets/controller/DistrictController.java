@@ -63,8 +63,14 @@ public class DistrictController {
      */
     @RequestMapping("delete")
     public BaseOutput<District> delete(@RequestBody Long id) {
-        districtService.delDistrict(id);
-        return BaseOutput.success();
+        try {
+            districtService.delDistrict(id);
+            return BaseOutput.success();
+        } catch (BusinessException be) {
+            return BaseOutput.failure(be.getErrorMsg());
+        } catch (Exception e) {
+            return BaseOutput.failure(e.getMessage());
+        }
     }
 
     /**

@@ -141,9 +141,6 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
                         dto.setUnitName(datum.getName());
                     }
                 }
-                // 转换部门
-                BaseOutput<Department> departmentBaseOutput = departmentRpc.get(obj.getDepartmentId().longValue());
-                dto.setDepartmentName(departmentBaseOutput.getData().getName());
                 // 转换一级区域
                 District district = districtService.get(obj.getArea().longValue());
                 dto.setAreaName(district.getName());

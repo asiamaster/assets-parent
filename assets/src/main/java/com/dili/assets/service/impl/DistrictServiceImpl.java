@@ -2,12 +2,16 @@ package com.dili.assets.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import com.dili.assets.domain.District;
+import com.dili.assets.domain.query.BoothQuery;
 import com.dili.assets.glossary.StateEnum;
 import com.dili.assets.mapper.DistrictMapper;
+import com.dili.assets.service.BoothService;
 import com.dili.assets.service.DistrictService;
+import com.dili.commons.glossary.YesOrNoEnum;
 import com.dili.ss.base.BaseServiceImpl;
 import com.dili.ss.exception.BusinessException;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -23,6 +27,9 @@ public class DistrictServiceImpl extends BaseServiceImpl<District, Long> impleme
     public DistrictMapper getActualDao() {
         return (DistrictMapper) getDao();
     }
+
+    @Autowired
+    private BoothService boothService;
 
     @Override
     public void saveDistrict(District input) {
@@ -104,6 +111,29 @@ public class DistrictServiceImpl extends BaseServiceImpl<District, Long> impleme
 
     @Override
     public void delDistrict(Long id) {
+        BoothQuery query = new BoothQuery();
+        query.setArea(id.intValue());
+        if (CollUtil.isNotEmpty(boothService.listByExample(query))) {
+            throw new BusinessException("500", "该区域被使用无法删除");
+        }
+        query = new BoothQuery();
+        query.setSecondArea(id.intValue());
+        if (CollUtil.isNotEmpty(boothService.listByExample(query))) {
+            throw new BusinessException("500", "该区域被使用无法删除");
+        }
+        District check = new District();
+        check.setParentId(id);
+        check.setIsDelete(YesOrNoEnum.NO.getCode());
+        List<District> districts = listByExample(check);
+        for (District district : districts) {
+            query = new BoothQuery();
+            query.setSecondArea(district.getId().intValue());
+            if (CollUtil.isNotEmpty(boothService.listByExample(query))) {
+                throw new BusinessException("500", "该区域被使用无法删除");
+            }
+        }
+
+
         District condition = new District();
         condition.setId(id);
         condition.setIsDelete(StateEnum.YES.getCode());

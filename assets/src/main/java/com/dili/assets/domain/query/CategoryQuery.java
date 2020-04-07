@@ -18,7 +18,7 @@ public class CategoryQuery extends Category {
     /**
      * 用于快速查找整棵品类树 where path like '1,2,3,%'
      */
-    @Like(Like.LEFT)
+    @Like(Like.RIGHT)
     @Column(name = "`path`")
     private String queryPath;
 
