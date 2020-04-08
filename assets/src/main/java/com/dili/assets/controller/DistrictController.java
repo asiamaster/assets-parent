@@ -4,6 +4,7 @@ import com.dili.assets.domain.District;
 import com.dili.assets.glossary.StateEnum;
 import com.dili.assets.service.DistrictService;
 import com.dili.ss.domain.BaseOutput;
+import com.dili.ss.domain.EasyuiPageOutput;
 import com.dili.ss.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -85,7 +86,9 @@ public class DistrictController {
             if (input != null && input.getIsDelete() == null) {
                 input.setIsDelete(StateEnum.NO.getCode());
             }
-            return districtService.listEasyuiPageByExample(input, true).toString();
+            EasyuiPageOutput easyuiPageOutput = districtService.listEasyuiPageByExample(input, true);
+//            if()
+            return easyuiPageOutput.toString();
         } catch (Exception e) {
             e.printStackTrace();
         }

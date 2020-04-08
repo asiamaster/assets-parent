@@ -46,12 +46,12 @@ public class BoothRentServiceImpl extends BaseServiceImpl<BoothRent, Long> imple
                     boolean canSave = true;
                     for (BoothRent boothRent : boothRents) {
                         //
-                        if (DateUtil.compare(input.getEnd(), boothRent.getStart()) > 0 && DateUtil.compare(input.getEnd(), boothRent.getEnd()) < 0) {
+                        if (DateUtil.compare(input.getEnd(), boothRent.getStart()) > 0 || DateUtil.compare(input.getEnd(), boothRent.getEnd()) < 0) {
                             canSave = false;
                             break;
                         }
 
-                        if (DateUtil.compare(input.getStart(), boothRent.getEnd()) < 0 && DateUtil.compare(input.getStart(), boothRent.getStart()) > 0) {
+                        if (DateUtil.compare(input.getStart(), boothRent.getEnd()) < 0 || DateUtil.compare(input.getStart(), boothRent.getStart()) > 0) {
                             canSave = false;
                             break;
                         }
