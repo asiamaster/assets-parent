@@ -1,5 +1,6 @@
 package com.dili.assets.controller;
 
+import cn.hutool.core.collection.CollUtil;
 import com.dili.assets.domain.District;
 import com.dili.assets.glossary.StateEnum;
 import com.dili.assets.service.DistrictService;
@@ -12,7 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 由MyBatis Generator工具自动生成
@@ -87,7 +91,29 @@ public class DistrictController {
                 input.setIsDelete(StateEnum.NO.getCode());
             }
             EasyuiPageOutput easyuiPageOutput = districtService.listEasyuiPageByExample(input, true);
-//            if()
+            List rows = easyuiPageOutput.getRows();
+            List parentList = new ArrayList();
+            if (CollUtil.isNotEmpty(rows)) {
+                List<Long> child = new ArrayList();
+                rows.forEach(obj -> {
+                    Map district = (Map) obj;
+                    Long parentId = Long.parseLong(district.get("parentId").toString());
+                    if (parentId != 0) {
+                        if (!child.contains(parentId)) {
+                            child.add(parentId);
+                        }
+                    }
+                });
+                for (Long district : child) {
+                    boolean anyMatch = rows.stream().anyMatch(o -> {
+                        Map d = (Map) o;
+                        return d.get("id").equals(district);
+                    });
+                    if (!anyMatch) {
+                        rows.add(districtService.get(district));
+                    }
+                }
+            }
             return easyuiPageOutput.toString();
         } catch (Exception e) {
             e.printStackTrace();

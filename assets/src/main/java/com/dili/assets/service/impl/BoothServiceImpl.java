@@ -14,6 +14,7 @@ import com.dili.commons.glossary.EnabledStateEnum;
 import com.dili.commons.glossary.YesOrNoEnum;
 import com.dili.ss.base.BaseServiceImpl;
 import com.dili.ss.domain.BaseOutput;
+import com.dili.ss.domain.EasyuiPageOutput;
 import com.dili.ss.dto.DTOUtils;
 import com.dili.ss.exception.BusinessException;
 import com.dili.ss.util.DateUtils;
@@ -27,6 +28,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 由MyBatis Generator工具自动生成
@@ -77,7 +79,31 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
             if (input.getEndTime() != null) {
                 input.setEndTime(DateUtils.formatDate2DateTimeEnd(input.getEndTime()));
             }
-            return this.listEasyuiPageByExample(input, true).toString();
+            EasyuiPageOutput easyuiPageOutput = this.listEasyuiPageByExample(input, true);
+            List rows = easyuiPageOutput.getRows();
+            List parentList = new ArrayList();
+            if (CollUtil.isNotEmpty(rows)) {
+                List<Long> child = new ArrayList();
+                rows.forEach(obj -> {
+                    Map booth = (Map) obj;
+                    Long parentId = Long.parseLong(booth.get("parentId").toString());
+                    if (parentId != 0) {
+                        if (!child.contains(parentId)) {
+                            child.add(parentId);
+                        }
+                    }
+                });
+                for (Long booth : child) {
+                    boolean anyMatch = rows.stream().anyMatch(o -> {
+                        Map d = (Map) o;
+                        return d.get("id").equals(booth);
+                    });
+                    if (!anyMatch) {
+                        rows.add(this.get(booth));
+                    }
+                }
+            }
+            return easyuiPageOutput.toString();
         } catch (Exception e) {
             e.printStackTrace();
         }
