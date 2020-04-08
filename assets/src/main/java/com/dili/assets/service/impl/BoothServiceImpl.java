@@ -17,6 +17,7 @@ import com.dili.ss.domain.BaseOutput;
 import com.dili.ss.domain.EasyuiPageOutput;
 import com.dili.ss.dto.DTOUtils;
 import com.dili.ss.exception.BusinessException;
+import com.dili.ss.metadata.ValueProviderUtils;
 import com.dili.ss.util.DateUtils;
 import com.dili.uap.sdk.domain.DataDictionaryValue;
 import com.dili.uap.sdk.domain.Department;
@@ -79,14 +80,14 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
             if (input.getEndTime() != null) {
                 input.setEndTime(DateUtils.formatDate2DateTimeEnd(input.getEndTime()));
             }
-            EasyuiPageOutput easyuiPageOutput = this.listEasyuiPageByExample(input, true);
+            EasyuiPageOutput easyuiPageOutput = this.listEasyuiPageByExample(input, false);
             List rows = easyuiPageOutput.getRows();
-            List parentList = new ArrayList();
+            int count = 0;
             if (CollUtil.isNotEmpty(rows)) {
                 List<Long> child = new ArrayList();
                 rows.forEach(obj -> {
-                    Map booth = (Map) obj;
-                    Long parentId = Long.parseLong(booth.get("parentId").toString());
+                    Booth booth = (Booth) obj;
+                    Long parentId =booth.getParentId();
                     if (parentId != 0) {
                         if (!child.contains(parentId)) {
                             child.add(parentId);
@@ -95,15 +96,18 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
                 });
                 for (Long booth : child) {
                     boolean anyMatch = rows.stream().anyMatch(o -> {
-                        Map d = (Map) o;
-                        return d.get("id").equals(booth);
+                        Booth d = (Booth) o;
+                        return d.getId().equals(booth);
                     });
                     if (!anyMatch) {
+                        count++;
                         rows.add(this.get(booth));
                     }
                 }
             }
-            return easyuiPageOutput.toString();
+            easyuiPageOutput.setTotal(easyuiPageOutput.getTotal() + count);
+            List results = ValueProviderUtils.buildDataByProvider(input, rows);
+            return new EasyuiPageOutput(Integer.parseInt(String.valueOf(easyuiPageOutput.getTotal())), results).toString();
         } catch (Exception e) {
             e.printStackTrace();
         }

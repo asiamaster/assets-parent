@@ -7,6 +7,7 @@ import com.dili.assets.service.DistrictService;
 import com.dili.ss.domain.BaseOutput;
 import com.dili.ss.domain.EasyuiPageOutput;
 import com.dili.ss.exception.BusinessException;
+import com.dili.ss.metadata.ValueProviderUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -90,14 +91,14 @@ public class DistrictController {
             if (input != null && input.getIsDelete() == null) {
                 input.setIsDelete(StateEnum.NO.getCode());
             }
-            EasyuiPageOutput easyuiPageOutput = districtService.listEasyuiPageByExample(input, true);
+            EasyuiPageOutput easyuiPageOutput = districtService.listEasyuiPageByExample(input, false);
             List rows = easyuiPageOutput.getRows();
-            List parentList = new ArrayList();
+            int count = 0;
             if (CollUtil.isNotEmpty(rows)) {
                 List<Long> child = new ArrayList();
                 rows.forEach(obj -> {
-                    Map district = (Map) obj;
-                    Long parentId = Long.parseLong(district.get("parentId").toString());
+                    District district = (District) obj;
+                    Long parentId = district.getParentId();
                     if (parentId != 0) {
                         if (!child.contains(parentId)) {
                             child.add(parentId);
@@ -106,15 +107,18 @@ public class DistrictController {
                 });
                 for (Long district : child) {
                     boolean anyMatch = rows.stream().anyMatch(o -> {
-                        Map d = (Map) o;
-                        return d.get("id").equals(district);
+                        District d = (District) o;
+                        return d.getId().equals(district);
                     });
                     if (!anyMatch) {
+                        count++;
                         rows.add(districtService.get(district));
                     }
                 }
             }
-            return easyuiPageOutput.toString();
+            easyuiPageOutput.setTotal(easyuiPageOutput.getTotal() + count);
+            List results = ValueProviderUtils.buildDataByProvider(input, rows);
+            return new EasyuiPageOutput(Integer.parseInt(String.valueOf(easyuiPageOutput.getTotal())), results).toString();
         } catch (Exception e) {
             e.printStackTrace();
         }
