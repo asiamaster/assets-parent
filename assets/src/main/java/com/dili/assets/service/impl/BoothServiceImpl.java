@@ -3,6 +3,7 @@ package com.dili.assets.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import com.dili.assets.domain.Booth;
+import com.dili.assets.domain.BoothRent;
 import com.dili.assets.domain.District;
 import com.dili.assets.domain.query.BoothQuery;
 import com.dili.assets.glossary.StateEnum;
@@ -20,7 +21,6 @@ import com.dili.ss.exception.BusinessException;
 import com.dili.ss.metadata.ValueProviderUtils;
 import com.dili.ss.util.DateUtils;
 import com.dili.uap.sdk.domain.DataDictionaryValue;
-import com.dili.uap.sdk.domain.Department;
 import com.dili.uap.sdk.rpc.DataDictionaryRpc;
 import com.dili.uap.sdk.rpc.DepartmentRpc;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 由MyBatis Generator工具自动生成
@@ -46,6 +45,9 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
 
     @Autowired
     private DistrictService districtService;
+
+    @Autowired
+    private BoothRentServiceImpl boothRentService;
 
     public BoothMapper getActualDao() {
         return (BoothMapper) getDao();
@@ -131,6 +133,20 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
     public void boothSplit(Long parentId, String[] names, String notes, String[] numbers) {
         if (names == null || numbers == null) {
             return;
+        }
+        Booth queryBooth = new Booth();
+        queryBooth.setParentId(parentId);
+        queryBooth.setIsDelete(YesOrNoEnum.NO.getCode());
+        List<Booth> booths = this.listByExample(queryBooth);
+        if(CollUtil.isNotEmpty(booths)){
+            for (Booth booth : booths) {
+                BoothRent boothRent = new BoothRent();
+                boothRent.setBoothId(booth.getId());
+                List<BoothRent> boothRents = boothRentService.listByExample(boothRent);
+                if(CollUtil.isNotEmpty(boothRents)){
+                    throw new BusinessException("5000", "摊位已有租赁，不能拆分");
+                }
+            }
         }
         if (names.length == numbers.length) {
             Booth parent = get(parentId);
