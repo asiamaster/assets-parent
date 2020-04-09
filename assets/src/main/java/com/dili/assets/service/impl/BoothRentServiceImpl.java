@@ -45,13 +45,15 @@ public class BoothRentServiceImpl extends BaseServiceImpl<BoothRent, Long> imple
                 } else {
                     boolean canSave = true;
                     for (BoothRent boothRent : boothRents) {
-                        //
-                        if (DateUtil.compare(input.getEnd(), boothRent.getStart()) > 0 || DateUtil.compare(input.getEnd(), boothRent.getEnd()) < 0) {
+                        // 判断开始时间
+                        // 1,如果传入的开始时间在当前开始时间之后，并且开始时间在当前结束时间之前
+                        if (DateUtil.compare(input.getStart(), boothRent.getStart()) > 0 && DateUtil.compare(input.getStart(), boothRent.getEnd()) < 0) {
                             canSave = false;
                             break;
                         }
-
-                        if (DateUtil.compare(input.getStart(), boothRent.getEnd()) < 0 || DateUtil.compare(input.getStart(), boothRent.getStart()) > 0) {
+                        // 判断结束时间
+                        // 1,如果传入的结束时间在当前开始时间之后，并且结束时间在当前结束时间之前
+                        if (DateUtil.compare(input.getEnd(), boothRent.getStart()) > 0 && DateUtil.compare(input.getEnd(), boothRent.getEnd()) < 0) {
                             canSave = false;
                             break;
                         }

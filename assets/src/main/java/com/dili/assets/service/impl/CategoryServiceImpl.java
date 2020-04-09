@@ -83,6 +83,8 @@ public class CategoryServiceImpl extends BaseServiceImpl<Category, Long> impleme
         List<Category> byExample = this.listByExample(condition);
         if (CollUtil.isNotEmpty(byExample)) {
             byExample.forEach(category -> ids.add(category.getId()));
+        } else {
+            ids.add(id);
         }
         getActualDao().batchUpdate(ids, value);
     }

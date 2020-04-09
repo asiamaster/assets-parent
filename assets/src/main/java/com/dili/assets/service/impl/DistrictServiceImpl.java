@@ -125,6 +125,9 @@ public class DistrictServiceImpl extends BaseServiceImpl<District, Long> impleme
         check.setParentId(id);
         check.setIsDelete(YesOrNoEnum.NO.getCode());
         List<District> districts = listByExample(check);
+        if (CollUtil.isNotEmpty(districts)) {
+            throw new BusinessException("500", "父区域无法删除");
+        }
         for (District district : districts) {
             query = new BoothQuery();
             query.setSecondArea(district.getId().intValue());
