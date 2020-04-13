@@ -47,13 +47,13 @@ public class BoothRentServiceImpl extends BaseServiceImpl<BoothRent, Long> imple
                     for (BoothRent boothRent : boothRents) {
                         // 判断开始时间
                         // 1,如果传入的开始时间在当前开始时间之后，并且开始时间在当前结束时间之前
-                        if (DateUtil.compare(input.getStart(), boothRent.getStart()) > 0 && DateUtil.compare(input.getStart(), boothRent.getEnd()) < 0) {
+                        if (DateUtil.compare(input.getStart(), boothRent.getStart()) >= 0 && DateUtil.compare(input.getStart(), boothRent.getEnd()) <= 0) {
                             canSave = false;
                             break;
                         }
                         // 判断结束时间
                         // 1,如果传入的结束时间在当前开始时间之后，并且结束时间在当前结束时间之前
-                        if (DateUtil.compare(input.getEnd(), boothRent.getStart()) > 0 && DateUtil.compare(input.getEnd(), boothRent.getEnd()) < 0) {
+                        if (DateUtil.compare(input.getEnd(), boothRent.getStart()) >= 0 && DateUtil.compare(input.getEnd(), boothRent.getEnd()) <= 0) {
                             canSave = false;
                             break;
                         }

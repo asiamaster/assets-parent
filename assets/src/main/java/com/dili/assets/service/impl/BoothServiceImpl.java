@@ -160,7 +160,7 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
                 booth.setNumber(Double.parseDouble(numbers[i]));
                 booth.setParentId(parentId);
                 booth.setSecondArea(parent.getSecondArea());
-                booth.setSplitNotes(notes);
+                booth.setNotes(notes);
                 booth.setDepartmentId(parent.getDepartmentId());
                 booth.setUnit(parent.getUnit());
                 booth.setType(parent.getType());
