@@ -217,6 +217,7 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
         if (booth.getParentId() == 0) {
             Booth input = new Booth();
             input.setParentId(id);
+            input.setIsDelete(YesOrNoEnum.NO.getCode());
             List<Booth> booths = this.listByExample(input);
 
             var ref = new Object() {
