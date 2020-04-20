@@ -148,6 +148,12 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
                 }
             }
         }
+        BoothRent boothRent = new BoothRent();
+        boothRent.setBoothId(parentId);
+        List<BoothRent> boothRents = boothRentService.listByExample(boothRent);
+        if(CollUtil.isNotEmpty(boothRents)){
+            throw new BusinessException("5000", "摊位已有租赁，不能拆分");
+        }
         if (names.length == numbers.length) {
             Booth parent = get(parentId);
             if (parent.getState().equals(EnabledStateEnum.DISABLED.getCode()) || parent.getIsDelete().equals(YesOrNoEnum.YES.getCode())) {
