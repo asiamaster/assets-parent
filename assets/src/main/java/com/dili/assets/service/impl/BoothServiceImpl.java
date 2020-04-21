@@ -2,6 +2,7 @@ package com.dili.assets.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
 import com.dili.assets.domain.Booth;
 import com.dili.assets.domain.BoothRent;
 import com.dili.assets.domain.District;
@@ -17,6 +18,7 @@ import com.dili.ss.base.BaseServiceImpl;
 import com.dili.ss.domain.BaseOutput;
 import com.dili.ss.domain.EasyuiPageOutput;
 import com.dili.ss.dto.DTOUtils;
+import com.dili.ss.dto.IDTO;
 import com.dili.ss.exception.BusinessException;
 import com.dili.ss.metadata.ValueProviderUtils;
 import com.dili.ss.util.DateUtils;
@@ -82,6 +84,14 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
             if (input.getEndTime() != null) {
                 input.setEndTime(DateUtils.formatDate2DateTimeEnd(input.getEndTime()));
             }
+            if (input.getDepartmentId() == null && StrUtil.isNotBlank(input.getDeps())) {
+                input.setMetadata(IDTO.OR_CONDITION_EXPR, "department_id is null");
+            }
+
+            if(input.getDepartmentId() == null && StrUtil.isBlank(input.getDeps())){
+                input.setMetadata(IDTO.AND_CONDITION_EXPR, "department_id is null");
+            }
+
             EasyuiPageOutput easyuiPageOutput = this.listEasyuiPageByExample(input, false);
             List rows = easyuiPageOutput.getRows();
             int count = 0;
@@ -89,7 +99,7 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
                 List<Long> child = new ArrayList();
                 rows.forEach(obj -> {
                     Booth booth = (Booth) obj;
-                    Long parentId =booth.getParentId();
+                    Long parentId = booth.getParentId();
                     if (parentId != 0) {
                         if (!child.contains(parentId)) {
                             child.add(parentId);
@@ -138,12 +148,12 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
         queryBooth.setParentId(parentId);
         queryBooth.setIsDelete(YesOrNoEnum.NO.getCode());
         List<Booth> booths = this.listByExample(queryBooth);
-        if(CollUtil.isNotEmpty(booths)){
+        if (CollUtil.isNotEmpty(booths)) {
             for (Booth booth : booths) {
                 BoothRent boothRent = new BoothRent();
                 boothRent.setBoothId(booth.getId());
                 List<BoothRent> boothRents = boothRentService.listByExample(boothRent);
-                if(CollUtil.isNotEmpty(boothRents)){
+                if (CollUtil.isNotEmpty(boothRents)) {
                     throw new BusinessException("5000", "摊位已有租赁，不能拆分");
                 }
             }
@@ -151,7 +161,7 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
         BoothRent boothRent = new BoothRent();
         boothRent.setBoothId(parentId);
         List<BoothRent> boothRents = boothRentService.listByExample(boothRent);
-        if(CollUtil.isNotEmpty(boothRents)){
+        if (CollUtil.isNotEmpty(boothRents)) {
             throw new BusinessException("5000", "摊位已有租赁，不能拆分");
         }
         if (names.length == numbers.length) {

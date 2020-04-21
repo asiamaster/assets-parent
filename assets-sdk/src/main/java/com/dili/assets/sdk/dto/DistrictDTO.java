@@ -63,6 +63,8 @@ public class DistrictDTO extends BaseDomain {
      */
     private Integer isDelete;
 
+    private String deps;
+
     /**
      * id
      */
@@ -229,5 +231,13 @@ public class DistrictDTO extends BaseDomain {
      */
     public void setIsDelete(Integer isDelete) {
         this.isDelete = isDelete;
+    }
+
+    public String getDeps() {
+        return deps;
+    }
+
+    public void setDeps(String deps) {
+        this.deps = deps;
     }
 }

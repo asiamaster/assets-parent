@@ -33,6 +33,9 @@ public class BoothQuery extends Booth {
     @Operator(Operator.LITTLE_EQUAL_THAN)
     @Column(name = "`number`")
     private Double endNumber;
+    @Operator(Operator.IN)
+    @Column(name = "`department_id`")
+    private String deps;
 
     public String getKeyword() {
         return keyword;
@@ -74,6 +77,12 @@ public class BoothQuery extends Booth {
         this.endNumber = endNumber;
     }
 
+    public String getDeps() {
+        return deps;
+    }
 
+    public void setDeps(String deps) {
+        this.deps = deps;
+    }
 // ==========================动态SQL过滤字段==================================== //
 }

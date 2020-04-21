@@ -1,11 +1,14 @@
 package com.dili.assets.controller;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
 import com.dili.assets.domain.District;
+import com.dili.assets.domain.query.DistrictQuery;
 import com.dili.assets.glossary.StateEnum;
 import com.dili.assets.service.DistrictService;
 import com.dili.ss.domain.BaseOutput;
 import com.dili.ss.domain.EasyuiPageOutput;
+import com.dili.ss.dto.IDTO;
 import com.dili.ss.exception.BusinessException;
 import com.dili.ss.metadata.ValueProviderUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,10 +89,17 @@ public class DistrictController {
      * @return
      */
     @RequestMapping("list")
-    public String list(@RequestBody District input) {
+    public String list(@RequestBody DistrictQuery input) {
         try {
             if (input != null && input.getIsDelete() == null) {
                 input.setIsDelete(StateEnum.NO.getCode());
+            }
+            if (input.getDepartmentId() == null && StrUtil.isNotBlank(input.getDeps())) {
+                input.setMetadata(IDTO.OR_CONDITION_EXPR, "department_id is null");
+            }
+
+            if (input.getDepartmentId() == null && StrUtil.isBlank(input.getDeps())) {
+                input.setMetadata(IDTO.AND_CONDITION_EXPR, "department_id is null");
             }
             EasyuiPageOutput easyuiPageOutput = districtService.listEasyuiPageByExample(input, false);
             List rows = easyuiPageOutput.getRows();

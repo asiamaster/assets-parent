@@ -94,6 +94,7 @@ public class BoothDTO extends BaseDomain {
     private Date endTime;
     private Double startNumber;
     private Double endNumber;
+    private String deps;
 
     /**
      * id
@@ -365,6 +366,14 @@ public class BoothDTO extends BaseDomain {
 
     public void setEndNumber(Double endNumber) {
         this.endNumber = endNumber;
+    }
+
+    public String getDeps() {
+        return deps;
+    }
+
+    public void setDeps(String deps) {
+        this.deps = deps;
     }
 
     // ==========================字段转义==================================== //
