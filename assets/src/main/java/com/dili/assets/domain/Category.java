@@ -76,6 +76,12 @@ public class Category extends BaseDomain {
     private Integer state;
 
     /**
+     * 层级
+     */
+    @Column(name = "`cate_level`")
+    private Integer cateLevel;
+
+    /**
      * id
      */
     public Long getId() {
@@ -243,4 +249,11 @@ public class Category extends BaseDomain {
         this.state = state;
     }
 
+    public Integer getCateLevel() {
+        return cateLevel;
+    }
+
+    public void setCateLevel(Integer cateLevel) {
+        this.cateLevel = cateLevel;
+    }
 }

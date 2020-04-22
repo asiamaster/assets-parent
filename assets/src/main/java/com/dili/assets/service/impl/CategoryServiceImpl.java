@@ -1,6 +1,7 @@
 package com.dili.assets.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
 import com.dili.assets.domain.Category;
 import com.dili.assets.domain.query.CategoryQuery;
 import com.dili.assets.mapper.CategoryMapper;
@@ -53,6 +54,9 @@ public class CategoryServiceImpl extends BaseServiceImpl<Category, Long> impleme
             c.setPath(c.getId().toString() + ",");
         } else {
             c.setPath(c.getPath() + c.getId() + ",");
+        }
+        if(StrUtil.isNotBlank(c.getPath())){
+            c.setCateLevel(c.getPath().split(",").length);
         }
         getActualDao().updateByPrimaryKey(c);
     }
