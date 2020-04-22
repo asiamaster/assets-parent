@@ -85,13 +85,13 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
                 input.setEndTime(DateUtils.formatDate2DateTimeEnd(input.getEndTime()));
             }
             if (input.getDepartmentId() == null && StrUtil.isNotBlank(input.getDeps())) {
-                input.setMetadata(IDTO.OR_CONDITION_EXPR, "department_id is null");
+                input.setMetadata(IDTO.AND_CONDITION_EXPR, "(department_id in (" + input.getDeps() + ") or department_id is null)");
             }
 
             if(input.getDepartmentId() == null && StrUtil.isBlank(input.getDeps())){
                 input.setMetadata(IDTO.AND_CONDITION_EXPR, "department_id is null");
             }
-
+            input.setDeps(null);
             EasyuiPageOutput easyuiPageOutput = this.listEasyuiPageByExample(input, false);
             List rows = easyuiPageOutput.getRows();
             int count = 0;

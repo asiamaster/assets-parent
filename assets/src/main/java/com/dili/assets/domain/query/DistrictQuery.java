@@ -6,8 +6,7 @@ import com.dili.ss.domain.annotation.Operator;
 import javax.persistence.Column;
 
 public class DistrictQuery extends District {
-    @Operator(Operator.IN)
-    @Column(name = "`department_id`")
+
     private String deps;
 
     public String getDeps() {
