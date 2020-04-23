@@ -34,11 +34,7 @@ public class Category extends BaseDomain {
      */
     @Column(name = "`py_initials`")
     private String pyInitials;
-    /**
-     * 状态
-     */
-    @Column(name = "`is_delete`")
-    private Integer isDelete;
+
     /**
      * 父品类
      */
@@ -135,20 +131,6 @@ public class Category extends BaseDomain {
      */
     public void setPyInitials(String pyInitials) {
         this.pyInitials = pyInitials;
-    }
-
-    /**
-     * 状态
-     */
-    public Integer getIsDelete() {
-        return this.isDelete;
-    }
-
-    /**
-     * 状态
-     */
-    public void setIsDelete(Integer isDelete) {
-        this.isDelete = isDelete;
     }
 
     /**

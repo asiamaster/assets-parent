@@ -104,6 +104,9 @@
             <if test="state !=null and state !=''">
                 and `state`=#{state}
             </if>
+            <if test="parent !=null and parent !=''">
+                and `parent`=#{parent}
+            </if>
         </where>
     </select>
 </mapper>
