@@ -27,6 +27,7 @@ import com.dili.uap.sdk.rpc.DataDictionaryRpc;
 import com.dili.uap.sdk.rpc.DepartmentRpc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -56,6 +57,7 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
     }
 
     @Override
+    @Transactional
     public void saveBooth(Booth booth) {
         Booth query = new Booth();
         query.setName(booth.getName());
@@ -140,6 +142,7 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
     }
 
     @Override
+    @Transactional
     public void boothSplit(Long parentId, String[] names, String notes, String[] numbers) {
         if (names == null || numbers == null) {
             return;
