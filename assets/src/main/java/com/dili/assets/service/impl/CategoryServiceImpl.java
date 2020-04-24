@@ -82,8 +82,9 @@ public class CategoryServiceImpl extends BaseServiceImpl<Category, Long> impleme
     @Override
     public void batchUpdate(Long id, Integer value) {
         List<Long> ids = new ArrayList<>();
+        Category parent = get(id);
         CategoryQuery condition = new CategoryQuery();
-        condition.setQueryPath(id + ",");
+        condition.setQueryPath(parent.getPath());
         List<Category> byExample = this.listByExample(condition);
         if (CollUtil.isNotEmpty(byExample)) {
             byExample.forEach(category -> ids.add(category.getId()));
