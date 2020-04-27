@@ -85,6 +85,27 @@ public class DistrictServiceImpl extends BaseServiceImpl<District, Long> impleme
     public void division(Long parentId, String[] names, String[] notes, String[] numbers) {
         District parent = this.get(parentId);
         for (int i = 0; i < names.length; i++) {
+            District cond = new District();
+            cond.setName(names[i]);
+            cond.setIsDelete(StateEnum.NO.getCode());
+            cond.setMarketId(parent.getMarketId());
+            List<District> districts = this.listByExample(cond);
+            if (CollUtil.isNotEmpty(districts)) {
+                throw new BusinessException("1", "编号已存在");
+            }
+
+            cond = new District();
+            cond.setDepartmentId(parent.getDepartmentId());
+            cond.setName(names[i]);
+            cond.setIsDelete(StateEnum.NO.getCode());
+            cond.setMarketId(parent.getMarketId());
+            districts = this.listByExample(cond);
+
+            if (CollUtil.isNotEmpty(districts)) {
+                throw new BusinessException("1", "该部门下区域已存在");
+            }
+        }
+        for (int i = 0; i < names.length; i++) {
             if (StringUtils.isNotBlank(names[i])) {
                 int j = i + 1;
                 District district = new District();
