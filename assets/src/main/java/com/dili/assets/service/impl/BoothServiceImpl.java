@@ -134,6 +134,7 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
         booth.setIsDelete(YesOrNoEnum.YES.getCode());
         Booth input = new Booth();
         input.setParentId(id);
+        input.setIsDelete(YesOrNoEnum.NO.getCode());
         List<Booth> booths = this.listByExample(input);
         if (CollUtil.isNotEmpty(booths)) {
             throw new BusinessException("500", "不能删除父摊位");
