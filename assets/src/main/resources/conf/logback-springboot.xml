@@ -24,11 +24,6 @@
 
     <!-- 测试环境 -->
     <springProfile name="test">
-        <appender name="appender" class="ch.qos.logback.core.ConsoleAppender">
-            <encoder>
-                <pattern>[assets-test]%-12(%d{yyyy-MM-dd HH:mm:ss.SSS}) |-%-5level [%thread] %c [%L] -| %msg%n</pattern>
-            </encoder>
-        </appender>
         <!-- 每天产生一个文件 -->
         <appender name="fileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
             <!-- 文件路径 -->
@@ -52,11 +47,6 @@
     </springProfile>
     <!-- 生产环境 -->
     <springProfile name="prod">
-        <appender name="appender" class="ch.qos.logback.core.ConsoleAppender">
-            <encoder>
-                <pattern>[assets-prod] %d |-%highlight(%-5level) [%t] %highlight(%c) [%L] -| %msg%n</pattern>
-            </encoder>
-        </appender>
         <!-- 按照每天生成日志文件 -->
         <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
             <file>${LOG_HOME}/${LOG_NAME}.log</file>
@@ -78,6 +68,6 @@
         <logger name="io.seata.rm.datasource.undo" level="info"/>
     </springProfile>
     <root level="info">
-        <appender-ref ref="appender" />
+        <appender-ref ref="FILE"/>
     </root>
 </configuration>
