@@ -139,18 +139,9 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
         Booth input = new Booth();
         input.setParentId(id);
         input.setIsDelete(YesOrNoEnum.NO.getCode());
-        LOG.info("查找父摊位id：" + id + ",是否删除:" + YesOrNoEnum.NO.getCode());
         List<Booth> booths = this.listByExample(input);
 
         if (CollUtil.isNotEmpty(booths)) {
-            LOG.info("找到子项目不能删除");
-            System.out.println("找到子项目不能删除");
-            for (Booth booth1 : booths) {
-                LOG.info("" + booth1.getId());
-                LOG.info("" + booth1.getIsDelete());
-                System.out.println(booth1.getId());
-                System.out.println(booth1.getIsDelete());
-            }
             throw new BusinessException("500", "不能删除父摊位");
         }
         this.updateSelective(booth);
