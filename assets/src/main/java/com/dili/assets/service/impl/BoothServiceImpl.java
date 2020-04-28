@@ -25,6 +25,8 @@ import com.dili.ss.util.DateUtils;
 import com.dili.uap.sdk.domain.DataDictionaryValue;
 import com.dili.uap.sdk.rpc.DataDictionaryRpc;
 import com.dili.uap.sdk.rpc.DepartmentRpc;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,6 +41,8 @@ import java.util.List;
  */
 @Service
 public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements BoothService {
+
+    private final static Logger LOG = LoggerFactory.getLogger(BoothServiceImpl.class);
 
     @Autowired
     DataDictionaryRpc dataDictionaryRpc;
@@ -135,8 +139,18 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
         Booth input = new Booth();
         input.setParentId(id);
         input.setIsDelete(YesOrNoEnum.NO.getCode());
+        LOG.info("查找父摊位id：" + id + ",是否删除:" + YesOrNoEnum.NO.getCode());
         List<Booth> booths = this.listByExample(input);
+
         if (CollUtil.isNotEmpty(booths)) {
+            LOG.info("找到子项目不能删除");
+            System.out.println("找到子项目不能删除");
+            for (Booth booth1 : booths) {
+                LOG.info("" + booth1.getId());
+                LOG.info("" + booth1.getIsDelete());
+                System.out.println(booth1.getId());
+                System.out.println(booth1.getIsDelete());
+            }
             throw new BusinessException("500", "不能删除父摊位");
         }
         this.updateSelective(booth);
