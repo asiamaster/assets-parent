@@ -84,9 +84,31 @@ public class DistrictServiceImpl extends BaseServiceImpl<District, Long> impleme
     @Override
     public void division(Long parentId, String[] names, String[] notes, String[] numbers) {
         District parent = this.get(parentId);
-        for (int i = 0; i < names.length; i++) {
+        for (String name : names) {
             District cond = new District();
-            cond.setName(names[i]);
+            cond.setName(name);
+            cond.setIsDelete(StateEnum.NO.getCode());
+            cond.setMarketId(parent.getMarketId());
+            List<District> districts = this.listByExample(cond);
+            if (CollUtil.isNotEmpty(districts)) {
+                throw new BusinessException("1", "区域已存在");
+            }
+
+            cond = new District();
+            cond.setDepartmentId(parent.getDepartmentId());
+            cond.setName(name);
+            cond.setIsDelete(StateEnum.NO.getCode());
+            cond.setMarketId(parent.getMarketId());
+            districts = this.listByExample(cond);
+
+            if (CollUtil.isNotEmpty(districts)) {
+                throw new BusinessException("1", "该部门下区域已存在");
+            }
+        }
+
+        for (String s : numbers) {
+            District cond = new District();
+            cond.setNumber(s);
             cond.setIsDelete(StateEnum.NO.getCode());
             cond.setMarketId(parent.getMarketId());
             List<District> districts = this.listByExample(cond);
@@ -96,13 +118,13 @@ public class DistrictServiceImpl extends BaseServiceImpl<District, Long> impleme
 
             cond = new District();
             cond.setDepartmentId(parent.getDepartmentId());
-            cond.setName(names[i]);
+            cond.setNumber(s);
             cond.setIsDelete(StateEnum.NO.getCode());
             cond.setMarketId(parent.getMarketId());
             districts = this.listByExample(cond);
 
             if (CollUtil.isNotEmpty(districts)) {
-                throw new BusinessException("1", "该部门下区域已存在");
+                throw new BusinessException("1", "该部门下编号已存在");
             }
         }
         for (int i = 0; i < names.length; i++) {
