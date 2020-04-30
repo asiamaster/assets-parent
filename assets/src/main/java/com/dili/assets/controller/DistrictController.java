@@ -163,7 +163,13 @@ public class DistrictController {
      */
     @RequestMapping(value = "/divisionSave", method = RequestMethod.POST)
     public BaseOutput divisionSave(Long parentId, String[] names, String[] notes, String[] numbers) {
-        districtService.division(parentId, names, notes, numbers);
-        return BaseOutput.success();
+        try {
+            districtService.division(parentId, names, notes, numbers);
+            return BaseOutput.success();
+        } catch (BusinessException be) {
+            return BaseOutput.failure(be.getErrorMsg());
+        } catch (Exception e) {
+            return BaseOutput.failure(e.getMessage());
+        }
     }
 }
