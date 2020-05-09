@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dili.assets.mapper.CtypeToBtypeMapper">
+  <resultMap id="BaseResultMap" type="com.dili.assets.domain.CtypeToBtype">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="CREATED" jdbcType="TIMESTAMP" property="created" />
+    <result column="MODIFIED" jdbcType="TIMESTAMP" property="modified" />
+    <result column="car_type_id" jdbcType="BIGINT" property="carTypeId" />
+    <result column="biz_type_id" jdbcType="BIGINT" property="bizTypeId" />
+    <result column="weight" jdbcType="BIGINT" property="weight" />
+    <result column="auto_release" jdbcType="INTEGER" property="autoRelease" />
+    <result column="auto_save" jdbcType="INTEGER" property="autoSave" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, CREATED, MODIFIED, car_type_id, biz_type_id, weight, auto_release, auto_save
+  </sql>
+  <select id="selectBy" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    select 
+    <include refid="Base_Column_List" />
+    from ctype_to_btype
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <update id="updateBy" parameterType="com.dili.assets.domain.CtypeToBtype">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    update ctype_to_btype
+    <set>
+      <if test="created != null">
+        CREATED = #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modified != null">
+        MODIFIED = #{modified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="carTypeId != null">
+        car_type_id = #{carTypeId,jdbcType=BIGINT},
+      </if>
+      <if test="bizTypeId != null">
+        biz_type_id = #{bizTypeId,jdbcType=BIGINT},
+      </if>
+      <if test="weight != null">
+        weight = #{weight,jdbcType=BIGINT},
+      </if>
+      <if test="autoRelease != null">
+        auto_release = #{autoRelease,jdbcType=INTEGER},
+      </if>
+      <if test="autoSave != null">
+        auto_save = #{autoSave,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
