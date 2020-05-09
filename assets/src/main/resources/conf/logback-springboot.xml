@@ -68,6 +68,11 @@
 
     <!-- 生产环境 -->
     <springProfile name="prod">
+        <appender name="appender" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>[${LOG_NAME}-test] %d |-%highlight(%-5level) [%t] [%c:%L] -| %msg%n</pattern>
+            </encoder>
+        </appender>
         <!-- 按照每天生成日志文件 -->
         <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
             <file>${LOG_HOME}/${LOG_NAME}.log</file>
