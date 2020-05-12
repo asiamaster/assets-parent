@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dili.assets.mapper.ProductRuleMapper">
+  <resultMap id="BaseResultMap" type="com.dili.assets.domain.ProductRule">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="market_id" jdbcType="BIGINT" property="marketId" />
+    <result column="product_name" jdbcType="VARCHAR" property="productName" />
+    <result column="product_id" jdbcType="BIGINT" property="productId" />
+    <result column="dep_id" jdbcType="BIGINT" property="depId" />
+    <result column="product_price" jdbcType="DOUBLE" property="productPrice" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="CREATED" jdbcType="TIMESTAMP" property="created" />
+    <result column="MODIFIED" jdbcType="TIMESTAMP" property="modified" />
+    <result column="operator" jdbcType="BIGINT" property="operator" />
+    <result column="operator_name" jdbcType="VARCHAR" property="operatorName" />
+    <result column="yn" jdbcType="TINYINT" property="yn" />
+    <result column="price_snap" jdbcType="VARCHAR" property="priceSnap" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, market_id, product_name, product_id, dep_id, product_price, remark, CREATED, 
+    MODIFIED, operator, operator_name, yn, price_snap
+  </sql>
+  <select id="selectBy" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    select 
+    <include refid="Base_Column_List" />
+    from product_rule
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <update id="updateBy" parameterType="com.dili.assets.domain.ProductRule">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    update product_rule
+    <set>
+      <if test="marketId != null">
+        market_id = #{marketId,jdbcType=BIGINT},
+      </if>
+      <if test="productName != null">
+        product_name = #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="productId != null">
+        product_id = #{productId,jdbcType=BIGINT},
+      </if>
+      <if test="depId != null">
+        dep_id = #{depId,jdbcType=BIGINT},
+      </if>
+      <if test="productPrice != null">
+        product_price = #{productPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="created != null">
+        CREATED = #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modified != null">
+        MODIFIED = #{modified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operator != null">
+        operator = #{operator,jdbcType=BIGINT},
+      </if>
+      <if test="operatorName != null">
+        operator_name = #{operatorName,jdbcType=VARCHAR},
+      </if>
+      <if test="yn != null">
+        yn = #{yn,jdbcType=TINYINT},
+      </if>
+      <if test="priceSnap != null">
+        price_snap = #{priceSnap,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dili.assets.mapper.productRuleRecordMapper">
+  <resultMap id="BaseResultMap" type="com.dili.assets.domain.productRuleRecord">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="rule_id" jdbcType="BIGINT" property="ruleId" />
+    <result column="org_price" jdbcType="DOUBLE" property="orgPrice" />
+    <result column="next_price" jdbcType="DOUBLE" property="nextPrice" />
+    <result column="effect_time" jdbcType="TIMESTAMP" property="effectTime" />
+    <result column="operator_name" jdbcType="VARCHAR" property="operatorName" />
+    <result column="created" jdbcType="TIMESTAMP" property="created" />
+    <result column="modified" jdbcType="TIMESTAMP" property="modified" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, rule_id, org_price, next_price, effect_time, operator_name, created, modified
+  </sql>
+  <select id="selectBy" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    select 
+    <include refid="Base_Column_List" />
+    from product_rule_record
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <update id="updateBy" parameterType="com.dili.assets.domain.productRuleRecord">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    update product_rule_record
+    <set>
+      <if test="ruleId != null">
+        rule_id = #{ruleId,jdbcType=BIGINT},
+      </if>
+      <if test="orgPrice != null">
+        org_price = #{orgPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="nextPrice != null">
+        next_price = #{nextPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="effectTime != null">
+        effect_time = #{effectTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatorName != null">
+        operator_name = #{operatorName,jdbcType=VARCHAR},
+      </if>
+      <if test="created != null">
+        created = #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modified != null">
+        modified = #{modified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
