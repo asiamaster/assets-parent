@@ -1,38 +1,33 @@
-package com.dili.assets.domain;
-
-import com.dili.ss.domain.BaseDomain;
-import com.dili.ss.metadata.FieldEditor;
-import com.dili.ss.metadata.annotation.EditMode;
-import com.dili.ss.metadata.annotation.FieldDef;
+package com.dili.assets.sdk.dto;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.*;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.alibaba.fastjson.annotation.JSONField;
+import com.dili.ss.domain.BaseDomain;
+import com.dili.ss.metadata.FieldEditor;
+import com.dili.ss.metadata.annotation.EditMode;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * 由MyBatis Generator工具自动生成
- * 部门车型关系
- * This file was generated on 2020-05-12 10:33:30.
+ * 摊位 ;
+ * This file was generated on 2020-02-17 13:21:57.
  */
-@Table(name = "`department_car_type`")
-public class DepartmentCarType extends BaseDomain {
-    @Id
-    @Column(name = "`id`")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class DepartmentCarTypeDTO extends BaseDomain {
     private Long id;
 
     /**
      * 部门ID
      */
-    @Column(name = "`department_id`")
     private Long departmentId;
 
     /**
      * 车型ID
      */
-    @Column(name = "`car_type_id`")
     private Long carTypeId;
     
     private List<Long> carTypeIds=new ArrayList<>();
@@ -40,37 +35,40 @@ public class DepartmentCarType extends BaseDomain {
     /**
      * 操作员
      */
-    @Column(name = "`operator_id`")
     private Long operatorId;
 
     /**
      * 操作员姓名
      */
-    @Column(name = "`operator_name`")
     private String operatorName;
-
-    @Column(name = "`CREATED`")
+    /**
+     * 创建时间
+     */
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date created;
-
-    @Column(name = "`MODIFIED`")
+    /**
+     * 更新时间
+     */
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date modified;
 
     /**
      * 1:有效：0无效
      */
-    @Column(name = "`yn`")
-    private Byte yn;
+    private Integer yn;
 
     /**
      * 备注
      */
-    @Column(name = "`remark`")
     private String remark;
 
     /**
      * @return id
      */
-    @FieldDef(label="id")
     @EditMode(editor = FieldEditor.Number, required = true)
     public Long getId() {
         return id;
@@ -88,8 +86,6 @@ public class DepartmentCarType extends BaseDomain {
      *
      * @return department_id - 部门ID
      */
-    @FieldDef(label="部门ID")
-    @EditMode(editor = FieldEditor.Number, required = true)
     public Long getDepartmentId() {
         return departmentId;
     }
@@ -108,8 +104,6 @@ public class DepartmentCarType extends BaseDomain {
      *
      * @return car_type_id - 车型ID
      */
-    @FieldDef(label="车型ID")
-    @EditMode(editor = FieldEditor.Number, required = true)
     public Long getCarTypeId() {
         return carTypeId;
     }
@@ -128,8 +122,6 @@ public class DepartmentCarType extends BaseDomain {
      *
      * @return operator_id - 操作员
      */
-    @FieldDef(label="操作员")
-    @EditMode(editor = FieldEditor.Number, required = false)
     public Long getOperatorId() {
         return operatorId;
     }
@@ -148,8 +140,6 @@ public class DepartmentCarType extends BaseDomain {
      *
      * @return operator_name - 操作员姓名
      */
-    @FieldDef(label="操作员姓名", maxLength = 20)
-    @EditMode(editor = FieldEditor.Text, required = false)
     public String getOperatorName() {
         return operatorName;
     }
@@ -166,8 +156,6 @@ public class DepartmentCarType extends BaseDomain {
     /**
      * @return CREATED
      */
-    @FieldDef(label="created")
-    @EditMode(editor = FieldEditor.Datetime, required = false)
     public Date getCreated() {
         return created;
     }
@@ -182,8 +170,6 @@ public class DepartmentCarType extends BaseDomain {
     /**
      * @return MODIFIED
      */
-    @FieldDef(label="modified")
-    @EditMode(editor = FieldEditor.Datetime, required = false)
     public Date getModified() {
         return modified;
     }
@@ -200,9 +186,7 @@ public class DepartmentCarType extends BaseDomain {
      *
      * @return yn - 1:有效：0无效
      */
-    @FieldDef(label="1:有效：0无效")
-    @EditMode(editor = FieldEditor.Text, required = false)
-    public Byte getYn() {
+    public Integer getYn() {
         return yn;
     }
 
@@ -211,7 +195,7 @@ public class DepartmentCarType extends BaseDomain {
      *
      * @param yn 1:有效：0无效
      */
-    public void setYn(Byte yn) {
+    public void setYn(Integer yn) {
         this.yn = yn;
     }
 
@@ -220,8 +204,6 @@ public class DepartmentCarType extends BaseDomain {
      *
      * @return remark - 备注
      */
-    @FieldDef(label="备注", maxLength = 255)
-    @EditMode(editor = FieldEditor.Text, required = false)
     public String getRemark() {
         return remark;
     }

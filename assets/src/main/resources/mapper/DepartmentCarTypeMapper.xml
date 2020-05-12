@@ -64,4 +64,11 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
+  <select id="list" resultType="com.dili.assets.domain.DepartmentCarType">
+      select id,department_id,car_type_id,operator_id,operator_name,CREATED,MODIFIED,yn,remark
+		from department_car_type where department_id = #{departmentId}
+  </select>
+  <delete id="deleteByDepartmentId">
+  	  delete from department_car_type where department_id = #{departmentId}
+  </delete>
 </mapper>
