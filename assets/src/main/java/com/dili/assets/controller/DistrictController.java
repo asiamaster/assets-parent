@@ -2,6 +2,9 @@ package com.dili.assets.controller;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.dili.assets.domain.District;
 import com.dili.assets.domain.query.DistrictQuery;
 import com.dili.assets.glossary.StateEnum;
@@ -102,34 +105,33 @@ public class DistrictController {
                 input.setMetadata(IDTO.AND_CONDITION_EXPR, "department_id is null");
             }
             input.setDeps(null);
-            EasyuiPageOutput easyuiPageOutput = districtService.listEasyuiPageByExample(input, false);
-            List rows = easyuiPageOutput.getRows();
             int count = 0;
-            if (CollUtil.isNotEmpty(rows)) {
-                List<Long> child = new ArrayList();
-                rows.forEach(obj -> {
-                    District district = (District) obj;
-                    Long parentId = district.getParentId();
-                    if (parentId != 0) {
-                        if (!child.contains(parentId)) {
-                            child.add(parentId);
-                        }
-                    }
-                });
-                for (Long district : child) {
-                    boolean anyMatch = rows.stream().anyMatch(o -> {
-                        District d = (District) o;
-                        return d.getId().equals(district);
-                    });
-                    if (!anyMatch) {
-                        count++;
-                        rows.add(districtService.get(district));
-                    }
-                }
+            if (input.getId() == null) {
+                count = districtService.listByExample(input).size();
+                input.setParentId(0L);
+            } else {
+                input.setParentId(input.getId());
+                input.setId(null);
             }
-            easyuiPageOutput.setTotal(easyuiPageOutput.getTotal() + count);
-            List results = ValueProviderUtils.buildDataByProvider(input, rows);
-            return new EasyuiPageOutput(Integer.parseInt(String.valueOf(easyuiPageOutput.getTotal())), results).toString();
+
+            List<District> districts = districtService.listByExample(input);
+            List result = new ArrayList();
+
+            for (District district : districts) {
+                JSONObject json = JSON.parseObject(JSON.toJSONString(district));
+                json.put("state", "closed");
+                result.add(json);
+            }
+            String resultJsonStr = JSONObject.toJSONString(result);
+            if (count == 0) {
+                return resultJsonStr;
+            }
+            JSONObject obj = new JSONObject();
+            obj.put("rows", JSON.parseArray(resultJsonStr));
+            obj.put("footer", JSON.parseArray("[\n" +
+                    "\t{\"name\":\"总数:\",\"number\":" + count + ",\"iconCls\":\"icon-sum\"}\n" +
+                    "]"));
+            return obj.toJSONString();
         } catch (Exception e) {
             e.printStackTrace();
         }
