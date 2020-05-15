@@ -115,9 +115,10 @@ public class DistrictController {
             }
 
             List<District> districts = districtService.listByExample(input);
+            List results = ValueProviderUtils.buildDataByProvider(input, districts);
             List result = new ArrayList();
 
-            for (District district : districts) {
+            for (Object district : results) {
                 JSONObject json = JSON.parseObject(JSON.toJSONString(district));
                 json.put("state", "closed");
                 result.add(json);

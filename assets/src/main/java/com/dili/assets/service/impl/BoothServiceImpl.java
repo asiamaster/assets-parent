@@ -3,6 +3,8 @@ package com.dili.assets.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.dili.assets.domain.Booth;
 import com.dili.assets.domain.BoothRent;
 import com.dili.assets.domain.District;
@@ -98,34 +100,34 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
                 input.setMetadata(IDTO.AND_CONDITION_EXPR, "department_id is null");
             }
             input.setDeps(null);
-            EasyuiPageOutput easyuiPageOutput = this.listEasyuiPageByExample(input, false);
-            List rows = easyuiPageOutput.getRows();
             int count = 0;
-            if (CollUtil.isNotEmpty(rows)) {
-                List<Long> child = new ArrayList();
-                rows.forEach(obj -> {
-                    Booth booth = (Booth) obj;
-                    Long parentId = booth.getParentId();
-                    if (parentId != 0) {
-                        if (!child.contains(parentId)) {
-                            child.add(parentId);
-                        }
-                    }
-                });
-                for (Long booth : child) {
-                    boolean anyMatch = rows.stream().anyMatch(o -> {
-                        Booth d = (Booth) o;
-                        return d.getId().equals(booth);
-                    });
-                    if (!anyMatch) {
-                        count++;
-                        rows.add(this.get(booth));
-                    }
-                }
+            if (input.getId() == null) {
+                count = this.listByExample(input).size();
+                input.setParentId(0L);
+            } else {
+                input.setParentId(input.getId());
+                input.setId(null);
             }
-            easyuiPageOutput.setTotal(easyuiPageOutput.getTotal() + count);
-            List results = ValueProviderUtils.buildDataByProvider(input, rows);
-            return new EasyuiPageOutput(Integer.parseInt(String.valueOf(easyuiPageOutput.getTotal())), results).toString();
+            List<Booth> booths = this.listByExample(input);
+            List results = ValueProviderUtils.buildDataByProvider(input, booths);
+            List result = new ArrayList();
+
+            for (Object district : results) {
+                JSONObject json = JSON.parseObject(JSON.toJSONString(district));
+                json.put("status",json.getString("state"));
+                json.put("state", "closed");
+                result.add(json);
+            }
+            String resultJsonStr = JSONObject.toJSONString(result);
+            if (count == 0) {
+                return resultJsonStr;
+            }
+            JSONObject obj = new JSONObject();
+            obj.put("rows", JSON.parseArray(resultJsonStr));
+            obj.put("footer", JSON.parseArray("[\n" +
+                    "\t{\"name\":\"总数:\",\"number\":" + count + ",\"iconCls\":\"icon-sum\"}\n" +
+                    "]"));
+            return obj.toJSONString();
         } catch (Exception e) {
             e.printStackTrace();
         }
