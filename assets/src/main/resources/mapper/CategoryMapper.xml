@@ -95,7 +95,8 @@
 
 
     <select id="listCategory" parameterType="com.dili.assets.domain.query.CategoryQuery" resultMap="BaseResultMap">
-        select * from category
+        select id, name, pingying, py_initials, state, parent, path, code, creator_id, create_time,
+        modify_time from category
         <where>
             `state`!=3
             <if test="keyword !=null and keyword !=''">
@@ -104,7 +105,7 @@
             <if test="state !=null and state !=''">
                 and `state`=#{state}
             </if>
-            <if test="parent !=null and parent !=''">
+            <if test="parent !=null">
                 and `parent`=#{parent}
             </if>
         </where>
