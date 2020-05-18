@@ -8,4 +8,6 @@ import com.dili.ss.base.BaseService;
  * This file was generated on 2020-05-09 16:44:34.
  */
 public interface CarTypeService extends BaseService<CarType, Long> {
+
+	void insertCarType(CarType carType);
 }

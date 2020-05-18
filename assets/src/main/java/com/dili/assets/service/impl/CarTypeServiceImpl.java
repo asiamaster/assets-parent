@@ -16,4 +16,9 @@ public class CarTypeServiceImpl extends BaseServiceImpl<CarType, Long> implement
     public CarTypeMapper getActualDao() {
         return (CarTypeMapper)getDao();
     }
+
+	@Override
+	public void insertCarType(CarType carType) {
+		getActualDao().insertCarType(carType);
+	}
 }

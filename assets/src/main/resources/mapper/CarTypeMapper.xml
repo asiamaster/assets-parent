@@ -16,12 +16,14 @@
     <result column="weight" jdbcType="BIGINT" property="weight" />
     <result column="status" jdbcType="BIGINT" property="status" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="number" jdbcType="BIGINT" property="number" />
+    <result column="classify" jdbcType="VARCHAR" property="classify" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, market_id, CREATED, MODIFIED, operator_id, operator_name, code, name, weight, 
+    id, market_id, CREATED, MODIFIED, operator_id, operator_name, code, name, weight, number, classify,
     status, remark
   </sql>
   <select id="selectBy" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -69,7 +71,18 @@
       <if test="remark != null">
         remark = #{remark,jdbcType=VARCHAR},
       </if>
+      <if test="classify != null">
+        classify = #{classify,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null">
+        number = #{number,jdbcType=BIGINT},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
+  <insert id="insertCarType">
+      INSERT INTO `car_type`(`market_id`, `number`, `classify`, `name`, `remark`, `status`, `creator_id`)
+      select #{marketId} market_id, case when max(`number`) is null then 0 else max(number) end + 1 number, 
+      #{classify} classify, #{name} name, #{remark} remark, #{status} status, #{creatorId} creator_id  from `car_type`
+  </insert>
 </mapper>

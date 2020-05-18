@@ -2,10 +2,15 @@ package com.dili.assets.sdk.dto;
 
 import java.util.Date;
 
+import javax.persistence.Column;
+
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.dili.ss.domain.BaseDomain;
+import com.dili.ss.metadata.FieldEditor;
+import com.dili.ss.metadata.annotation.EditMode;
+import com.dili.ss.metadata.annotation.FieldDef;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
@@ -23,6 +28,11 @@ public class CarTypeDTO extends BaseDomain {
      * 市场
      */
     private Long marketId;
+    /**
+     * 编号
+     */
+    @Column(name = "`number`")
+    private Long number;
 
     /**
      * 创建时间
@@ -30,7 +40,7 @@ public class CarTypeDTO extends BaseDomain {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date created;
+    private Date createTime;
 
     /**
      * 修改时间
@@ -38,17 +48,18 @@ public class CarTypeDTO extends BaseDomain {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date modified;
+    private Date modifyTime;
 
     /**
      * 操作员ID
      */
-    private Long operatorId;
+    private Long creatorId;
 
     /**
-     * 操作员名称
+     * 类型
      */
-    private String operatorName;
+    @Column(name = "`classify`")
+    private String classify;
 
     /**
      * 代码
@@ -68,7 +79,7 @@ public class CarTypeDTO extends BaseDomain {
     /**
      * 状态
      */
-    private Long status;
+    private Integer status;
 
     /**
      * 备注
@@ -116,8 +127,8 @@ public class CarTypeDTO extends BaseDomain {
      *
      * @return CREATED - 创建时间
      */
-    public Date getCreated() {
-        return created;
+    public Date getCreateTime() {
+        return createTime;
     }
 
     /**
@@ -125,8 +136,8 @@ public class CarTypeDTO extends BaseDomain {
      *
      * @param created 创建时间
      */
-    public void setCreated(Date created) {
-        this.created = created;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     /**
@@ -134,8 +145,8 @@ public class CarTypeDTO extends BaseDomain {
      *
      * @return MODIFIED - 修改时间
      */
-    public Date getModified() {
-        return modified;
+    public Date getModifyTime() {
+        return modifyTime;
     }
 
     /**
@@ -143,8 +154,8 @@ public class CarTypeDTO extends BaseDomain {
      *
      * @param modified 修改时间
      */
-    public void setModified(Date modified) {
-        this.modified = modified;
+    public void setModifyTime(Date modifyTime) {
+        this.modifyTime = modifyTime;
     }
 
     /**
@@ -152,8 +163,8 @@ public class CarTypeDTO extends BaseDomain {
      *
      * @return operator_id - 操作员ID
      */
-    public Long getOperatorId() {
-        return operatorId;
+    public Long getCreatorId() {
+        return creatorId;
     }
 
     /**
@@ -161,28 +172,29 @@ public class CarTypeDTO extends BaseDomain {
      *
      * @param operatorId 操作员ID
      */
-    public void setOperatorId(Long operatorId) {
-        this.operatorId = operatorId;
+    public void setCreatorId(Long creatorId) {
+        this.creatorId = creatorId;
     }
 
     /**
-     * 获取操作员名称
+     * 获取类型
      *
-     * @return operator_name - 操作员名称
+     * @return classify - 类型
      */
-    public String getOperatorName() {
-        return operatorName;
+    @FieldDef(label="代码", maxLength = 20)
+    @EditMode(editor = FieldEditor.Text, required = false)
+    public String getClassify() {
+    	return classify;
     }
-
+    
     /**
-     * 设置操作员名称
+     * 设置类型
      *
-     * @param operatorName 操作员名称
+     * @param classify 类型
      */
-    public void setOperatorName(String operatorName) {
-        this.operatorName = operatorName;
+    public void setClassify(String classify) {
+    	this.classify = classify;
     }
-
     /**
      * 获取代码
      *
@@ -242,7 +254,7 @@ public class CarTypeDTO extends BaseDomain {
      *
      * @return status - 状态
      */
-    public Long getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
@@ -251,7 +263,7 @@ public class CarTypeDTO extends BaseDomain {
      *
      * @param status 状态
      */
-    public void setStatus(Long status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
@@ -272,4 +284,12 @@ public class CarTypeDTO extends BaseDomain {
     public void setRemark(String remark) {
         this.remark = remark;
     }
+
+	public Long getNumber() {
+		return number;
+	}
+
+	public void setNumber(Long number) {
+		this.number = number;
+	}
 }

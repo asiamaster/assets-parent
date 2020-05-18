@@ -1,20 +1,23 @@
 package com.dili.assets.controller;
 
-import com.dili.assets.domain.CarType;
-import com.dili.assets.service.CarTypeService;
-import com.dili.ss.domain.BaseOutput;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.dili.assets.domain.Booth;
+import com.dili.assets.domain.CarType;
+import com.dili.assets.service.CarTypeService;
+import com.dili.ss.domain.BaseOutput;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 
 /**
  * 由MyBatis Generator工具自动生成
@@ -22,7 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Api("/carType")
 @Controller
-@RequestMapping("/carType")
+@RequestMapping("/api/carType")
 public class CarTypeController {
     @Autowired
     CarTypeService carTypeService;
@@ -48,9 +51,9 @@ public class CarTypeController {
     @ApiImplicitParams({
 		@ApiImplicitParam(name="CarType", paramType="form", value = "CarType的form信息", required = false, dataType = "string")
 	})
-    @RequestMapping(value="/listPage.action", method = {RequestMethod.GET, RequestMethod.POST})
-    public @ResponseBody String listPage(@ModelAttribute CarType carType) throws Exception {
-        return carTypeService.listEasyuiPageByExample(carType, true).toString();
+    @RequestMapping(value="/listPage", method = {RequestMethod.GET, RequestMethod.POST})
+    public @ResponseBody String listPage(@RequestBody CarType carType) throws Exception {
+    	return carTypeService.listEasyuiPageByExample(carType, true).toString();
     }
 
     /**
@@ -62,9 +65,10 @@ public class CarTypeController {
     @ApiImplicitParams({
 		@ApiImplicitParam(name="CarType", paramType="form", value = "CarType的form信息", required = true, dataType = "string")
 	})
-    @RequestMapping(value="/insert.action", method = {RequestMethod.GET, RequestMethod.POST})
-    public @ResponseBody BaseOutput insert(@ModelAttribute CarType carType) {
-        carTypeService.insertSelective(carType);
+    @RequestMapping(value="/save", method = {RequestMethod.GET, RequestMethod.POST})
+    public @ResponseBody BaseOutput insert(@RequestBody CarType carType) {
+    	System.err.println(carType.getCreatorId());
+        carTypeService.insertCarType(carType);
         return BaseOutput.success("新增成功");
     }
 
@@ -77,8 +81,8 @@ public class CarTypeController {
     @ApiImplicitParams({
 		@ApiImplicitParam(name="CarType", paramType="form", value = "CarType的form信息", required = true, dataType = "string")
 	})
-    @RequestMapping(value="/update.action", method = {RequestMethod.GET, RequestMethod.POST})
-    public @ResponseBody BaseOutput update(@ModelAttribute CarType carType) {
+    @RequestMapping(value="/update", method = {RequestMethod.GET, RequestMethod.POST})
+    public @ResponseBody BaseOutput update(@RequestBody CarType carType) {
         carTypeService.updateSelective(carType);
         return BaseOutput.success("修改成功");
     }
@@ -92,9 +96,20 @@ public class CarTypeController {
     @ApiImplicitParams({
 		@ApiImplicitParam(name="id", paramType="form", value = "CarType的主键", required = true, dataType = "long")
 	})
-    @RequestMapping(value="/delete.action", method = {RequestMethod.GET, RequestMethod.POST})
-    public @ResponseBody BaseOutput delete(Long id) {
+    @RequestMapping(value="/delete", method = {RequestMethod.GET, RequestMethod.POST})
+    public @ResponseBody BaseOutput delete(@RequestBody Long id) {
         carTypeService.delete(id);
         return BaseOutput.success("删除成功");
+    }
+    
+    /**
+     * 获取
+     *
+     * @param id
+     * @return
+     */
+    @RequestMapping("get")
+    public @ResponseBody BaseOutput<Booth> get(@RequestBody Long id) {
+        return BaseOutput.success().setData(carTypeService.get(id));
     }
 }

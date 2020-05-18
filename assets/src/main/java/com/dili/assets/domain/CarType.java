@@ -1,11 +1,17 @@
 package com.dili.assets.domain;
 
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import com.dili.ss.domain.BaseDomain;
 import com.dili.ss.metadata.FieldEditor;
 import com.dili.ss.metadata.annotation.EditMode;
 import com.dili.ss.metadata.annotation.FieldDef;
-import java.util.Date;
-import javax.persistence.*;
 
 /**
  * 由MyBatis Generator工具自动生成
@@ -27,36 +33,40 @@ public class CarType extends BaseDomain {
      */
     @Column(name = "`market_id`")
     private Long marketId;
+    /**
+     * 编号
+     */
+    @Column(name = "`number`")
+    private String number;
 
     /**
      * 创建时间
      */
-    @Column(name = "`CREATED`")
-    private Date created;
+    @Column(name = "`create_time`")
+    private Date createTime;
 
     /**
      * 修改时间
      */
-    @Column(name = "`MODIFIED`")
-    private Date modified;
+    @Column(name = "`modify_time`")
+    private Date modifyTime;
 
     /**
      * 操作员ID
      */
-    @Column(name = "`operator_id`")
-    private Long operatorId;
-
-    /**
-     * 操作员名称
-     */
-    @Column(name = "`operator_name`")
-    private String operatorName;
+    @Column(name = "`creator_id`")
+    private Long creatorId;
 
     /**
      * 代码
      */
     @Column(name = "`code`")
     private String code;
+    /**
+     * 类型
+     */
+    @Column(name = "`classify`")
+    private String classify;
 
     /**
      * 名称
@@ -74,7 +84,7 @@ public class CarType extends BaseDomain {
      * 状态
      */
     @Column(name = "`status`")
-    private Long status;
+    private Integer status;
 
     /**
      * 备注
@@ -129,8 +139,8 @@ public class CarType extends BaseDomain {
      */
     @FieldDef(label="创建时间")
     @EditMode(editor = FieldEditor.Datetime, required = true)
-    public Date getCreated() {
-        return created;
+    public Date getCreateTime() {
+        return createTime;
     }
 
     /**
@@ -138,8 +148,8 @@ public class CarType extends BaseDomain {
      *
      * @param created 创建时间
      */
-    public void setCreated(Date created) {
-        this.created = created;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     /**
@@ -149,8 +159,8 @@ public class CarType extends BaseDomain {
      */
     @FieldDef(label="修改时间")
     @EditMode(editor = FieldEditor.Datetime, required = true)
-    public Date getModified() {
-        return modified;
+    public Date getModifyTime() {
+        return modifyTime;
     }
 
     /**
@@ -158,8 +168,8 @@ public class CarType extends BaseDomain {
      *
      * @param modified 修改时间
      */
-    public void setModified(Date modified) {
-        this.modified = modified;
+    public void setModifyTime(Date modifyTime) {
+        this.modifyTime = modifyTime;
     }
 
     /**
@@ -169,8 +179,8 @@ public class CarType extends BaseDomain {
      */
     @FieldDef(label="操作员ID")
     @EditMode(editor = FieldEditor.Number, required = false)
-    public Long getOperatorId() {
-        return operatorId;
+    public Long getCreatorId() {
+        return creatorId;
     }
 
     /**
@@ -178,28 +188,8 @@ public class CarType extends BaseDomain {
      *
      * @param operatorId 操作员ID
      */
-    public void setOperatorId(Long operatorId) {
-        this.operatorId = operatorId;
-    }
-
-    /**
-     * 获取操作员名称
-     *
-     * @return operator_name - 操作员名称
-     */
-    @FieldDef(label="操作员名称", maxLength = 20)
-    @EditMode(editor = FieldEditor.Text, required = false)
-    public String getOperatorName() {
-        return operatorName;
-    }
-
-    /**
-     * 设置操作员名称
-     *
-     * @param operatorName 操作员名称
-     */
-    public void setOperatorName(String operatorName) {
-        this.operatorName = operatorName;
+    public void setCreatorId(Long creatorId) {
+        this.creatorId = creatorId;
     }
 
     /**
@@ -220,6 +210,25 @@ public class CarType extends BaseDomain {
      */
     public void setCode(String code) {
         this.code = code;
+    }
+    /**
+     * 获取类型
+     *
+     * @return classify - 类型
+     */
+    @FieldDef(label="代码", maxLength = 20)
+    @EditMode(editor = FieldEditor.Text, required = false)
+    public String getClassify() {
+    	return classify;
+    }
+    
+    /**
+     * 设置类型
+     *
+     * @param classify 类型
+     */
+    public void setClassify(String classify) {
+    	this.classify = classify;
     }
 
     /**
@@ -269,7 +278,7 @@ public class CarType extends BaseDomain {
      */
     @FieldDef(label="状态")
     @EditMode(editor = FieldEditor.Number, required = false)
-    public Long getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
@@ -278,7 +287,7 @@ public class CarType extends BaseDomain {
      *
      * @param status 状态
      */
-    public void setStatus(Long status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
@@ -301,4 +310,25 @@ public class CarType extends BaseDomain {
     public void setRemark(String remark) {
         this.remark = remark;
     }
+
+	public String getNumber() {
+		return number;
+	}
+
+	public void setNumber(String number) {
+		try {
+			if(number != null) {
+				if(number.length() == 1) {
+					number = "000" + number;
+				}else if(number.length() == 2) {
+					number = "00" + number;
+				}else if(number.length() == 3) {
+					number = "0" + number;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		this.number = number;
+	}
 }
