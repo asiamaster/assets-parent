@@ -88,7 +88,7 @@
 <!--            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
 <!--        </table>-->
         <!-- 生成指定表模型 -->
-        <table domainObjectName="productRuleRecord" tableName="product_rule_record">
+        <table domainObjectName="carTypePublic" tableName="car_type_public">
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
         </table>
     </context>
