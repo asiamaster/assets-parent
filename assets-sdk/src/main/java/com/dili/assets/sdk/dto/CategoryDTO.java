@@ -227,6 +227,43 @@ public class CategoryDTO {
         this.state = state;
     }
 
+    /**
+     * 别名
+     */
+
+    private String cusName;
+
+    /**
+     * 快捷码
+     */
+
+    private String keycode;
+
+    public String getCusName() {
+        return cusName;
+    }
+
+    public void setCusName(String cusName) {
+        this.cusName = cusName;
+    }
+
+    public String getKeycode() {
+        return keycode;
+    }
+
+    public void setKeycode(String keycode) {
+        this.keycode = keycode;
+    }
+
+    private Long marketId;
+
+    public Long getMarketId() {
+        return marketId;
+    }
+
+    public void setMarketId(Long marketId) {
+        this.marketId = marketId;
+    }
 
     private String keyword;
 

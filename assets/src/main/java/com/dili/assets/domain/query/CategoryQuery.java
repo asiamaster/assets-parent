@@ -13,6 +13,16 @@ import javax.persistence.Transient;
  */
 public class CategoryQuery extends Category {
 
+
+    private Long marketId;
+
+    public Long getMarketId() {
+        return marketId;
+    }
+
+    public void setMarketId(Long marketId) {
+        this.marketId = marketId;
+    }
     // ==========================动态SQL过滤字段==================================== //
 
     /**
