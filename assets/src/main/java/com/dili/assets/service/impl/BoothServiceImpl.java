@@ -82,29 +82,35 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
     @Override
     public String listForPage(BoothQuery input) {
         try {
+            BoothQuery countInput = new BoothQuery();
             if (input == null) {
                 input = new BoothQuery();
             }
+            countInput.setMarketId(input.getMarketId());
             input.setIsDelete(StateEnum.NO.getCode());
+            countInput.setIsDelete(StateEnum.NO.getCode());
             if (input.getStartTime() != null) {
                 input.setStartTime(DateUtils.formatDate2DateTimeStart(input.getStartTime()));
+                countInput.setStartTime(DateUtils.formatDate2DateTimeStart(input.getStartTime()));
             }
             if (input.getEndTime() != null) {
                 input.setEndTime(DateUtils.formatDate2DateTimeEnd(input.getEndTime()));
+                countInput.setEndTime(DateUtils.formatDate2DateTimeEnd(input.getEndTime()));
             }
             if (input.getDepartmentId() == null && StrUtil.isNotBlank(input.getDeps())) {
                 input.setMetadata(IDTO.AND_CONDITION_EXPR, "(department_id in (" + input.getDeps() + ") or department_id is null)");
+                countInput.setMetadata(IDTO.AND_CONDITION_EXPR, "(department_id in (" + input.getDeps() + ") or department_id is null)");
             }
 
-            if(input.getDepartmentId() == null && StrUtil.isBlank(input.getDeps())){
+            if (input.getDepartmentId() == null && StrUtil.isBlank(input.getDeps())) {
                 input.setMetadata(IDTO.AND_CONDITION_EXPR, "department_id is null");
+                countInput.setMetadata(IDTO.AND_CONDITION_EXPR, "department_id is null");
             }
             input.setDeps(null);
-            int count = 0;
-            if (input.getId() == null) {
-                count = this.listByExample(input).size();
-                input.setParentId(0L);
-            } else {
+            int count = this.listByExample(countInput).size();
+            boolean expand = false;
+            if (input.getId() != null) {
+                expand = true;
                 input.setParentId(input.getId());
                 input.setId(null);
             }
@@ -114,19 +120,17 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
 
             for (Object district : results) {
                 JSONObject json = JSON.parseObject(JSON.toJSONString(district));
-                json.put("status",json.getString("state"));
+                json.put("status", json.getString("state"));
                 json.put("state", "closed");
                 result.add(json);
             }
             String resultJsonStr = JSONObject.toJSONString(result);
-            if (count == 0) {
+            if (expand) {
                 return resultJsonStr;
             }
             JSONObject obj = new JSONObject();
             obj.put("rows", JSON.parseArray(resultJsonStr));
-            obj.put("footer", JSON.parseArray("[\n" +
-                    "\t{\"name\":\"总数:\",\"number\":" + count + ",\"iconCls\":\"icon-sum\"}\n" +
-                    "]"));
+            obj.put("footer", JSON.parseArray("[{\"name\":\"总数:" + count + "\",\"iconCls\":\"icon-sum\"}]"));
             return obj.toJSONString();
         } catch (Exception e) {
             e.printStackTrace();
