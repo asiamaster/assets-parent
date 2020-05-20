@@ -115,6 +115,9 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
                 input.setId(null);
             }
             List<Booth> booths = this.listByExample(input);
+            if(input.getParentId() == null){
+                count = booths.size();
+            }
             List results = ValueProviderUtils.buildDataByProvider(input, booths);
             List result = new ArrayList();
 

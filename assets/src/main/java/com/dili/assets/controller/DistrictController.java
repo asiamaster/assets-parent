@@ -118,6 +118,9 @@ public class DistrictController {
                 input.setId(null);
             }
             List<District> districts = districtService.listByExample(input);
+            if(input.getParentId() == null){
+                count = districts.size();
+            }
             List results = ValueProviderUtils.buildDataByProvider(input, districts);
             List result = new ArrayList();
 

@@ -35,7 +35,7 @@ public class BoothPathProvider implements ValueProvider {
                 return booth.getName();
             } else {
                 Booth parent = boothService.get(booth.getParentId());
-                return parent.getName() + "-" + booth.getName();
+                return parent.getName() + "," + booth.getName();
             }
         }
         return null;
