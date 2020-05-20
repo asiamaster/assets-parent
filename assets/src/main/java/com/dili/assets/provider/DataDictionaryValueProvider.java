@@ -1,6 +1,7 @@
 package com.dili.assets.provider;
 
 import com.alibaba.fastjson.JSONObject;
+import com.dili.ss.dto.DTOUtils;
 import com.dili.ss.metadata.FieldMeta;
 import com.dili.ss.metadata.ValuePair;
 import com.dili.ss.metadata.ValuePairImpl;
@@ -24,6 +25,7 @@ public class DataDictionaryValueProvider extends BatchDisplayTextProviderAdaptor
 
 
     protected static final String DD_CODE_KEY = "dd_code";
+    protected static final String MARKET_CODE_KEY = "market_code";
     @Autowired
     DataDictionaryRpc dataDictionaryRpc;
 
@@ -34,7 +36,13 @@ public class DataDictionaryValueProvider extends BatchDisplayTextProviderAdaptor
             return Lists.newArrayList();
         }
         String code = JSONObject.parseObject(queryParams.toString()).getString(DD_CODE_KEY);
-        List<DataDictionaryValue> list = dataDictionaryRpc.listDataDictionaryValueByDdCode(code).getData();
+        String market_code = JSONObject.parseObject(queryParams.toString()).getString(MARKET_CODE_KEY);
+        DataDictionaryValue dataDictionary = DTOUtils.newInstance(DataDictionaryValue.class);
+        dataDictionary.setDdCode(code);
+        dataDictionary.setFirmCode(market_code);
+        
+        List<DataDictionaryValue> list = dataDictionaryRpc.listDataDictionaryValue(dataDictionary).getData();
+        
         if (CollectionUtils.isEmpty(list)) {
             return null;
         }

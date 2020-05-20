@@ -81,8 +81,22 @@ public class CarTypePublicController {
 	})
     @RequestMapping(value="/update", method = {RequestMethod.GET, RequestMethod.POST})
     public @ResponseBody BaseOutput update(@RequestBody CarTypePublic carTypePublic) {
-        carTypePublicService.updateSelective(carTypePublic);
+        carTypePublicService.updateCarTypePublic(carTypePublic);
         return BaseOutput.success("修改成功");
+    }
+    /**
+     * 修改carTypePublic
+     * @param carTypePublic
+     * @return BaseOutput
+     */
+    @ApiOperation("修改carTypePublic")
+    @ApiImplicitParams({
+    	@ApiImplicitParam(name="carTypePublic", paramType="form", value = "carTypePublic的form信息", required = true, dataType = "string")
+    })
+    @RequestMapping(value="/updateStatus", method = {RequestMethod.GET, RequestMethod.POST})
+    public @ResponseBody BaseOutput updateStatus(@RequestBody CarTypePublic carTypePublic) {
+    	carTypePublicService.updateSelective(carTypePublic);
+    	return BaseOutput.success("修改成功");
     }
 
     /**

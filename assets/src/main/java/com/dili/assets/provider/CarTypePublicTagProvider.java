@@ -3,42 +3,52 @@ package com.dili.assets.provider;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
+import org.apache.tomcat.util.buf.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.dili.assets.glossary.CarTypePublicEnum;
+import com.dili.ss.dto.DTOUtils;
 import com.dili.ss.metadata.FieldMeta;
 import com.dili.ss.metadata.ValuePair;
-import com.dili.ss.metadata.ValuePairImpl;
 import com.dili.ss.metadata.ValueProvider;
+import com.dili.uap.sdk.domain.DataDictionaryValue;
+import com.dili.uap.sdk.domain.UserTicket;
+import com.dili.uap.sdk.rpc.DataDictionaryRpc;
+import com.dili.uap.sdk.session.SessionContext;
 
 
 @Component
 public class CarTypePublicTagProvider implements ValueProvider {
-    private static final List<ValuePair<?>> BUFFER = new ArrayList<>();
-
-    static {
-        BUFFER.addAll(Stream.of(CarTypePublicEnum.values())
-                .map(e -> new ValuePairImpl<>(e.getName(), e.getCode().toString()))
-                .collect(Collectors.toList()));
-    }
+	@Autowired
+    private DataDictionaryRpc dataDictionaryRpc;
 
     @Override
     public List<ValuePair<?>> getLookupList(Object o, Map map, FieldMeta fieldMeta) {
-        return BUFFER;
+        return null;
     }
 
     @Override
-    public String getDisplayText(Object object, Map map, FieldMeta fieldMeta) {
-        if (null == object) {
+    public String getDisplayText(Object val, Map map, FieldMeta fieldMeta) {
+    	if (val == null) {
             return null;
         }
-        ValuePair<?> valuePair = BUFFER.stream().filter(val -> object.toString().equals(val.getValue())).findFirst().orElseGet(null);
-        if (null != valuePair) {
-            return valuePair.getText();
-        }
-        return null;
+    	Map<String, Object> _rowData = (Map<String, Object>) map.get("_rowData");
+    	DataDictionaryValue dataDictionaryValue = DTOUtils.newInstance(DataDictionaryValue.class);
+    	dataDictionaryValue.setDdCode("cartype_tag");
+    	dataDictionaryValue.setFirmCode(_rowData.get("marketCode").toString());
+    	
+    	List<DataDictionaryValue> list = dataDictionaryRpc.listDataDictionaryValue(dataDictionaryValue).getData();
+    	List<String> displayText = new ArrayList<String>();
+    	String[] tags = val.toString().split(",");
+    	for (int i = 0; i < tags.length; i++) {
+    		for (int j = 0; j < list.size(); j++) {
+    			DataDictionaryValue data = list.get(j);
+    			if (data.getCode().equals(tags[i])) {
+    				displayText.add(data.getName());
+    			}
+    		}
+		}
+        return StringUtils.join(displayText, ',');
     }
 }

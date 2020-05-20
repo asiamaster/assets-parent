@@ -11,4 +11,6 @@ public interface CarTypePublicMapper extends MyMapper<CarTypePublic> {
 	List<CarTypePublic> listCarTypePublic(CarTypePublicQuery carTypePublic);
 
 	CarTypePublic getCarTypePublicById(Long id);
+
+	void updateCarTypePublic(CarTypePublic carTypePublic);
 }

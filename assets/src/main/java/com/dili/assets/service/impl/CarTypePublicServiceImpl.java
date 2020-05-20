@@ -43,4 +43,9 @@ public class CarTypePublicServiceImpl extends BaseServiceImpl<CarTypePublic, Lon
 	public CarTypePublic getCarTypePublicById(Long id) {
 		return getActualDao().getCarTypePublicById(id);
 	}
+
+	@Override
+	public void updateCarTypePublic(CarTypePublic carTypePublic) {
+		getActualDao().updateCarTypePublic(carTypePublic);
+	}
 }

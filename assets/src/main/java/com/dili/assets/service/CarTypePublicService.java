@@ -13,4 +13,6 @@ public interface CarTypePublicService extends BaseService<CarTypePublic, Long> {
 	String listCarTypePublic(CarTypePublicQuery carTypePublic, boolean b) throws Exception;
 
 	CarTypePublic getCarTypePublicById(Long id);
+
+	void updateCarTypePublic(CarTypePublic carTypePublic);
 }

@@ -88,10 +88,10 @@
   </update>
   <select id="listCarTypePublic" resultMap="BaseResultMap">
       select ctb.id,ct.id car_type_id,ct.name,ct.number,ctb.code,ctb.tag,ctb.entrance_self_weight,ctb.storage_self_weight,
-		ctb.vehicle_self_weight,ctb.auto_pass,ctb.remark,ctb.status
+		ctb.vehicle_self_weight,ctb.auto_pass,ctb.remark,ctb.status,ctb.market_code
 		from car_type ct 
-		left join car_type_public ctb on ct.id = ctb.car_type_id and ct.status = 1 and ctb.market_code = #{marketCode,jdbcType=BIGINT}
-	  <where>
+		left join car_type_public ctb on ct.id = ctb.car_type_id and ctb.market_code = #{marketCode,jdbcType=VARCHAR}
+		where ct.status = 1
 	      <if test="carTypeId != null">
 	        and ctb.car_type_id = #{carTypeId,jdbcType=BIGINT}
 	      </if>
@@ -134,7 +134,6 @@
 	      <if test="tag != null">
 	        and position(#{tag,jdbcType=VARCHAR} in tag)
 	      </if>
-	  </where>
   </select>
   <select id="getCarTypePublicById" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -142,4 +141,17 @@
     from car_type_public
     where id = #{id,jdbcType=BIGINT}
   </select>
+  <update id="updateCarTypePublic" parameterType="com.dili.assets.domain.CarTypePublic">
+    update car_type_public
+    	<set>
+          code = #{code,jdbcType=VARCHAR},
+          entrance_self_weight = #{entranceSelfWeight,jdbcType=BIGINT},
+          storage_self_weight = #{storageSelfWeight,jdbcType=BIGINT},
+          vehicle_self_weight = #{vehicleSelfWeight,jdbcType=BIGINT},
+          auto_pass = #{autoPass,jdbcType=INTEGER},
+          remark = #{remark,jdbcType=VARCHAR},
+          tag = #{tag,jdbcType=VARCHAR},
+      </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
 </mapper>
