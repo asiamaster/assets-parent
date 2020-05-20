@@ -1,20 +1,17 @@
 package com.dili.assets.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dili.assets.domain.CarTypePublic;
+import com.dili.assets.domain.query.CarTypePublicQuery;
 import com.dili.assets.service.CarTypePublicService;
 import com.dili.ss.domain.BaseOutput;
-import com.dili.ss.domain.EasyuiPageOutput;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -54,7 +51,7 @@ public class CarTypePublicController {
 		@ApiImplicitParam(name="carTypePublic", paramType="form", value = "carTypePublic的form信息", required = false, dataType = "string")
 	})
     @RequestMapping(value="/listPage", method = {RequestMethod.GET, RequestMethod.POST})
-    public @ResponseBody String listPage(@RequestBody CarTypePublic carTypePublic) throws Exception {
+    public @ResponseBody String listPage(@RequestBody CarTypePublicQuery carTypePublic) throws Exception {
         return carTypePublicService.listCarTypePublic(carTypePublic, true);
     }
 
@@ -67,8 +64,8 @@ public class CarTypePublicController {
     @ApiImplicitParams({
 		@ApiImplicitParam(name="carTypePublic", paramType="form", value = "carTypePublic的form信息", required = true, dataType = "string")
 	})
-    @RequestMapping(value="/insert.action", method = {RequestMethod.GET, RequestMethod.POST})
-    public @ResponseBody BaseOutput insert(@ModelAttribute CarTypePublic carTypePublic) {
+    @RequestMapping(value="/save", method = {RequestMethod.GET, RequestMethod.POST})
+    public @ResponseBody BaseOutput insert(@RequestBody CarTypePublic carTypePublic) {
         carTypePublicService.insertSelective(carTypePublic);
         return BaseOutput.success("新增成功");
     }
@@ -82,8 +79,8 @@ public class CarTypePublicController {
     @ApiImplicitParams({
 		@ApiImplicitParam(name="carTypePublic", paramType="form", value = "carTypePublic的form信息", required = true, dataType = "string")
 	})
-    @RequestMapping(value="/update.action", method = {RequestMethod.GET, RequestMethod.POST})
-    public @ResponseBody BaseOutput update(@ModelAttribute CarTypePublic carTypePublic) {
+    @RequestMapping(value="/update", method = {RequestMethod.GET, RequestMethod.POST})
+    public @ResponseBody BaseOutput update(@RequestBody CarTypePublic carTypePublic) {
         carTypePublicService.updateSelective(carTypePublic);
         return BaseOutput.success("修改成功");
     }
@@ -101,5 +98,16 @@ public class CarTypePublicController {
     public @ResponseBody BaseOutput delete(Long id) {
         carTypePublicService.delete(id);
         return BaseOutput.success("删除成功");
+    }
+    
+    /**
+     * 获取
+     *
+     * @param id
+     * @return
+     */
+    @RequestMapping("get")
+    public @ResponseBody BaseOutput<CarTypePublic> get(@RequestBody Long id) {
+        return BaseOutput.success().setData(carTypePublicService.getCarTypePublicById(id));
     }
 }

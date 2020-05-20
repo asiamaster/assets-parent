@@ -1,6 +1,7 @@
 package com.dili.assets.service;
 
 import com.dili.assets.domain.CarTypePublic;
+import com.dili.assets.domain.query.CarTypePublicQuery;
 import com.dili.ss.base.BaseService;
 
 /**
@@ -9,5 +10,7 @@ import com.dili.ss.base.BaseService;
  */
 public interface CarTypePublicService extends BaseService<CarTypePublic, Long> {
 
-	String listCarTypePublic(CarTypePublic carTypePublic, boolean b) throws Exception;
+	String listCarTypePublic(CarTypePublicQuery carTypePublic, boolean b) throws Exception;
+
+	CarTypePublic getCarTypePublicById(Long id);
 }

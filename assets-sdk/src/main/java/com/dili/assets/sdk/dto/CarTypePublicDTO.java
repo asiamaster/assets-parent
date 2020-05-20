@@ -26,12 +26,12 @@ public class CarTypePublicDTO extends BaseDomain {
     /**
      * 市场
      */
-    private Long marketId;
+    private String marketCode;
 
     /**
      * 车型
      */
-    private Long carTypeId;
+    private String carTypeId;
 
     /**
      * 快捷编码
@@ -62,8 +62,12 @@ public class CarTypePublicDTO extends BaseDomain {
     /**
      * 自动放行
      */
-    private Integer aotuPass;
-
+    private Integer autoPass;
+    /**
+     * 自动放行
+     */
+    @Column(name = "`auto_save`")
+    private Integer autoSave;
     /**
      * 状态
      */
@@ -121,19 +125,19 @@ public class CarTypePublicDTO extends BaseDomain {
     /**
      * 获取市场
      *
-     * @return market_id - 市场
+     * @return market_code - 市场
      */
-    public Long getMarketId() {
-        return marketId;
+    public String getMarketCode() {
+        return marketCode;
     }
 
     /**
      * 设置市场
      *
-     * @param marketId 市场
+     * @param marketCode 市场
      */
-    public void setMarketId(Long marketId) {
-        this.marketId = marketId;
+    public void setMarketCode(String marketCode) {
+        this.marketCode = marketCode;
     }
 
     /**
@@ -141,7 +145,7 @@ public class CarTypePublicDTO extends BaseDomain {
      *
      * @return car_type_id - 车型
      */
-    public Long getCarTypeId() {
+    public String getCarTypeId() {
         return carTypeId;
     }
 
@@ -150,7 +154,7 @@ public class CarTypePublicDTO extends BaseDomain {
      *
      * @param carTypeId 车型
      */
-    public void setCarTypeId(Long carTypeId) {
+    public void setCarTypeId(String carTypeId) {
         this.carTypeId = carTypeId;
     }
 
@@ -236,10 +240,10 @@ public class CarTypePublicDTO extends BaseDomain {
     /**
      * 获取自动放行
      *
-     * @return aotu_pass - 自动放行
+     * @return auto_pass - 自动放行
      */
-    public Integer getAotuPass() {
-        return aotuPass;
+    public Integer getAutoPass() {
+        return autoPass;
     }
 
     /**
@@ -247,10 +251,16 @@ public class CarTypePublicDTO extends BaseDomain {
      *
      * @param aotuPass 自动放行
      */
-    public void setAotuPass(Integer aotuPass) {
-        this.aotuPass = aotuPass;
+    public void setAutoPass(Integer autoPass) {
+        this.autoPass = autoPass;
     }
+    public Integer getAutoSave() {
+		return autoSave;
+	}
 
+	public void setAutoSave(Integer autoSave) {
+		this.autoSave = autoSave;
+	}
     /**
      * 获取状态
      *

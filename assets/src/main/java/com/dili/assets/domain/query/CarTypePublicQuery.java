@@ -1,4 +1,4 @@
-package com.dili.assets.domain;
+package com.dili.assets.domain.query;
 
 import java.util.Date;
 
@@ -19,7 +19,7 @@ import com.dili.ss.metadata.annotation.FieldDef;
  * This file was generated on 2020-05-18 14:41:03.
  */
 @Table(name = "`car_type_public`")
-public class CarTypePublic extends BaseDomain {
+public class CarTypePublicQuery extends BaseDomain {
     /**
      * id
      */
@@ -111,10 +111,9 @@ public class CarTypePublic extends BaseDomain {
     @Column(name = "`creator_id`")
     private Long creatorId;
     
-    /**
-     * 车型
-     */
-    private CarType carType;
+    private String name;
+    
+    private Long number;
     
     /**
      * 获取id
@@ -271,7 +270,7 @@ public class CarTypePublic extends BaseDomain {
      */
     @FieldDef(label="自动放行")
     @EditMode(editor = FieldEditor.Number, required = false)
-    public Integer getAutoPass() {
+    public Integer getAotuPass() {
         return autoPass;
     }
 
@@ -280,7 +279,7 @@ public class CarTypePublic extends BaseDomain {
      *
      * @param aotuPass 自动放行
      */
-    public void setAutoPass(Integer autoPass) {
+    public void setAotuPass(Integer autoPass) {
         this.autoPass = autoPass;
     }
 
@@ -392,12 +391,20 @@ public class CarTypePublic extends BaseDomain {
         this.creatorId = creatorId;
     }
 
-	public CarType getCarType() {
-		return carType;
+	public String getName() {
+		return name;
 	}
 
-	public void setCarType(CarType carType) {
-		this.carType = carType;
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Long getNumber() {
+		return number;
+	}
+
+	public void setNumber(Long number) {
+		this.number = number;
 	}
 
 }
