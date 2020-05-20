@@ -42,6 +42,7 @@ public class CustomCategoryServiceImpl extends BaseServiceImpl<CustomCategory, L
         } else {
             child_ids.add(id);
         }
+        List<CustomCategory> batchInsertList = new ArrayList<>();
         for (Long child_id : child_ids) {
             // 构建条件
             CustomCategory cc_condition = new CustomCategory();
@@ -49,17 +50,19 @@ public class CustomCategoryServiceImpl extends BaseServiceImpl<CustomCategory, L
             cc_condition.setCategory(child_id);
             // 处理当前更改的品类状态，如果自定义品类库没有则新增，否则直接改状态
             List<CustomCategory> list = this.listByExample(cc_condition);
+
             if (CollUtil.isNotEmpty(list)) {
                 CustomCategory c_category = list.get(0);
                 c_category.setState(value);
-                this.update(c_category);
+                batchInsertList.add(c_category);
             } else {
                 CustomCategory c_category = new CustomCategory();
                 c_category.setState(value);
                 c_category.setCategory(child_id);
                 c_category.setMarketId(marketId);
-                this.insert(c_category);
+                batchInsertList.add(c_category);
             }
         }
+        this.batchInsert(batchInsertList);
     }
 }
