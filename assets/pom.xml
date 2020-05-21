@@ -181,10 +181,6 @@
                     <artifactId>swiper</artifactId>
                     <groupId>org.webjars.npm</groupId>
                 </exclusion>
-                <exclusion>
-                    <artifactId>dom7</artifactId>
-                    <groupId>org.webjars.npm</groupId>
-                </exclusion>
             </exclusions>
         </dependency>
     </dependencies>
