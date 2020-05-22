@@ -1,6 +1,7 @@
 package com.dili.assets.sdk.dto;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Table;
@@ -43,21 +44,6 @@ public class CarTypePublicDTO extends BaseDomain {
      */
     @Column(name = "`tag`")
     private String tag;
-
-    /**
-     * 进门收费自重
-     */
-    private Long entranceSelfWeight;
-
-    /**
-     * 司磅入库自重
-     */
-    private Long storageSelfWeight;
-
-    /**
-     * 空车进门自重
-     */
-    private Long vehicleSelfWeight;
 
     /**
      * 自动放行
@@ -103,6 +89,11 @@ public class CarTypePublicDTO extends BaseDomain {
      * 车型
      */
     private CarTypeDTO carType;
+    /**
+     * 标签
+     */
+    private List<TagExtDTO> tagExt;
+    
 
     /**
      * 获取id
@@ -183,59 +174,6 @@ public class CarTypePublicDTO extends BaseDomain {
 	public void setTag(String tag) {
 		this.tag = tag;
 	}
-    /**
-     * 获取进门收费自重
-     *
-     * @return entrance_self_weight - 进门收费自重
-     */
-    public Long getEntranceSelfWeight() {
-        return entranceSelfWeight;
-    }
-
-    /**
-     * 设置进门收费自重
-     *
-     * @param entranceSelfWeight 进门收费自重
-     */
-    public void setEntranceSelfWeight(Long entranceSelfWeight) {
-        this.entranceSelfWeight = entranceSelfWeight;
-    }
-
-    /**
-     * 获取司磅入库自重
-     *
-     * @return storage_self_weight - 司磅入库自重
-     */
-    public Long getStorageSelfWeight() {
-        return storageSelfWeight;
-    }
-
-    /**
-     * 设置司磅入库自重
-     *
-     * @param storageSelfWeight 司磅入库自重
-     */
-    public void setStorageSelfWeight(Long storageSelfWeight) {
-        this.storageSelfWeight = storageSelfWeight;
-    }
-
-    /**
-     * 获取空车进门自重
-     *
-     * @return vehicle_self_weight - 空车进门自重
-     */
-    public Long getVehicleSelfWeight() {
-        return vehicleSelfWeight;
-    }
-
-    /**
-     * 设置空车进门自重
-     *
-     * @param vehicleSelfWeight 空车进门自重
-     */
-    public void setVehicleSelfWeight(Long vehicleSelfWeight) {
-        this.vehicleSelfWeight = vehicleSelfWeight;
-    }
 
     /**
      * 获取自动放行
@@ -358,5 +296,13 @@ public class CarTypePublicDTO extends BaseDomain {
 	public void setCarType(CarTypeDTO carType) {
 		this.carType = carType;
 	}
-    
+
+	
+	public List<TagExtDTO> getTagExt() {
+		return tagExt;
+	}
+
+	public void setTagExt(List<TagExtDTO> tagExt) {
+		this.tagExt = tagExt;
+	}
 }

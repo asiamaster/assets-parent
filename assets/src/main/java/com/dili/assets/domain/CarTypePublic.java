@@ -1,6 +1,7 @@
 package com.dili.assets.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -53,24 +54,6 @@ public class CarTypePublic extends BaseDomain {
     private String tag;
     
     /**
-     * 进门收费自重
-     */
-    @Column(name = "`entrance_self_weight`")
-    private Long entranceSelfWeight;
-
-    /**
-     * 司磅入库自重
-     */
-    @Column(name = "`storage_self_weight`")
-    private Long storageSelfWeight;
-
-    /**
-     * 空车进门自重
-     */
-    @Column(name = "`vehicle_self_weight`")
-    private Long vehicleSelfWeight;
-
-    /**
      * 自动放行
      */
     @Column(name = "`auto_pass`")
@@ -115,6 +98,11 @@ public class CarTypePublic extends BaseDomain {
      * 车型
      */
     private CarType carType;
+    
+    /**
+     * 标签
+     */
+    private List<TagExt> tagExt;
     
     /**
      * 获取id
@@ -203,66 +191,6 @@ public class CarTypePublic extends BaseDomain {
 	public void setTag(String tag) {
 		this.tag = tag;
 	}
-
-	/**
-     * 获取进门收费自重
-     *
-     * @return entrance_self_weight - 进门收费自重
-     */
-    @FieldDef(label="进门收费自重")
-    @EditMode(editor = FieldEditor.Number, required = false)
-    public Long getEntranceSelfWeight() {
-        return entranceSelfWeight;
-    }
-
-    /**
-     * 设置进门收费自重
-     *
-     * @param entranceSelfWeight 进门收费自重
-     */
-    public void setEntranceSelfWeight(Long entranceSelfWeight) {
-        this.entranceSelfWeight = entranceSelfWeight;
-    }
-
-    /**
-     * 获取司磅入库自重
-     *
-     * @return storage_self_weight - 司磅入库自重
-     */
-    @FieldDef(label="司磅入库自重")
-    @EditMode(editor = FieldEditor.Number, required = false)
-    public Long getStorageSelfWeight() {
-        return storageSelfWeight;
-    }
-
-    /**
-     * 设置司磅入库自重
-     *
-     * @param storageSelfWeight 司磅入库自重
-     */
-    public void setStorageSelfWeight(Long storageSelfWeight) {
-        this.storageSelfWeight = storageSelfWeight;
-    }
-
-    /**
-     * 获取空车进门自重
-     *
-     * @return vehicle_self_weight - 空车进门自重
-     */
-    @FieldDef(label="空车进门自重")
-    @EditMode(editor = FieldEditor.Number, required = false)
-    public Long getVehicleSelfWeight() {
-        return vehicleSelfWeight;
-    }
-
-    /**
-     * 设置空车进门自重
-     *
-     * @param vehicleSelfWeight 空车进门自重
-     */
-    public void setVehicleSelfWeight(Long vehicleSelfWeight) {
-        this.vehicleSelfWeight = vehicleSelfWeight;
-    }
 
     /**
      * 获取自动放行
@@ -399,5 +327,11 @@ public class CarTypePublic extends BaseDomain {
 	public void setCarType(CarType carType) {
 		this.carType = carType;
 	}
+	public List<TagExt> getTagExt() {
+		return tagExt;
+	}
 
+	public void setTagExt(List<TagExt> tagExt) {
+		this.tagExt = tagExt;
+	}
 }

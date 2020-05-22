@@ -1,5 +1,8 @@
 package com.dili.assets.service;
 
+import java.util.List;
+import java.util.Map;
+
 import com.dili.assets.domain.CarTypePublic;
 import com.dili.assets.domain.query.CarTypePublicQuery;
 import com.dili.ss.base.BaseService;
@@ -12,7 +15,9 @@ public interface CarTypePublicService extends BaseService<CarTypePublic, Long> {
 
 	String listCarTypePublic(CarTypePublicQuery carTypePublic, boolean b) throws Exception;
 
-	CarTypePublic getCarTypePublicById(Long id);
+	List<Map<String, Object>> getCarTypePublicById(CarTypePublicQuery carTypePublic);
 
 	void updateCarTypePublic(CarTypePublic carTypePublic);
+
+	void deleteTagExt(CarTypePublicQuery carTypePublic);
 }

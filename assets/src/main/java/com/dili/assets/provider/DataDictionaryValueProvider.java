@@ -42,7 +42,7 @@ public class DataDictionaryValueProvider extends BatchDisplayTextProviderAdaptor
         dataDictionary.setFirmCode(market_code);
         
         List<DataDictionaryValue> list = dataDictionaryRpc.listDataDictionaryValue(dataDictionary).getData();
-        
+        System.err.println(list.size());
         if (CollectionUtils.isEmpty(list)) {
             return null;
         }

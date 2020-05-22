@@ -1,6 +1,7 @@
 package com.dili.assets.domain.query;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -12,6 +13,7 @@ import com.dili.ss.domain.BaseDomain;
 import com.dili.ss.metadata.FieldEditor;
 import com.dili.ss.metadata.annotation.EditMode;
 import com.dili.ss.metadata.annotation.FieldDef;
+import com.dili.uap.sdk.domain.DataDictionaryValue;
 
 /**
  * 由MyBatis Generator工具自动生成
@@ -115,6 +117,7 @@ public class CarTypePublicQuery extends BaseDomain {
     
     private Long number;
     
+    private List<DataDictionaryValue> tags;
     /**
      * 获取id
      *
@@ -405,6 +408,14 @@ public class CarTypePublicQuery extends BaseDomain {
 
 	public void setNumber(Long number) {
 		this.number = number;
+	}
+
+	public List<DataDictionaryValue> getTags() {
+		return tags;
+	}
+
+	public void setTags(List<DataDictionaryValue> tags) {
+		this.tags = tags;
 	}
 
 }

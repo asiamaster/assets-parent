@@ -9,9 +9,6 @@
     <result column="market_code" jdbcType="BIGINT" property="marketCode" />
     <result column="car_type_id" jdbcType="BIGINT" property="carTypeId" />
     <result column="code" jdbcType="VARCHAR" property="code" />
-    <result column="entrance_self_weight" jdbcType="BIGINT" property="entranceSelfWeight" />
-    <result column="storage_self_weight" jdbcType="BIGINT" property="storageSelfWeight" />
-    <result column="vehicle_self_weight" jdbcType="BIGINT" property="vehicleSelfWeight" />
     <result column="auto_pass" jdbcType="INTEGER" property="autoPass" />
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
@@ -29,7 +26,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, market_code, car_type_id, code, entrance_self_weight, storage_self_weight, vehicle_self_weight, tag, auto_save,
+    id, market_code, car_type_id, code, tag, auto_save,
     auto_pass, status, remark, create_time, modify_time, creator_id
   </sql>
   <select id="selectBy" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -56,15 +53,6 @@
       <if test="code != null">
         code = #{code,jdbcType=VARCHAR},
       </if>
-      <if test="entranceSelfWeight != null">
-        entrance_self_weight = #{entranceSelfWeight,jdbcType=BIGINT},
-      </if>
-      <if test="storageSelfWeight != null">
-        storage_self_weight = #{storageSelfWeight,jdbcType=BIGINT},
-      </if>
-      <if test="vehicleSelfWeight != null">
-        vehicle_self_weight = #{vehicleSelfWeight,jdbcType=BIGINT},
-      </if>
       <if test="aotuPass != null">
         auto_pass = #{autoPass,jdbcType=INTEGER},
       </if>
@@ -86,26 +74,37 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <select id="listCarTypePublic" resultMap="BaseResultMap">
-      select ctb.id,ct.id car_type_id,ct.name,ct.number,ctb.code,ctb.tag,ctb.entrance_self_weight,ctb.storage_self_weight,
-		ctb.vehicle_self_weight,ctb.auto_pass,ctb.remark,ctb.status,ctb.market_code
+  <select id="listCarTypePublic" resultType="java.util.Map">
+  
+      select ctb.id,ct.id car_type_id,ct.name carTypeName,convert(ct.number,char) carTypeNumber,ctb.code,ctb.tag,ctb.auto_pass autoPass, ctb.auto_save autoSave,ctb.remark,ctb.status,ctb.market_code
+		<if test="tags.size() > 0">
+			<foreach collection="tags" item="tag" index="ind">
+				,te.${tag.code}_weight,te.${tag.code}_code,te.${tag.code}_name
+			</foreach>
+		</if>
 		from car_type ct 
 		left join car_type_public ctb on ct.id = ctb.car_type_id and ctb.market_code = #{marketCode,jdbcType=VARCHAR}
+		<if test="tags.size() > 0">
+			left join (
+			SELECT
+				tag_ext.car_type_public_id car_type_public_id
+			<foreach collection="tags" item="tag">
+				,SUM( IF ( CODE = #{tag.code}, weight, NULL ) ) AS ${tag.code}_weight,
+				MAX( IF ( CODE = #{tag.code}, CODE, 0 ) ) AS ${tag.code}_code,
+				MAX( IF ( CODE = #{tag.code}, NAME, 0 ) ) AS ${tag.code}_name
+			</foreach>
+			FROM
+				tag_ext 
+			GROUP BY
+				car_type_public_id
+			) te on ctb.id = te.car_type_public_id
+		</if>
 		where ct.status = 1
 	      <if test="carTypeId != null">
 	        and ctb.car_type_id = #{carTypeId,jdbcType=BIGINT}
 	      </if>
 	      <if test="code != null">
 	        and ctb.code = #{code,jdbcType=VARCHAR}
-	      </if>
-	      <if test="entranceSelfWeight != null">
-	        and ctb.entrance_self_weight = #{entranceSelfWeight,jdbcType=BIGINT}
-	      </if>
-	      <if test="storageSelfWeight != null">
-	        and ctb.storage_self_weight = #{storageSelfWeight,jdbcType=BIGINT}
-	      </if>
-	      <if test="vehicleSelfWeight != null">
-	        and ctb.vehicle_self_weight = #{vehicleSelfWeight,jdbcType=BIGINT}
 	      </if>
 	      <if test="aotuPass != null">
 	        and ctb.auto_pass = #{autoPass,jdbcType=INTEGER}
@@ -125,6 +124,9 @@
 	      <if test="creatorId != null">
 	        and ctb.creator_id = #{creatorId,jdbcType=BIGINT}
 	      </if>
+	      <if test="id != null">
+	        and ctb.id = #{id,jdbcType=BIGINT}
+	      </if>
 	      <if test="number != null">
 	        and ct.number = #{number,jdbcType=BIGINT}
 	      </if>
@@ -134,24 +136,46 @@
 	      <if test="tag != null">
 	        and position(#{tag,jdbcType=VARCHAR} in tag)
 	      </if>
+	      order by ct.number
   </select>
-  <select id="getCarTypePublicById" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from car_type_public
-    where id = #{id,jdbcType=BIGINT}
+  <select id="getCarTypePublicById" resultType="java.util.Map">
+    select ctb.id,ct.id car_type_id,ct.name carTypeName,convert(ct.number,char) carTypeNumber,ctb.code,ctb.tag,ctb.auto_pass autoPass, ctb.auto_save autoSave,ctb.remark,ctb.status,ctb.market_code
+		<if test="tags.size() > 0">
+			<foreach collection="tags" item="tag" index="ind">
+				,te.${tag.code}_weight,te.${tag.code}_code,te.${tag.code}_name
+			</foreach>
+		</if>
+		from car_type ct 
+		left join car_type_public ctb on ct.id = ctb.car_type_id and ctb.market_code = #{marketCode,jdbcType=VARCHAR}
+		<if test="tags.size() > 0">
+			left join (
+			SELECT
+				tag_ext.car_type_public_id car_type_public_id
+			<foreach collection="tags" item="tag">
+				,SUM( IF ( CODE = #{tag.code}, weight, NULL ) ) AS ${tag.code}_weight,
+				MAX( IF ( CODE = #{tag.code}, CODE, 0 ) ) AS ${tag.code}_code,
+				MAX( IF ( CODE = #{tag.code}, NAME, 0 ) ) AS ${tag.code}_name
+			</foreach>
+			FROM
+				tag_ext 
+			GROUP BY
+				car_type_public_id
+			) te on ctb.id = te.car_type_public_id
+		</if>
+		where ct.status = 1 and ctb.id = #{id,jdbcType=BIGINT}
+	     
   </select>
   <update id="updateCarTypePublic" parameterType="com.dili.assets.domain.CarTypePublic">
     update car_type_public
     	<set>
           code = #{code,jdbcType=VARCHAR},
-          entrance_self_weight = #{entranceSelfWeight,jdbcType=BIGINT},
-          storage_self_weight = #{storageSelfWeight,jdbcType=BIGINT},
-          vehicle_self_weight = #{vehicleSelfWeight,jdbcType=BIGINT},
           auto_pass = #{autoPass,jdbcType=INTEGER},
           remark = #{remark,jdbcType=VARCHAR},
           tag = #{tag,jdbcType=VARCHAR},
       </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
+  <delete id="deleteTagExt">
+      delete from tag_ext where car_type_public_id = #{id}
+  </delete>
 </mapper>

@@ -1,5 +1,7 @@
 package com.dili.assets.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -9,9 +11,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dili.assets.domain.CarTypePublic;
+import com.dili.assets.domain.TagExt;
 import com.dili.assets.domain.query.CarTypePublicQuery;
 import com.dili.assets.service.CarTypePublicService;
+import com.dili.assets.service.TagExtService;
 import com.dili.ss.domain.BaseOutput;
+import com.dili.ss.dto.DTOUtils;
+import com.dili.uap.sdk.domain.DataDictionaryValue;
+import com.dili.uap.sdk.rpc.DataDictionaryRpc;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -28,7 +35,10 @@ import io.swagger.annotations.ApiOperation;
 public class CarTypePublicController {
     @Autowired
     CarTypePublicService carTypePublicService;
-
+    @Autowired
+    TagExtService tagExtService;
+    @Autowired
+    private DataDictionaryRpc dataDictionaryRpc;
     /**
      * 跳转到carTypePublic页面
      * @param modelMap
@@ -52,6 +62,12 @@ public class CarTypePublicController {
 	})
     @RequestMapping(value="/listPage", method = {RequestMethod.GET, RequestMethod.POST})
     public @ResponseBody String listPage(@RequestBody CarTypePublicQuery carTypePublic) throws Exception {
+    	DataDictionaryValue dataDictionaryValue = DTOUtils.newInstance(DataDictionaryValue.class);
+    	dataDictionaryValue.setDdCode("cartype_tag");
+    	dataDictionaryValue.setFirmCode(carTypePublic.getMarketCode());
+    	
+    	List<DataDictionaryValue> list = dataDictionaryRpc.listDataDictionaryValue(dataDictionaryValue).getData();
+    	carTypePublic.setTags(list);
         return carTypePublicService.listCarTypePublic(carTypePublic, true);
     }
 
@@ -66,8 +82,19 @@ public class CarTypePublicController {
 	})
     @RequestMapping(value="/save", method = {RequestMethod.GET, RequestMethod.POST})
     public @ResponseBody BaseOutput insert(@RequestBody CarTypePublic carTypePublic) {
-        carTypePublicService.insertSelective(carTypePublic);
-        return BaseOutput.success("新增成功");
+    	try {
+    		carTypePublicService.insertSelective(carTypePublic);
+    		List<TagExt> tagExt = carTypePublic.getTagExt();
+            for (TagExt te : tagExt) {
+				te.setCarTypePublicId(carTypePublic.getId());
+			}
+            tagExtService.batchInsert(tagExt);
+            return BaseOutput.success("新增成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return BaseOutput.success("新增失败");
+		}
+        
     }
 
     /**
@@ -81,6 +108,9 @@ public class CarTypePublicController {
 	})
     @RequestMapping(value="/update", method = {RequestMethod.GET, RequestMethod.POST})
     public @ResponseBody BaseOutput update(@RequestBody CarTypePublic carTypePublic) {
+    	if(carTypePublic.getTagExt() != null && carTypePublic.getTagExt().size() > 0) {
+    		tagExtService.batchInsert(carTypePublic.getTagExt());
+    	}
         carTypePublicService.updateCarTypePublic(carTypePublic);
         return BaseOutput.success("修改成功");
     }
@@ -113,6 +143,20 @@ public class CarTypePublicController {
         carTypePublicService.delete(id);
         return BaseOutput.success("删除成功");
     }
+    /**
+     * 删除carTypePublic
+     * @param id
+     * @return BaseOutput
+     */
+    @ApiOperation("删除carTypePublic")
+    @ApiImplicitParams({
+    	@ApiImplicitParam(name="id", paramType="form", value = "carTypePublic的主键", required = true, dataType = "long")
+    })
+    @RequestMapping(value="/deleteTagExt", method = {RequestMethod.GET, RequestMethod.POST})
+    public @ResponseBody BaseOutput deleteTagExt(@RequestBody CarTypePublicQuery carTypePublic) {
+    	carTypePublicService.deleteTagExt(carTypePublic);
+    	return BaseOutput.success("删除成功");
+    }
     
     /**
      * 获取
@@ -121,7 +165,13 @@ public class CarTypePublicController {
      * @return
      */
     @RequestMapping("get")
-    public @ResponseBody BaseOutput<CarTypePublic> get(@RequestBody Long id) {
-        return BaseOutput.success().setData(carTypePublicService.getCarTypePublicById(id));
+    public @ResponseBody BaseOutput get(@RequestBody CarTypePublicQuery carTypePublic) {
+    	DataDictionaryValue dataDictionaryValue = DTOUtils.newInstance(DataDictionaryValue.class);
+    	dataDictionaryValue.setDdCode("cartype_tag");
+    	dataDictionaryValue.setFirmCode(carTypePublic.getMarketCode());
+    	
+    	List<DataDictionaryValue> list = dataDictionaryRpc.listDataDictionaryValue(dataDictionaryValue).getData();
+    	carTypePublic.setTags(list);
+        return BaseOutput.success().setData(carTypePublicService.getCarTypePublicById(carTypePublic).get(0));
     }
 }

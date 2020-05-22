@@ -1,6 +1,7 @@
 package com.dili.assets.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -33,19 +34,24 @@ public class CarTypePublicServiceImpl extends BaseServiceImpl<CarTypePublic, Lon
 		if(carTypePublic.getRows() != null && carTypePublic.getRows() >= 1) {
 			PageHelper.startPage(page, carTypePublic.getRows());
 		}
-		List<CarTypePublic> list = getActualDao().listCarTypePublic(carTypePublic);
+		List<Map<String, Object>> list = getActualDao().listCarTypePublic(carTypePublic);
 		long total = list instanceof Page ? ( (Page) list).getTotal() : list.size();
         List results = b ? ValueProviderUtils.buildDataByProvider(carTypePublic, list) : list;
 		return new EasyuiPageOutput(Integer.parseInt(String.valueOf(total)), results).toString();
 	}
 
 	@Override
-	public CarTypePublic getCarTypePublicById(Long id) {
-		return getActualDao().getCarTypePublicById(id);
+	public List<Map<String, Object>> getCarTypePublicById(CarTypePublicQuery carTypePublic) {
+		return getActualDao().getCarTypePublicById(carTypePublic);
 	}
 
 	@Override
 	public void updateCarTypePublic(CarTypePublic carTypePublic) {
 		getActualDao().updateCarTypePublic(carTypePublic);
+	}
+
+	@Override
+	public void deleteTagExt(CarTypePublicQuery carTypePublic) {
+		getActualDao().deleteTagExt(carTypePublic);
 	}
 }
