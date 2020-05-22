@@ -94,27 +94,33 @@ public class DistrictController {
     @RequestMapping("list")
     public String list(@RequestBody DistrictQuery input) {
         try {
+            DistrictQuery countInput = new DistrictQuery();
+            countInput.setMarketId(input.getMarketId());
             if (input != null && input.getIsDelete() == null) {
                 input.setIsDelete(StateEnum.NO.getCode());
+                countInput.setIsDelete(StateEnum.NO.getCode());
             }
             if (input.getDepartmentId() == null && StrUtil.isNotBlank(input.getDeps())) {
                 input.setMetadata(IDTO.AND_CONDITION_EXPR, "(department_id in (" + input.getDeps() + ") or department_id is null)");
+                countInput.setMetadata(IDTO.AND_CONDITION_EXPR, "(department_id in (" + input.getDeps() + ") or department_id is null)");
             }
 
             if (input.getDepartmentId() == null && StrUtil.isBlank(input.getDeps())) {
                 input.setMetadata(IDTO.AND_CONDITION_EXPR, "department_id is null");
+                countInput.setMetadata(IDTO.AND_CONDITION_EXPR, "department_id is null");
             }
             input.setDeps(null);
-            int count = 0;
-            if (input.getId() == null) {
-                count = districtService.listByExample(input).size();
-                input.setParentId(0L);
-            } else {
+            int count = districtService.listByExample(countInput).size();
+            boolean expand = false;
+            if (input.getId() != null) {
+                expand = true;
                 input.setParentId(input.getId());
                 input.setId(null);
             }
-
             List<District> districts = districtService.listByExample(input);
+            if(input.getParentId() == null){
+                count = districts.size();
+            }
             List results = ValueProviderUtils.buildDataByProvider(input, districts);
             List result = new ArrayList();
 
@@ -124,14 +130,12 @@ public class DistrictController {
                 result.add(json);
             }
             String resultJsonStr = JSONObject.toJSONString(result);
-            if (count == 0) {
+            if (expand) {
                 return resultJsonStr;
             }
             JSONObject obj = new JSONObject();
             obj.put("rows", JSON.parseArray(resultJsonStr));
-            obj.put("footer", JSON.parseArray("[\n" +
-                    "\t{\"name\":\"总数:\",\"number\":" + count + ",\"iconCls\":\"icon-sum\"}\n" +
-                    "]"));
+            obj.put("footer", JSON.parseArray("[{\"name\":\"总数:" + count + "\",\"iconCls\":\"icon-sum\",\"id\":\"\"}]"));
             return obj.toJSONString();
         } catch (Exception e) {
             e.printStackTrace();
