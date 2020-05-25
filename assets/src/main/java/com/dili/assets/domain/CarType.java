@@ -29,11 +29,6 @@ public class CarType extends BaseDomain {
     private Long id;
 
     /**
-     * 市场
-     */
-    @Column(name = "`market_id`")
-    private Long marketId;
-    /**
      * 编号
      */
     @Column(name = "`number`")
@@ -110,26 +105,6 @@ public class CarType extends BaseDomain {
      */
     public void setId(Long id) {
         this.id = id;
-    }
-
-    /**
-     * 获取市场
-     *
-     * @return market_id - 市场
-     */
-    @FieldDef(label="市场")
-    @EditMode(editor = FieldEditor.Number, required = false)
-    public Long getMarketId() {
-        return marketId;
-    }
-
-    /**
-     * 设置市场
-     *
-     * @param marketId 市场
-     */
-    public void setMarketId(Long marketId) {
-        this.marketId = marketId;
     }
 
     /**

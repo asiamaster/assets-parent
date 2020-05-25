@@ -25,10 +25,6 @@ public class CarTypeDTO extends BaseDomain {
     private Long id;
 
     /**
-     * 市场
-     */
-    private Long marketId;
-    /**
      * 编号
      */
     @Column(name = "`number`")
@@ -104,23 +100,6 @@ public class CarTypeDTO extends BaseDomain {
         this.id = id;
     }
 
-    /**
-     * 获取市场
-     *
-     * @return market_id - 市场
-     */
-    public Long getMarketId() {
-        return marketId;
-    }
-
-    /**
-     * 设置市场
-     *
-     * @param marketId 市场
-     */
-    public void setMarketId(Long marketId) {
-        this.marketId = marketId;
-    }
 
     /**
      * 获取创建时间

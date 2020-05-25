@@ -1,5 +1,7 @@
 package com.dili.assets.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -55,6 +57,22 @@ public class CarTypeController {
     public @ResponseBody String listPage(@RequestBody CarType carType) throws Exception {
     	return carTypeService.listEasyuiPageByExample(carType, true).toString();
     }
+    
+    /**
+     * 分页查询CarType，返回easyui分页信息
+     * @param carType
+     * @return String
+     * @throws Exception
+     */
+    @ApiOperation(value="分页查询CarType", notes = "分页查询CarType，返回easyui分页信息")
+    @ApiImplicitParams({
+    	@ApiImplicitParam(name="CarType", paramType="form", value = "CarType的form信息", required = false, dataType = "string")
+    })
+    @RequestMapping(value="/list", method = {RequestMethod.GET, RequestMethod.POST})
+    public @ResponseBody BaseOutput<List<CarType>> list(@RequestBody CarType carType) throws Exception {
+    	List<CarType> list = carTypeService.list(carType);
+    	return BaseOutput.success().setData(list);
+    }
 
     /**
      * 新增CarType
@@ -67,7 +85,6 @@ public class CarTypeController {
 	})
     @RequestMapping(value="/save", method = {RequestMethod.GET, RequestMethod.POST})
     public @ResponseBody BaseOutput insert(@RequestBody CarType carType) {
-    	System.err.println(carType.getCreatorId());
         carTypeService.insertCarType(carType);
         return BaseOutput.success("新增成功");
     }

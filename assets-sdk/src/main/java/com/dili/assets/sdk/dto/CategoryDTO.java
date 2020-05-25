@@ -237,4 +237,9 @@ public class CategoryDTO {
     public void setKeyword(String keyword) {
         this.keyword = keyword;
     }
+
+	public void setMarketId(Long firmId) {
+		// TODO Auto-generated method stub
+		
+	}
 }

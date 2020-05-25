@@ -89,7 +89,7 @@
 <!--        </table>-->
         <!-- 生成指定表模型 -->
         <!-- 启动命令： mybatis-generator:generate -->
-        <table domainObjectName="TagExt" tableName="tag_ext">
+        <table domainObjectName="BlackListVehicle" tableName="black_list_vehicle">
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
         </table>
     </context>
