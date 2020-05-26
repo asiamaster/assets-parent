@@ -6,14 +6,10 @@
       WARNING - @mbg.generated
     -->
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="market_id" jdbcType="BIGINT" property="marketId" />
-    <result column="CREATED" jdbcType="TIMESTAMP" property="created" />
-    <result column="MODIFIED" jdbcType="TIMESTAMP" property="modified" />
-    <result column="operator_id" jdbcType="BIGINT" property="operatorId" />
-    <result column="operator_name" jdbcType="VARCHAR" property="operatorName" />
-    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+    <result column="creator_id" jdbcType="BIGINT" property="creatorId" />
     <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="weight" jdbcType="BIGINT" property="weight" />
     <result column="status" jdbcType="BIGINT" property="status" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="number" jdbcType="BIGINT" property="number" />
@@ -23,7 +19,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, market_id, CREATED, MODIFIED, operator_id, operator_name, code, name, weight, number, classify,
+    id, market_id, create_time, modify_time, creator_id, name, number, classify,
     status, remark
   </sql>
   <select id="selectBy" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -35,54 +31,9 @@
     from car_type
     where id = #{id,jdbcType=BIGINT}
   </select>
-  <update id="updateBy" parameterType="com.dili.assets.domain.CarType">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    update car_type
-    <set>
-      <if test="marketId != null">
-        market_id = #{marketId,jdbcType=BIGINT},
-      </if>
-      <if test="created != null">
-        CREATED = #{created,jdbcType=TIMESTAMP},
-      </if>
-      <if test="modified != null">
-        MODIFIED = #{modified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="operatorId != null">
-        operator_id = #{operatorId,jdbcType=BIGINT},
-      </if>
-      <if test="operatorName != null">
-        operator_name = #{operatorName,jdbcType=VARCHAR},
-      </if>
-      <if test="code != null">
-        code = #{code,jdbcType=VARCHAR},
-      </if>
-      <if test="name != null">
-        name = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="weight != null">
-        weight = #{weight,jdbcType=BIGINT},
-      </if>
-      <if test="status != null">
-        status = #{status,jdbcType=BIGINT},
-      </if>
-      <if test="remark != null">
-        remark = #{remark,jdbcType=VARCHAR},
-      </if>
-      <if test="classify != null">
-        classify = #{classify,jdbcType=VARCHAR},
-      </if>
-      <if test="number != null">
-        number = #{number,jdbcType=BIGINT},
-      </if>
-    </set>
-    where id = #{id,jdbcType=BIGINT}
-  </update>
   <insert id="insertCarType">
-      INSERT INTO `car_type`(`market_id`, `number`, `classify`, `name`, `remark`, `status`, `creator_id`)
-      select #{marketId} market_id, case when max(`number`) is null then 0 else max(number) end + 1 number, 
+      INSERT INTO `car_type`(`number`, `classify`, `name`, `remark`, `status`, `creator_id`)
+      select case when max(`number`) is null then 0 else max(number) end + 1 number, 
       #{classify} classify, #{name} name, #{remark} remark, #{status} status, #{creatorId} creator_id  from `car_type`
   </insert>
 </mapper>

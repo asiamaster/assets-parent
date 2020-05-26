@@ -53,11 +53,6 @@ public class CarType extends BaseDomain {
     private Long creatorId;
 
     /**
-     * 代码
-     */
-    @Column(name = "`code`")
-    private String code;
-    /**
      * 类型
      */
     @Column(name = "`classify`")
@@ -68,12 +63,6 @@ public class CarType extends BaseDomain {
      */
     @Column(name = "`name`")
     private String name;
-
-    /**
-     * 皮重
-     */
-    @Column(name = "`weight`")
-    private Long weight;
 
     /**
      * 状态
@@ -167,25 +156,7 @@ public class CarType extends BaseDomain {
         this.creatorId = creatorId;
     }
 
-    /**
-     * 获取代码
-     *
-     * @return code - 代码
-     */
-    @FieldDef(label="代码", maxLength = 20)
-    @EditMode(editor = FieldEditor.Text, required = false)
-    public String getCode() {
-        return code;
-    }
 
-    /**
-     * 设置代码
-     *
-     * @param code 代码
-     */
-    public void setCode(String code) {
-        this.code = code;
-    }
     /**
      * 获取类型
      *
@@ -224,26 +195,6 @@ public class CarType extends BaseDomain {
      */
     public void setName(String name) {
         this.name = name;
-    }
-
-    /**
-     * 获取皮重
-     *
-     * @return weight - 皮重
-     */
-    @FieldDef(label="皮重")
-    @EditMode(editor = FieldEditor.Number, required = false)
-    public Long getWeight() {
-        return weight;
-    }
-
-    /**
-     * 设置皮重
-     *
-     * @param weight 皮重
-     */
-    public void setWeight(Long weight) {
-        this.weight = weight;
     }
 
     /**

@@ -58,19 +58,9 @@ public class CarTypeDTO extends BaseDomain {
     private String classify;
 
     /**
-     * 代码
-     */
-    private String code;
-
-    /**
      * 名称
      */
     private String name;
-
-    /**
-     * 皮重
-     */
-    private Long weight;
 
     /**
      * 状态
@@ -174,23 +164,6 @@ public class CarTypeDTO extends BaseDomain {
     public void setClassify(String classify) {
     	this.classify = classify;
     }
-    /**
-     * 获取代码
-     *
-     * @return code - 代码
-     */
-    public String getCode() {
-        return code;
-    }
-
-    /**
-     * 设置代码
-     *
-     * @param code 代码
-     */
-    public void setCode(String code) {
-        this.code = code;
-    }
 
     /**
      * 获取名称
@@ -210,23 +183,6 @@ public class CarTypeDTO extends BaseDomain {
         this.name = name;
     }
 
-    /**
-     * 获取皮重
-     *
-     * @return weight - 皮重
-     */
-    public Long getWeight() {
-        return weight;
-    }
-
-    /**
-     * 设置皮重
-     *
-     * @param weight 皮重
-     */
-    public void setWeight(Long weight) {
-        this.weight = weight;
-    }
 
     /**
      * 获取状态
