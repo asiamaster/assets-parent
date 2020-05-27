@@ -2,6 +2,8 @@ package com.dili.assets.sdk.dto;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class CityDto {
 
 	private Long id;
@@ -9,11 +11,13 @@ public class CityDto {
 	/**
 	 * 创建时间
 	 */
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date created;
 
 	/**
 	 * 修改时间
 	 */
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date modified;
 
 	/**

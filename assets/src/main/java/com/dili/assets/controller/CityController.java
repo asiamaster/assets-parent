@@ -19,12 +19,18 @@ import io.swagger.annotations.Api;
  */
 @Api("/city")
 @RestController
-@RequestMapping("/city")
+@RequestMapping("/api/city")
 public class CityController {
 
 	@Autowired
 	CityService cityService;
 
+	/**
+	 * 城市查询接口
+	 * 
+	 * @param city
+	 * @return
+	 */
 	@PostMapping("/list")
 	public BaseOutput<List<City>> list(@RequestBody City city) {
 		return BaseOutput.success().setData(this.cityService.list(city));
