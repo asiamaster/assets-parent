@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,7 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Api("/tagExt")
 @Controller
-@RequestMapping("/tagExt")
+@RequestMapping("/api/tagExt")
 public class TagExtController {
     @Autowired
     TagExtService tagExtService;
@@ -48,9 +49,27 @@ public class TagExtController {
     @ApiImplicitParams({
 		@ApiImplicitParam(name="TagExt", paramType="form", value = "TagExt的form信息", required = false, dataType = "string")
 	})
-    @RequestMapping(value="/listPage.action", method = {RequestMethod.GET, RequestMethod.POST})
-    public @ResponseBody String listPage(@ModelAttribute TagExt tagExt) throws Exception {
+    @RequestMapping(value="/listPage", method = {RequestMethod.GET, RequestMethod.POST})
+    public @ResponseBody String listPage(@RequestBody TagExt tagExt) throws Exception {
         return tagExtService.listEasyuiPageByExample(tagExt, true).toString();
+    }
+    /**
+     * 分页查询TagExt，返回easyui分页信息
+     * @param tagExt
+     * @return String
+     * @throws Exception
+     */
+    @ApiOperation(value="分页查询TagExt", notes = "分页查询TagExt，返回easyui分页信息")
+    @ApiImplicitParams({
+    	@ApiImplicitParam(name="TagExt", paramType="form", value = "TagExt的form信息", required = false, dataType = "string")
+    })
+    @RequestMapping(value="/get", method = {RequestMethod.GET, RequestMethod.POST})
+    public @ResponseBody BaseOutput<List<TagExt>> get(@RequestBody TagExt tagExt) throws Exception {
+    	System.err.println(tagExt.getCarTypePublicId());
+    	System.err.println(tagExt.getCode());
+    	List<TagExt> list = tagExtService.list(tagExt);
+    	System.err.println(list.size());
+    	return BaseOutput.success().setData(tagExtService.list(tagExt).get(0));
     }
 
     /**

@@ -1,6 +1,9 @@
 package com.dili.assets.service;
 
+import java.util.List;
+
 import com.dili.assets.domain.CarType;
+import com.dili.assets.domain.CarTypePublic;
 import com.dili.ss.base.BaseService;
 
 /**
@@ -10,4 +13,7 @@ import com.dili.ss.base.BaseService;
 public interface CarTypeService extends BaseService<CarType, Long> {
 
 	void insertCarType(CarType carType);
+
+	List<CarType> listCarType(CarTypePublic carType);
+
 }

@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dili.assets.domain.Booth;
 import com.dili.assets.domain.CarType;
+import com.dili.assets.domain.CarTypePublic;
 import com.dili.assets.service.CarTypeService;
 import com.dili.ss.domain.BaseOutput;
 
@@ -68,12 +68,11 @@ public class CarTypeController {
     @ApiImplicitParams({
     	@ApiImplicitParam(name="CarType", paramType="form", value = "CarType的form信息", required = false, dataType = "string")
     })
-    @RequestMapping(value="/list", method = {RequestMethod.GET, RequestMethod.POST})
-    public @ResponseBody BaseOutput<List<CarType>> list(@RequestBody CarType carType) throws Exception {
-    	List<CarType> list = carTypeService.list(carType);
-    	return BaseOutput.success().setData(list);
+    @RequestMapping(value="/listCarType", method = {RequestMethod.GET, RequestMethod.POST})
+    public @ResponseBody BaseOutput<List<CarType>> listCarType(@RequestBody CarTypePublic carType) throws Exception {
+    	return BaseOutput.success().setData(carTypeService.listCarType(carType));
     }
-
+    
     /**
      * 新增CarType
      * @param carType
