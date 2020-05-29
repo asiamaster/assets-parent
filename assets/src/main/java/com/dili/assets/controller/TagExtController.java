@@ -64,11 +64,8 @@ public class TagExtController {
     	@ApiImplicitParam(name="TagExt", paramType="form", value = "TagExt的form信息", required = false, dataType = "string")
     })
     @RequestMapping(value="/get", method = {RequestMethod.GET, RequestMethod.POST})
-    public @ResponseBody BaseOutput<List<TagExt>> get(@RequestBody TagExt tagExt) throws Exception {
-    	System.err.println(tagExt.getCarTypePublicId());
-    	System.err.println(tagExt.getCode());
+    public @ResponseBody BaseOutput<TagExt> get(@RequestBody TagExt tagExt) throws Exception {
     	List<TagExt> list = tagExtService.list(tagExt);
-    	System.err.println(list.size());
     	return BaseOutput.success().setData(tagExtService.list(tagExt).get(0));
     }
 
