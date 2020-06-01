@@ -13,13 +13,37 @@ import com.dili.ss.base.BaseService;
  */
 public interface CarTypePublicService extends BaseService<CarTypePublic, Long> {
 
+	/**
+	 * 分页查询公共车型
+	 * @param carTypePublic 公共车型实体类
+	 * @param b
+	 * @return
+	 * @throws Exception
+	 */
 	String listCarTypePublic(CarTypePublicQuery carTypePublic, boolean b) throws Exception;
 
+	/**
+	 * 通过车型id车型车型
+	 * @param carTypePublic 公共车型实体类
+	 * @return
+	 */
 	List<Map<String, Object>> getCarTypePublicById(CarTypePublicQuery carTypePublic);
 
+	/**
+	 * 公共车型更新
+	 * @param carTypePublic 公共车型实体类
+	 */
 	void updateCarTypePublic(CarTypePublic carTypePublic);
 
+	/**
+	 * 删除公共车型对应的标签
+	 * @param carTypePublic 公共车型实体类
+	 */
 	void deleteTagExt(CarTypePublicQuery carTypePublic);
 
+	/**
+	 * 进门收费注册车辆信息车型公共车型列表
+	 * @param carTypePublic 公共车型实体类
+	 */
 	List<Map<String, Object>> listCarTypePublicByTruck(CarTypePublicQuery carTypePublic);
 }

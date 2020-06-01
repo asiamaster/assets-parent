@@ -74,6 +74,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
+  <!-- 车型公共车型列表 -->
   <select id="listCarTypePublic" resultType="java.util.Map">
   
       select ctb.id,ct.id car_type_id,ct.name carTypeName,convert(ct.number,char) carTypeNumber,ctb.code,ctb.tag,ctb.auto_pass autoPass, ctb.auto_save autoSave,ctb.remark,ctb.status,ctb.market_code
@@ -83,7 +84,7 @@
 			</foreach>
 		</if>
 		from car_type ct 
-		right join car_type_public ctb on ct.id = ctb.car_type_id and ctb.market_code = #{marketCode,jdbcType=VARCHAR}
+		left join car_type_public ctb on ct.id = ctb.car_type_id and ctb.market_code = #{marketCode,jdbcType=VARCHAR}
 		<if test="tags.size() > 0">
 			left join (
 			SELECT
@@ -138,6 +139,7 @@
 	      </if>
 	      order by ct.number
   </select>
+  <!-- 通过id获取公共车型 -->
   <select id="getCarTypePublicById" resultType="java.util.Map">
     select ctb.id,ct.id car_type_id,ct.name carTypeName,convert(ct.number,char) carTypeNumber,ctb.code,ctb.tag,ctb.auto_pass autoPass, ctb.auto_save autoSave,ctb.remark,ctb.status,ctb.market_code
 		<if test="tags.size() > 0">
@@ -165,6 +167,7 @@
 		where ct.status = 1 and ctb.id = #{id,jdbcType=BIGINT}
 	     
   </select>
+  <!-- 更新公共车型 -->
   <update id="updateCarTypePublic" parameterType="com.dili.assets.domain.CarTypePublic">
     update car_type_public
     	<set>

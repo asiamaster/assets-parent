@@ -12,8 +12,17 @@ import com.dili.ss.base.BaseService;
  */
 public interface CarTypeService extends BaseService<CarType, Long> {
 
+	/**
+	 * 插入车型
+	 * @param carType 车型实体类
+	 */
 	void insertCarType(CarType carType);
 
+	/**
+	 * 车型列表查询
+	 * @param carType 车型实体类
+	 * @return
+	 */
 	List<CarType> listCarType(CarTypePublic carType);
 
 }
