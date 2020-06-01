@@ -83,7 +83,7 @@
 			</foreach>
 		</if>
 		from car_type ct 
-		left join car_type_public ctb on ct.id = ctb.car_type_id and ctb.market_code = #{marketCode,jdbcType=VARCHAR}
+		right join car_type_public ctb on ct.id = ctb.car_type_id and ctb.market_code = #{marketCode,jdbcType=VARCHAR}
 		<if test="tags.size() > 0">
 			left join (
 			SELECT

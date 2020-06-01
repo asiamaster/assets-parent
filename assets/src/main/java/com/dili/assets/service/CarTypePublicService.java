@@ -20,4 +20,6 @@ public interface CarTypePublicService extends BaseService<CarTypePublic, Long> {
 	void updateCarTypePublic(CarTypePublic carTypePublic);
 
 	void deleteTagExt(CarTypePublicQuery carTypePublic);
+
+	List<Map<String, Object>> listCarTypePublicByTruck(CarTypePublicQuery carTypePublic);
 }

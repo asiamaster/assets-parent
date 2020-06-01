@@ -1,6 +1,7 @@
 package com.dili.assets.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -69,6 +70,26 @@ public class CarTypePublicController {
     	List<DataDictionaryValue> list = dataDictionaryRpc.listDataDictionaryValue(dataDictionaryValue).getData();
     	carTypePublic.setTags(list);
         return carTypePublicService.listCarTypePublic(carTypePublic, true);
+    }
+    /**
+     * 分页查询carTypePublic，返回easyui分页信息
+     * @param carTypePublic
+     * @return String
+     * @throws Exception
+     */
+    @ApiOperation(value="分页查询carTypePublic", notes = "分页查询carTypePublic，返回easyui分页信息")
+    @ApiImplicitParams({
+    	@ApiImplicitParam(name="carTypePublic", paramType="form", value = "carTypePublic的form信息", required = false, dataType = "string")
+    })
+    @RequestMapping(value="/listCarTypePublic", method = {RequestMethod.GET, RequestMethod.POST})
+    public @ResponseBody BaseOutput<List<Map<String, Object>>> listCarTypePublic(@RequestBody CarTypePublicQuery carTypePublic) throws Exception {
+    	DataDictionaryValue dataDictionaryValue = DTOUtils.newInstance(DataDictionaryValue.class);
+    	dataDictionaryValue.setDdCode("cartype_tag");
+    	dataDictionaryValue.setFirmCode(carTypePublic.getMarketCode());
+    	
+    	List<DataDictionaryValue> list = dataDictionaryRpc.listDataDictionaryValue(dataDictionaryValue).getData();
+    	carTypePublic.setTags(list);
+    	return BaseOutput.success().setData(carTypePublicService.listCarTypePublicByTruck(carTypePublic));
     }
 
     /**

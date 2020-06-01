@@ -39,6 +39,12 @@ public class CarTypePublicServiceImpl extends BaseServiceImpl<CarTypePublic, Lon
         List results = b ? ValueProviderUtils.buildDataByProvider(carTypePublic, list) : list;
 		return new EasyuiPageOutput(Integer.parseInt(String.valueOf(total)), results).toString();
 	}
+	@Override
+	public List<Map<String, Object>> listCarTypePublicByTruck(CarTypePublicQuery carTypePublic){
+		
+		List<Map<String, Object>> list = getActualDao().listCarTypePublic(carTypePublic);
+		return list;
+	}
 
 	@Override
 	public List<Map<String, Object>> getCarTypePublicById(CarTypePublicQuery carTypePublic) {
