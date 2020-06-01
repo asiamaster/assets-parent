@@ -34,9 +34,6 @@ public class CategoryServiceImpl extends BaseServiceImpl<Category, Long> impleme
             if (p.getState().equals(3)) {
                 throw new BusinessException("1", "父品类已删除");
             }
-            if (!checkLevel(p)) {
-                throw new BusinessException("1", "品类最多只能新增到3级");
-            }
             c.setPath(p.getPath());
         } else {
             c.setParent(0L);
