@@ -6,6 +6,7 @@ import com.dili.ss.domain.BaseOutput;
 import com.dili.ss.domain.PageOutput;
 import com.github.pagehelper.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +30,10 @@ public class ChargeItemController {
      * @return BaseOutput
      */
     @RequestMapping(value="/save", method = {RequestMethod.GET, RequestMethod.POST})
-    public BaseOutput save(@Validated @RequestBody ChargeItem chargeItem) {
+    public BaseOutput save(@Validated @RequestBody ChargeItem chargeItem, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return BaseOutput.failure(bindingResult.getAllErrors().get(0).getDefaultMessage());
+        }
         chargeItemService.saveOrUpdate(chargeItem);
         return BaseOutput.success("新增成功");
     }

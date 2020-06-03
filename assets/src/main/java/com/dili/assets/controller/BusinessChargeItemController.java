@@ -7,6 +7,7 @@ import com.dili.ss.domain.PageOutput;
 import com.github.pagehelper.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,15 +32,17 @@ public class BusinessChargeItemController {
      * @return BaseOutput
      */
     @RequestMapping(value="/save", method = {RequestMethod.GET, RequestMethod.POST})
-    public BaseOutput save(@Validated @RequestBody BusinessChargeItem businessChargeItem) {
+    public BaseOutput save(@Validated @RequestBody BusinessChargeItem businessChargeItem, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return BaseOutput.failure(bindingResult.getAllErrors().get(0).getDefaultMessage());
+        }
         try {
             businessChargeItemService.saveOrUpdate(businessChargeItem);
             return BaseOutput.success("保存成功");
-        }catch (Throwable t){
+        } catch (Throwable t) {
             log.error(String.format("保存业务收费项信息[%s] 异常 [%s]", businessChargeItem.toString(), t.getMessage()), t);
             return BaseOutput.failure("操作失败，系统异常");
         }
-
     }
 
     /**

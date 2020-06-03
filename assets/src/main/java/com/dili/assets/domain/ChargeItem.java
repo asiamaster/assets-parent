@@ -10,6 +10,8 @@ import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -40,6 +42,8 @@ public class ChargeItem extends BaseDomain {
      */
     @Column(name = "`name`")
     @Like
+    @NotBlank(message = "收费项名称不能为空")
+    @Size(max = 50, message = "收费项名称请保持在50个字符以内")
     private String name;
 
     /**
@@ -60,6 +64,7 @@ public class ChargeItem extends BaseDomain {
      * 备注
      */
     @Column(name = "`notes`")
+    @Size(max = 255, message = "备注请保持在255个字符以内")
     private String notes;
 
     /**

@@ -8,6 +8,8 @@ import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 /**
@@ -32,18 +34,21 @@ public class BusinessChargeItem extends BaseDomain {
      * 所属市场
      */
     @Column(name = "`market_id`")
+    @NotNull(message = "所属市场不能为空")
     private Long marketId;
 
     /**
      * 所属业务
      */
     @Column(name = "`business_id`")
+    @NotNull(message = "所属业务不能为空")
     private Long businessId;
 
     /**
      * 所属费用项
      */
     @Column(name = "`charge_item`")
+    @NotNull(message = "费用项不能为空")
     private Long chargeItem;
 
     /**
@@ -62,6 +67,7 @@ public class BusinessChargeItem extends BaseDomain {
      * 备注
      */
     @Column(name = "`notes`")
+    @Size(max = 255, message = "备注请保持在255个字符以内")
     private String notes;
 
     /**
