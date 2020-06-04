@@ -42,15 +42,8 @@ public class CategoryQuery extends Category {
     @Transient
     private String keyword;
 
-    @Like
-    @SqlOperator(SqlOperator.OR)
-    @Column(name = "`name`")
+    @Transient
     private String orName;
-
-    @Like
-    @SqlOperator(SqlOperator.OR)
-    @Column(name = "`code`")
-    private String orCode;
 
     public String getKeyword() {
         return keyword;
@@ -66,14 +59,6 @@ public class CategoryQuery extends Category {
 
     public void setOrName(String orName) {
         this.orName = orName;
-    }
-
-    public String getOrCode() {
-        return orCode;
-    }
-
-    public void setOrCode(String orCode) {
-        this.orCode = orCode;
     }
 
     public String getQueryPath() {
