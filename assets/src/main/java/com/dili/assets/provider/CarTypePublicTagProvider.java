@@ -36,8 +36,7 @@ public class CarTypePublicTagProvider implements ValueProvider {
     	Map<String, Object> _rowData = (Map<String, Object>) map.get("_rowData");
     	DataDictionaryValue dataDictionaryValue = DTOUtils.newInstance(DataDictionaryValue.class);
     	dataDictionaryValue.setDdCode("cartype_tag");
-    	dataDictionaryValue.setFirmCode(_rowData.get("market_code").toString());
-    	
+    	dataDictionaryValue.setFirmId(Long.valueOf(_rowData.get("market_id").toString()));
     	List<DataDictionaryValue> list = dataDictionaryRpc.listDataDictionaryValue(dataDictionaryValue).getData();
     	List<String> displayText = new ArrayList<String>();
     	String[] tags = val.toString().split(",");

@@ -32,8 +32,8 @@ public class CarTypePublic extends BaseDomain {
     /**
      * 市场
      */
-    @Column(name = "`market_code`")
-    private String marketCode;
+    @Column(name = "`market_id`")
+    private Long marketId;
 
     /**
      * 车型
@@ -131,8 +131,8 @@ public class CarTypePublic extends BaseDomain {
      */
     @FieldDef(label="市场")
     @EditMode(editor = FieldEditor.Number, required = false)
-    public String getMarketCode() {
-        return marketCode;
+    public Long getMarketId() {
+        return marketId;
     }
 
     /**
@@ -140,8 +140,8 @@ public class CarTypePublic extends BaseDomain {
      *
      * @param marketCode 市场
      */
-    public void setMarketCode(String marketCode) {
-        this.marketCode = marketCode;
+    public void setMarketId(Long marketId) {
+        this.marketId = marketId;
     }
 
     /**

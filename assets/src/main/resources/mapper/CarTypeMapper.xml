@@ -39,9 +39,9 @@
   </insert>
   <!-- 查询车型列表 -->
   <select id="listCarType" resultMap="BaseResultMap">
-  	  select ct.id, ct.create_time, ct.modify_time, ct.creator_id, ct.name, ct.number, ct.classify,
+  	  select ctp.id, ct.create_time, ct.modify_time, ct.creator_id, ct.name, ct.number, ct.classify,
     ctp.status, ct.remark from car_type_public ctp left join car_type ct on ctp.car_type_id = ct.id
-		where ctp.market_code = #{marketCode}
+		where ctp.market_id = #{marketId}
 		<if test="status != null">
 			and ctp.status = #{status}
 		</if>

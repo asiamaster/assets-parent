@@ -35,7 +35,7 @@ public class CarTypePublicProvider implements ValueProvider {
 			UserTicket userTicket = SessionContext.getSessionContext().getUserTicket();
 	    	DataDictionaryValue dataDictionaryValue = DTOUtils.newInstance(DataDictionaryValue.class);
 	    	dataDictionaryValue.setDdCode("cartype_tag");
-	    	dataDictionaryValue.setFirmCode(userTicket.getFirmCode());
+	    	dataDictionaryValue.setFirmId(userTicket.getFirmId());
 	    	
 	    	List<DataDictionaryValue> list = dataDictionaryRpc.listDataDictionaryValue(dataDictionaryValue).getData();
 	    	List<String> displayText = new ArrayList<String>();

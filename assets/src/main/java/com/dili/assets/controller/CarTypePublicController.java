@@ -65,7 +65,7 @@ public class CarTypePublicController {
     public @ResponseBody String listPage(@RequestBody CarTypePublicQuery carTypePublic) throws Exception {
     	DataDictionaryValue dataDictionaryValue = DTOUtils.newInstance(DataDictionaryValue.class);
     	dataDictionaryValue.setDdCode("cartype_tag");
-    	dataDictionaryValue.setFirmCode(carTypePublic.getMarketCode());
+    	dataDictionaryValue.setId(carTypePublic.getMarketId());
     	
     	List<DataDictionaryValue> list = dataDictionaryRpc.listDataDictionaryValue(dataDictionaryValue).getData();
     	carTypePublic.setTags(list);
@@ -85,7 +85,7 @@ public class CarTypePublicController {
     public @ResponseBody BaseOutput<List<Map<String, Object>>> listCarTypePublic(@RequestBody CarTypePublicQuery carTypePublic) throws Exception {
     	DataDictionaryValue dataDictionaryValue = DTOUtils.newInstance(DataDictionaryValue.class);
     	dataDictionaryValue.setDdCode("cartype_tag");
-    	dataDictionaryValue.setFirmCode(carTypePublic.getMarketCode());
+    	dataDictionaryValue.setId(carTypePublic.getMarketId());
     	
     	List<DataDictionaryValue> list = dataDictionaryRpc.listDataDictionaryValue(dataDictionaryValue).getData();
     	carTypePublic.setTags(list);
@@ -189,7 +189,7 @@ public class CarTypePublicController {
     public @ResponseBody BaseOutput get(@RequestBody CarTypePublicQuery carTypePublic) {
     	DataDictionaryValue dataDictionaryValue = DTOUtils.newInstance(DataDictionaryValue.class);
     	dataDictionaryValue.setDdCode("cartype_tag");
-    	dataDictionaryValue.setFirmCode(carTypePublic.getMarketCode());
+    	dataDictionaryValue.setId(carTypePublic.getMarketId());
     	
     	List<DataDictionaryValue> list = dataDictionaryRpc.listDataDictionaryValue(dataDictionaryValue).getData();
     	carTypePublic.setTags(list);

@@ -27,7 +27,7 @@ public class CarTypePublicDTO extends BaseDomain {
     /**
      * 市场
      */
-    private String marketCode;
+    private Long marketId;
 
     /**
      * 车型
@@ -118,8 +118,8 @@ public class CarTypePublicDTO extends BaseDomain {
      *
      * @return market_code - 市场
      */
-    public String getMarketCode() {
-        return marketCode;
+    public Long getMarketId() {
+        return marketId;
     }
 
     /**
@@ -127,8 +127,8 @@ public class CarTypePublicDTO extends BaseDomain {
      *
      * @param marketCode 市场
      */
-    public void setMarketCode(String marketCode) {
-        this.marketCode = marketCode;
+    public void setMarketId(Long marketId) {
+        this.marketId = marketId;
     }
 
     /**

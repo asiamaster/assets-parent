@@ -6,7 +6,7 @@
       WARNING - @mbg.generated
     -->
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="market_code" jdbcType="BIGINT" property="marketCode" />
+    <result column="market_id" jdbcType="BIGINT" property="marketId" />
     <result column="car_type_id" jdbcType="BIGINT" property="carTypeId" />
     <result column="code" jdbcType="VARCHAR" property="code" />
     <result column="auto_pass" jdbcType="INTEGER" property="autoPass" />
@@ -26,7 +26,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, market_code, car_type_id, code, tag, auto_save,
+    id, market_id, car_type_id, code, tag, auto_save,
     auto_pass, status, remark, create_time, modify_time, creator_id
   </sql>
   <select id="selectBy" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -44,8 +44,8 @@
     -->
     update car_type_public
     <set>
-      <if test="marketCode != null">
-        market_code = #{marketCode,jdbcType=BIGINT},
+      <if test="marketId != null">
+        market_id = #{marketId,jdbcType=BIGINT},
       </if>
       <if test="carTypeId != null">
         car_type_id = #{carTypeId,jdbcType=BIGINT},
@@ -77,14 +77,14 @@
   <!-- 车型公共车型列表 -->
   <select id="listCarTypePublic" resultType="java.util.Map">
   
-      select ctb.id,ct.id car_type_id,ct.name carTypeName,convert(ct.number,char) carTypeNumber,ctb.code,ctb.tag,ctb.auto_pass autoPass, ctb.auto_save autoSave,ctb.remark,ctb.status,ctb.market_code
+      select ctb.id,ct.id car_type_id,ct.name carTypeName,convert(ct.number,char) carTypeNumber,ctb.code,ctb.tag,ctb.auto_pass autoPass, ctb.auto_save autoSave,ctb.remark,ctb.status,ctb.market_id
 		<if test="tags.size() > 0">
 			<foreach collection="tags" item="tag" index="ind">
 				,te.${tag.code}_weight,te.${tag.code}_code,te.${tag.code}_name
 			</foreach>
 		</if>
 		from car_type ct 
-		left join car_type_public ctb on ct.id = ctb.car_type_id and ctb.market_code = #{marketCode,jdbcType=VARCHAR}
+		left join car_type_public ctb on ct.id = ctb.car_type_id and ctb.market_id = #{marketId,jdbcType=VARCHAR}
 		<if test="tags.size() > 0">
 			left join (
 			SELECT
@@ -141,14 +141,14 @@
   </select>
   <!-- 通过id获取公共车型 -->
   <select id="getCarTypePublicById" resultType="java.util.Map">
-    select ctb.id,ct.id car_type_id,ct.name carTypeName,convert(ct.number,char) carTypeNumber,ctb.code,ctb.tag,ctb.auto_pass autoPass, ctb.auto_save autoSave,ctb.remark,ctb.status,ctb.market_code
+    select ctb.id,ct.id car_type_id,ct.name carTypeName,convert(ct.number,char) carTypeNumber,ctb.code,ctb.tag,ctb.auto_pass autoPass, ctb.auto_save autoSave,ctb.remark,ctb.status,ctb.market_id
 		<if test="tags.size() > 0">
 			<foreach collection="tags" item="tag" index="ind">
 				,te.${tag.code}_weight,te.${tag.code}_code,te.${tag.code}_name
 			</foreach>
 		</if>
 		from car_type ct 
-		left join car_type_public ctb on ct.id = ctb.car_type_id and ctb.market_code = #{marketCode,jdbcType=VARCHAR}
+		left join car_type_public ctb on ct.id = ctb.car_type_id and ctb.market_id = #{marketId,jdbcType=VARCHAR}
 		<if test="tags.size() > 0">
 			left join (
 			SELECT
