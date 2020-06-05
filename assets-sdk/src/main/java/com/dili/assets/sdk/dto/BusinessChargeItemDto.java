@@ -2,10 +2,10 @@ package com.dili.assets.sdk.dto;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.dili.ss.domain.BaseDomain;
+import com.google.common.base.MoreObjects;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * <B></B>
@@ -13,9 +13,9 @@ import java.util.List;
  * <B>农丰时代科技有限公司</B>
  *
  * @author yuehongbo
- * @date 2020/5/26 18:31
+ * @date 2020/5/28 17:19
  */
-public class ChargeItemDto extends BaseDomain {
+public class BusinessChargeItemDto extends BaseDomain {
 
     /**
      * 主键ID
@@ -23,13 +23,23 @@ public class ChargeItemDto extends BaseDomain {
     private Long id;
 
     /**
-     * 收费项名称
+     * 所属市场
      */
-    private String name;
+    private Long marketId;
+
+    /**
+     * 所属业务
+     */
+    private Long businessId;
+
+    /**
+     * 所属费用项
+     */
+    private Long chargeItem;
 
     /**
      * 是否启用
-     * @see com.dili.commons.glossary.YesOrNoEnum
+     * {@link com.dili.commons.glossary.YesOrNoEnum}
      */
     private Integer isEnable;
 
@@ -63,11 +73,6 @@ public class ChargeItemDto extends BaseDomain {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime modifyTime;
 
-    /**
-     * 根据ID集查询收费项信息
-     */
-    private List<Long> idList;
-
     @Override
     public Long getId() {
         return id;
@@ -78,12 +83,28 @@ public class ChargeItemDto extends BaseDomain {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public Long getMarketId() {
+        return marketId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setMarketId(Long marketId) {
+        this.marketId = marketId;
+    }
+
+    public Long getBusinessId() {
+        return businessId;
+    }
+
+    public void setBusinessId(Long businessId) {
+        this.businessId = businessId;
+    }
+
+    public Long getChargeItem() {
+        return chargeItem;
+    }
+
+    public void setChargeItem(Long chargeItem) {
+        this.chargeItem = chargeItem;
     }
 
     public Integer getIsEnable() {
@@ -134,11 +155,18 @@ public class ChargeItemDto extends BaseDomain {
         this.modifyTime = modifyTime;
     }
 
-    public List<Long> getIdList() {
-        return idList;
-    }
-
-    public void setIdList(List<Long> idList) {
-        this.idList = idList;
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("id", id)
+                .add("marketId", marketId)
+                .add("businessId", businessId)
+                .add("isEnable", isEnable)
+                .add("isDelete", isDelete)
+                .add("notes", notes)
+                .add("operatorId", operatorId)
+                .add("createTime", createTime)
+                .add("modifyTime", modifyTime)
+                .toString();
     }
 }

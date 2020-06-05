@@ -3,11 +3,15 @@ package com.dili.assets.controller;
 import com.dili.assets.domain.ChargeItem;
 import com.dili.assets.service.ChargeItemService;
 import com.dili.ss.domain.BaseOutput;
+import com.dili.ss.domain.PageOutput;
+import com.github.pagehelper.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 由MyBatis Generator工具自动生成
@@ -26,7 +30,10 @@ public class ChargeItemController {
      * @return BaseOutput
      */
     @RequestMapping(value="/save", method = {RequestMethod.GET, RequestMethod.POST})
-    public BaseOutput save(@Validated @RequestBody ChargeItem chargeItem) {
+    public BaseOutput save(@Validated @RequestBody ChargeItem chargeItem, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return BaseOutput.failure(bindingResult.getAllErrors().get(0).getDefaultMessage());
+        }
         chargeItemService.saveOrUpdate(chargeItem);
         return BaseOutput.success("新增成功");
     }
@@ -37,8 +44,20 @@ public class ChargeItemController {
      * @return
      */
     @RequestMapping(value="/listPage", method = {RequestMethod.POST})
-    public BaseOutput<List<ChargeItem>> listPage(@RequestBody(required = false) ChargeItem chargeItem){
-        return BaseOutput.success().setData(chargeItemService.listByExample(chargeItem));
+    public PageOutput<List<ChargeItem>> listPage(@RequestBody(required = false) ChargeItem chargeItem){
+        if (Objects.isNull(chargeItem)) {
+            chargeItem = new ChargeItem();
+        }
+        List<ChargeItem> list = chargeItemService.listByExample(chargeItem);
+        //总记录
+        Long total = list instanceof Page ? ((Page) list).getTotal() : list.size();
+        //总页数
+        int totalPage = list instanceof Page ? ((Page) list).getPages() : 1;
+        //当前页数
+        int pageNum = list instanceof Page ? ((Page) list).getPageNum() : 1;
+        PageOutput output = PageOutput.success();
+        output.setData(list).setPageNum(pageNum).setTotal(total.intValue()).setPageSize(chargeItem.getPage()).setPages(totalPage);
+        return output;
     }
 
     /**

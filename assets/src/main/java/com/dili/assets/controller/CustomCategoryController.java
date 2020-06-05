@@ -53,6 +53,10 @@ public class CustomCategoryController {
         Integer state = input.getState();
         // 根据条件查询基础品类
         input.setState(1); // 只查询基础品类中启用的数据
+        if (StrUtil.isNotBlank(input.getKeyword())) {
+            input.setOrName(input.getKeyword());
+            input.setKeyword(null);
+        }
         List<Category> list = categoryMapper.listCategory(input);
         // 根据市场查询自定义品类
         CustomCategory customCategory = new CustomCategory();
@@ -82,7 +86,7 @@ public class CustomCategoryController {
                     }
                 }
             });
-            return BaseOutput.success().setData(result);
+            return BaseOutput.success().setData(StrUtil.isNotBlank(input.getOrName()) ? searchCusName(result, input.getOrName()) : result);
         }
         return BaseOutput.success().setData(list);
     }
@@ -133,5 +137,33 @@ public class CustomCategoryController {
             return BaseOutput.failure("操作失败");
         }
         return BaseOutput.success();
+    }
+
+    /**
+     * 过滤品类别名（代码过滤）
+     */
+    private List<CategoryDTO> searchCusName(List<CategoryDTO> original, String keyword) {
+        List<CategoryDTO> result = new ArrayList<>();
+
+        if (CollUtil.isNotEmpty(original)) {
+            original.forEach(categoryDTO -> {
+                boolean find = false;
+                if (categoryDTO.getName().contains(keyword)) {
+                    find = true;
+                }
+                if (StrUtil.isNotBlank(categoryDTO.getCusName()) && categoryDTO.getCusName().contains(keyword)) {
+                    find = true;
+                }
+
+                if (StrUtil.isNotBlank(categoryDTO.getKeycode()) && categoryDTO.getKeycode().contains(keyword)) {
+                    find = true;
+                }
+
+                if (find) {
+                    result.add(categoryDTO);
+                }
+            });
+        }
+        return result;
     }
 }
