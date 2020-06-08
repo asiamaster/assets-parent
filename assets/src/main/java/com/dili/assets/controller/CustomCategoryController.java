@@ -118,7 +118,10 @@ public class CustomCategoryController {
     public BaseOutput save(@RequestBody CustomCategory input) {
         try {
             if (input.getId() != null) {
-                customCategoryMapper.updateByPrimaryKeySelective(input);
+                CustomCategory categoryUpdate = customCategoryService.get(input.getId());
+                categoryUpdate.setCusName(input.getCusName());
+                categoryUpdate.setKeycode(input.getKeycode());
+                customCategoryService.update(categoryUpdate);
             } else {
                 input.setState(1);
                 customCategoryMapper.insert(input);
