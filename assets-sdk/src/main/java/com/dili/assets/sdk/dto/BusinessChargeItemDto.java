@@ -30,7 +30,7 @@ public class BusinessChargeItemDto extends BaseDomain {
     /**
      * 所属业务
      */
-    private Long businessId;
+    private String businessType;
 
     /**
      * 所属费用项
@@ -91,12 +91,12 @@ public class BusinessChargeItemDto extends BaseDomain {
         this.marketId = marketId;
     }
 
-    public Long getBusinessId() {
-        return businessId;
+    public String getBusinessType() {
+        return businessType;
     }
 
-    public void setBusinessId(Long businessId) {
-        this.businessId = businessId;
+    public void setBusinessType(String businessType) {
+        this.businessType = businessType;
     }
 
     public Long getChargeItem() {
@@ -160,7 +160,7 @@ public class BusinessChargeItemDto extends BaseDomain {
         return MoreObjects.toStringHelper(this)
                 .add("id", id)
                 .add("marketId", marketId)
-                .add("businessId", businessId)
+                .add("businessType", businessType)
                 .add("isEnable", isEnable)
                 .add("isDelete", isDelete)
                 .add("notes", notes)
