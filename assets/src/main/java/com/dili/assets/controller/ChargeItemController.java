@@ -66,7 +66,7 @@ public class ChargeItemController {
      * @return
      */
     @RequestMapping(value = "/getById", method = {RequestMethod.POST})
-    public BaseOutput<ChargeItem> listPage(@RequestParam("id") Long id) {
+    public BaseOutput<ChargeItem> getById(@RequestParam("id") Long id) {
         return BaseOutput.success().setData(chargeItemService.get(id));
     }
 }
