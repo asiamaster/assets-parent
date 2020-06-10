@@ -15,7 +15,7 @@
             <property name="beginningDelimiter" value="`"/>
             <property name="endingDelimiter" value="`"/>
             <property name="mappers" value="${mapper.Mapper}"/>
-            <property name="isDTO" value="true"/>
+            <property name="isDTO" value="false"/>
         </plugin>
 
         <!-- Mybatis配置文件生成插件 -->
@@ -84,12 +84,12 @@
         <javaClientGenerator targetPackage="${targetMapperPackage}" targetProject="${targetJavaProject}" type="XMLMAPPER" />
 
         <!-- 生成所有表模型 -->
-<!--        <table tableName="%">-->
-<!--            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
-<!--        </table>-->
+       <table tableName="bank_union_info">
+           <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
+       </table>
         <!-- 生成指定表模型 -->
-        <table domainObjectName="BoothRent" tableName="booth_rent">
+        <!-- <table domainObjectName="CustomCategory" tableName="custom_category">
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
-        </table>
+        </table> -->
     </context>
 </generatorConfiguration>

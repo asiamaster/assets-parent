@@ -3,6 +3,8 @@ package com.dili.assets.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.dili.assets.domain.Booth;
 import com.dili.assets.domain.BoothRent;
 import com.dili.assets.domain.District;
@@ -80,52 +82,59 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
     @Override
     public String listForPage(BoothQuery input) {
         try {
+            BoothQuery countInput = new BoothQuery();
             if (input == null) {
                 input = new BoothQuery();
             }
+            countInput.setMarketId(input.getMarketId());
             input.setIsDelete(StateEnum.NO.getCode());
+            countInput.setIsDelete(StateEnum.NO.getCode());
             if (input.getStartTime() != null) {
                 input.setStartTime(DateUtils.formatDate2DateTimeStart(input.getStartTime()));
+                countInput.setStartTime(DateUtils.formatDate2DateTimeStart(input.getStartTime()));
             }
             if (input.getEndTime() != null) {
                 input.setEndTime(DateUtils.formatDate2DateTimeEnd(input.getEndTime()));
+                countInput.setEndTime(DateUtils.formatDate2DateTimeEnd(input.getEndTime()));
             }
             if (input.getDepartmentId() == null && StrUtil.isNotBlank(input.getDeps())) {
                 input.setMetadata(IDTO.AND_CONDITION_EXPR, "(department_id in (" + input.getDeps() + ") or department_id is null)");
+                countInput.setMetadata(IDTO.AND_CONDITION_EXPR, "(department_id in (" + input.getDeps() + ") or department_id is null)");
             }
 
-            if(input.getDepartmentId() == null && StrUtil.isBlank(input.getDeps())){
+            if (input.getDepartmentId() == null && StrUtil.isBlank(input.getDeps())) {
                 input.setMetadata(IDTO.AND_CONDITION_EXPR, "department_id is null");
+                countInput.setMetadata(IDTO.AND_CONDITION_EXPR, "department_id is null");
             }
             input.setDeps(null);
-            EasyuiPageOutput easyuiPageOutput = this.listEasyuiPageByExample(input, false);
-            List rows = easyuiPageOutput.getRows();
-            int count = 0;
-            if (CollUtil.isNotEmpty(rows)) {
-                List<Long> child = new ArrayList();
-                rows.forEach(obj -> {
-                    Booth booth = (Booth) obj;
-                    Long parentId = booth.getParentId();
-                    if (parentId != 0) {
-                        if (!child.contains(parentId)) {
-                            child.add(parentId);
-                        }
-                    }
-                });
-                for (Long booth : child) {
-                    boolean anyMatch = rows.stream().anyMatch(o -> {
-                        Booth d = (Booth) o;
-                        return d.getId().equals(booth);
-                    });
-                    if (!anyMatch) {
-                        count++;
-                        rows.add(this.get(booth));
-                    }
-                }
+            int count = this.listByExample(countInput).size();
+            boolean expand = false;
+            if (input.getId() != null) {
+                expand = true;
+                input.setParentId(input.getId());
+                input.setId(null);
             }
-            easyuiPageOutput.setTotal(easyuiPageOutput.getTotal() + count);
-            List results = ValueProviderUtils.buildDataByProvider(input, rows);
-            return new EasyuiPageOutput(Integer.parseInt(String.valueOf(easyuiPageOutput.getTotal())), results).toString();
+            List<Booth> booths = this.listByExample(input);
+            if(input.getParentId() == null){
+                count = booths.size();
+            }
+            List results = ValueProviderUtils.buildDataByProvider(input, booths);
+            List result = new ArrayList();
+
+            for (Object district : results) {
+                JSONObject json = JSON.parseObject(JSON.toJSONString(district));
+                json.put("status", json.getString("state"));
+                json.put("state", "closed");
+                result.add(json);
+            }
+            String resultJsonStr = JSONObject.toJSONString(result);
+            if (expand) {
+                return resultJsonStr;
+            }
+            JSONObject obj = new JSONObject();
+            obj.put("rows", JSON.parseArray(resultJsonStr));
+            obj.put("footer", JSON.parseArray("[{\"name\":\"总数:" + count + "\",\"iconCls\":\"icon-sum\"}]"));
+            return obj.toJSONString();
         } catch (Exception e) {
             e.printStackTrace();
         }

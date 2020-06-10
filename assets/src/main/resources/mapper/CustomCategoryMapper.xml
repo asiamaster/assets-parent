@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dili.assets.mapper.CustomCategoryMapper">
+  <resultMap id="BaseResultMap" type="com.dili.assets.domain.CustomCategory">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="category" jdbcType="BIGINT" property="category" />
+    <result column="market_id" jdbcType="BIGINT" property="marketId" />
+    <result column="cus_name" jdbcType="VARCHAR" property="cusName" />
+    <result column="keycode" jdbcType="VARCHAR" property="keycode" />
+    <result column="state" jdbcType="TINYINT" property="state" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, category, market_id, cus_name, keycode, state
+  </sql>
+  <select id="selectBy" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    select 
+    <include refid="Base_Column_List" />
+    from custom_category
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <update id="updateBy" parameterType="com.dili.assets.domain.CustomCategory">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    update custom_category
+    <set>
+      <if test="category != null">
+        category = #{category,jdbcType=BIGINT},
+      </if>
+      <if test="marketId != null">
+        market_id = #{marketId,jdbcType=BIGINT},
+      </if>
+      <if test="cusName != null">
+        cus_name = #{cusName,jdbcType=VARCHAR},
+      </if>
+      <if test="keycode != null">
+        keycode = #{keycode,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

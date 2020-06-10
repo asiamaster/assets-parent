@@ -34,9 +34,6 @@ public class CategoryServiceImpl extends BaseServiceImpl<Category, Long> impleme
             if (p.getState().equals(3)) {
                 throw new BusinessException("1", "父品类已删除");
             }
-            if (!checkLevel(p)) {
-                throw new BusinessException("1", "品类最多只能新增到3级");
-            }
             c.setPath(p.getPath());
         } else {
             c.setParent(0L);
@@ -55,7 +52,7 @@ public class CategoryServiceImpl extends BaseServiceImpl<Category, Long> impleme
         } else {
             c.setPath(c.getPath() + c.getId() + ",");
         }
-        if(StrUtil.isNotBlank(c.getPath())){
+        if (StrUtil.isNotBlank(c.getPath())) {
             c.setCateLevel(c.getPath().split(",").length);
         }
         getActualDao().updateByPrimaryKey(c);

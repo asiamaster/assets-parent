@@ -13,6 +13,16 @@ import javax.persistence.Transient;
  */
 public class CategoryQuery extends Category {
 
+
+    private Long marketId;
+
+    public Long getMarketId() {
+        return marketId;
+    }
+
+    public void setMarketId(Long marketId) {
+        this.marketId = marketId;
+    }
     // ==========================动态SQL过滤字段==================================== //
 
     /**
@@ -29,18 +39,15 @@ public class CategoryQuery extends Category {
     @Column(name = "`state`")
     private Integer stateFilter;
 
+    @Like
+    @Column(name = "`name`")
+    private String likeName;
+
     @Transient
     private String keyword;
 
-    @Like
-    @SqlOperator(SqlOperator.OR)
-    @Column(name = "`name`")
+    @Transient
     private String orName;
-
-    @Like
-    @SqlOperator(SqlOperator.OR)
-    @Column(name = "`code`")
-    private String orCode;
 
     public String getKeyword() {
         return keyword;
@@ -58,12 +65,12 @@ public class CategoryQuery extends Category {
         this.orName = orName;
     }
 
-    public String getOrCode() {
-        return orCode;
+    public String getLikeName() {
+        return likeName;
     }
 
-    public void setOrCode(String orCode) {
-        this.orCode = orCode;
+    public void setLikeName(String likeName) {
+        this.likeName = likeName;
     }
 
     public String getQueryPath() {

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dili.assets.mapper.CarTypeMapper">
+  <resultMap id="BaseResultMap" type="com.dili.assets.domain.CarType">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+    <result column="creator_id" jdbcType="BIGINT" property="creatorId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="status" jdbcType="BIGINT" property="status" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="number" jdbcType="BIGINT" property="number" />
+    <result column="classify" jdbcType="VARCHAR" property="classify" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, market_id, create_time, modify_time, creator_id, name, number, classify,
+    status, remark
+  </sql>
+  <select id="selectBy" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    select 
+    <include refid="Base_Column_List" />
+    from car_type
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <!-- 插入车型 -->
+  <insert id="insertCarType">
+      INSERT INTO `car_type`(`number`, `classify`, `name`, `remark`, `status`, `creator_id`, `create_time`, `modify_time`)
+      select case when max(`number`) is null then 0 else max(number) end + 1 number, 
+      #{classify} classify, #{name} name, #{remark} remark, #{status} status, #{creatorId} creator_id, #{createTime} create_time, #{modifyTime} modify_time  from `car_type`
+  </insert>
+  <!-- 查询车型列表 -->
+  <select id="listCarType" resultMap="BaseResultMap">
+  	  select ct.id, ct.create_time, ct.modify_time, ct.creator_id, ct.name, ct.number, ct.classify,
+    ctp.status, ct.remark from car_type_public ctp left join car_type ct on ctp.car_type_id = ct.id
+		where ctp.market_code = #{marketCode}
+		<if test="status != null">
+			and ctp.status = #{status}
+		</if>
+  </select>
+</mapper>

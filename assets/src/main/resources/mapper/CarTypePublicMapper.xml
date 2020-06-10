@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dili.assets.mapper.CarTypePublicMapper">
+  <resultMap id="BaseResultMap" type="com.dili.assets.domain.CarTypePublic">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="market_code" jdbcType="BIGINT" property="marketCode" />
+    <result column="car_type_id" jdbcType="BIGINT" property="carTypeId" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="auto_pass" jdbcType="INTEGER" property="autoPass" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+    <result column="creator_id" jdbcType="BIGINT" property="creatorId" />
+    <result column="number" jdbcType="BIGINT" property="carType.number" />
+    <result column="name" jdbcType="VARCHAR" property="carType.name" />
+    <result column="classify" jdbcType="VARCHAR" property="carType.classify" />
+    <result column="remark" jdbcType="VARCHAR" property="carType.remark" />
+    <result column="tag" jdbcType="VARCHAR" property="tag" />
+    <result column="auto_save" jdbcType="VARCHAR" property="autoSave" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, market_code, car_type_id, code, tag, auto_save,
+    auto_pass, status, remark, create_time, modify_time, creator_id
+  </sql>
+  <select id="selectBy" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    select 
+    <include refid="Base_Column_List" />
+    from car_type_public
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <update id="updateBy" parameterType="com.dili.assets.domain.CarTypePublic">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    update car_type_public
+    <set>
+      <if test="marketCode != null">
+        market_code = #{marketCode,jdbcType=BIGINT},
+      </if>
+      <if test="carTypeId != null">
+        car_type_id = #{carTypeId,jdbcType=BIGINT},
+      </if>
+      <if test="code != null">
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="aotuPass != null">
+        auto_pass = #{autoPass,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null">
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creatorId != null">
+        creator_id = #{creatorId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <!-- 车型公共车型列表 -->
+  <select id="listCarTypePublic" resultType="java.util.Map">
+  
+      select ctb.id,ct.id car_type_id,ct.name carTypeName,convert(ct.number,char) carTypeNumber,ctb.code,ctb.tag,ctb.auto_pass autoPass, ctb.auto_save autoSave,ctb.remark,ctb.status,ctb.market_code
+		<if test="tags.size() > 0">
+			<foreach collection="tags" item="tag" index="ind">
+				,te.${tag.code}_weight,te.${tag.code}_code,te.${tag.code}_name
+			</foreach>
+		</if>
+		from car_type ct 
+		left join car_type_public ctb on ct.id = ctb.car_type_id and ctb.market_code = #{marketCode,jdbcType=VARCHAR}
+		<if test="tags.size() > 0">
+			left join (
+			SELECT
+				tag_ext.car_type_public_id car_type_public_id
+			<foreach collection="tags" item="tag">
+				,SUM( IF ( CODE = #{tag.code}, weight, NULL ) ) AS ${tag.code}_weight,
+				MAX( IF ( CODE = #{tag.code}, CODE, 0 ) ) AS ${tag.code}_code,
+				MAX( IF ( CODE = #{tag.code}, NAME, 0 ) ) AS ${tag.code}_name
+			</foreach>
+			FROM
+				tag_ext 
+			GROUP BY
+				car_type_public_id
+			) te on ctb.id = te.car_type_public_id
+		</if>
+		where ct.status = 1
+	      <if test="carTypeId != null">
+	        and ctb.car_type_id = #{carTypeId,jdbcType=BIGINT}
+	      </if>
+	      <if test="code != null">
+	        and ctb.code = #{code,jdbcType=VARCHAR}
+	      </if>
+	      <if test="aotuPass != null">
+	        and ctb.auto_pass = #{autoPass,jdbcType=INTEGER}
+	      </if>
+	      <if test="status != null">
+	        and ctb.status = #{status,jdbcType=INTEGER}
+	      </if>
+	      <if test="remark != null">
+	        and ctb.remark = #{remark,jdbcType=VARCHAR}
+	      </if>
+	      <if test="createTime != null">
+	        and ctb.create_time = #{createTime,jdbcType=TIMESTAMP}
+	      </if>
+	      <if test="modifyTime != null">
+	        and ctb.modify_time = #{modifyTime,jdbcType=TIMESTAMP}
+	      </if>
+	      <if test="creatorId != null">
+	        and ctb.creator_id = #{creatorId,jdbcType=BIGINT}
+	      </if>
+	      <if test="id != null">
+	        and ctb.id = #{id,jdbcType=BIGINT}
+	      </if>
+	      <if test="number != null">
+	        and ct.number = #{number,jdbcType=BIGINT}
+	      </if>
+	      <if test="name != null">
+	        and ct.name = #{name,jdbcType=VARCHAR}
+	      </if>
+	      <if test="tag != null">
+	        and position(#{tag,jdbcType=VARCHAR} in tag)
+	      </if>
+	      order by ct.number
+  </select>
+  <!-- 通过id获取公共车型 -->
+  <select id="getCarTypePublicById" resultType="java.util.Map">
+    select ctb.id,ct.id car_type_id,ct.name carTypeName,convert(ct.number,char) carTypeNumber,ctb.code,ctb.tag,ctb.auto_pass autoPass, ctb.auto_save autoSave,ctb.remark,ctb.status,ctb.market_code
+		<if test="tags.size() > 0">
+			<foreach collection="tags" item="tag" index="ind">
+				,te.${tag.code}_weight,te.${tag.code}_code,te.${tag.code}_name
+			</foreach>
+		</if>
+		from car_type ct 
+		left join car_type_public ctb on ct.id = ctb.car_type_id and ctb.market_code = #{marketCode,jdbcType=VARCHAR}
+		<if test="tags.size() > 0">
+			left join (
+			SELECT
+				tag_ext.car_type_public_id car_type_public_id
+			<foreach collection="tags" item="tag">
+				,SUM( IF ( CODE = #{tag.code}, weight, NULL ) ) AS ${tag.code}_weight,
+				MAX( IF ( CODE = #{tag.code}, CODE, 0 ) ) AS ${tag.code}_code,
+				MAX( IF ( CODE = #{tag.code}, NAME, 0 ) ) AS ${tag.code}_name
+			</foreach>
+			FROM
+				tag_ext 
+			GROUP BY
+				car_type_public_id
+			) te on ctb.id = te.car_type_public_id
+		</if>
+		where ct.status = 1 and ctb.id = #{id,jdbcType=BIGINT}
+	     
+  </select>
+  <!-- 更新公共车型 -->
+  <update id="updateCarTypePublic" parameterType="com.dili.assets.domain.CarTypePublic">
+    update car_type_public
+    	<set>
+          code = #{code,jdbcType=VARCHAR},
+          auto_pass = #{autoPass,jdbcType=INTEGER},
+          remark = #{remark,jdbcType=VARCHAR},
+          tag = #{tag,jdbcType=VARCHAR},
+      </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <delete id="deleteTagExt">
+      delete from tag_ext where car_type_public_id = #{id}
+  </delete>
+</mapper>
