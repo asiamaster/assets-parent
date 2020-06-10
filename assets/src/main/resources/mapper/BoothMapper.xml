@@ -24,13 +24,14 @@
     <result column="creator_id" jdbcType="BIGINT" property="creatorId" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+    <result column="business_type" jdbcType="TINYINT" property="businessType" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
     id, name, number, unit, area, second_area, type, corner, department_id, market_id, parent_id, notes, state,
-    is_delete, split_notes, sort, creator_id, create_time, modify_time
+    is_delete, split_notes, sort, creator_id, create_time, modify_time, business_type
   </sql>
   <select id="selectBy" parameterType="java.lang.Long" resultMap="BaseResultMap">
     <!--
