@@ -1,15 +1,10 @@
 package com.dili.assets.provider;
 
-import cn.hutool.core.collection.CollUtil;
-import com.dili.assets.domain.Booth;
-import com.dili.assets.service.impl.BoothServiceImpl;
 import com.dili.commons.glossary.EnabledStateEnum;
-import com.dili.commons.glossary.YesOrNoEnum;
 import com.dili.ss.metadata.FieldMeta;
 import com.dili.ss.metadata.ValuePair;
 import com.dili.ss.metadata.ValuePairImpl;
 import com.dili.ss.metadata.ValueProvider;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -30,9 +25,6 @@ import java.util.stream.Stream;
 public class BoothStateProvider implements ValueProvider {
     private static final List<ValuePair<?>> BUFFER = new ArrayList<>();
 
-    @Autowired
-    private BoothServiceImpl boothService;
-
     static {
         BUFFER.addAll(Stream.of(EnabledStateEnum.values())
                 .map(e -> new ValuePairImpl<>(e.getName(), e.getCode().toString()))
@@ -49,16 +41,8 @@ public class BoothStateProvider implements ValueProvider {
         if (null == object) {
             return null;
         }
-        Map rowData = (Map) map.get("_rowData");
-        Long id = (Long) rowData.get("id");
-        Booth query = new Booth();
-        query.setIsDelete(YesOrNoEnum.NO.getCode());
-        query.setParentId(id);
-        if (CollUtil.isNotEmpty(boothService.listByExample(query))) {
-            return null;
-        }
         for (ValuePair<?> valuePair : BUFFER) {
-            if (valuePair.getValue().equals(object.toString())) {
+            if(valuePair.getValue().equals(object.toString())){
                 return valuePair.getText();
             }
         }

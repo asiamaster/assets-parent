@@ -28,16 +28,11 @@ public class DisProvider implements ValueProvider {
             return null;
         }
         HashMap rowData = (HashMap) metaMap.get("_rowData");
-        District district = districtService.get(Long.parseLong(rowData.get("id").toString()));
-
-        if (district != null) {
-            if (district.getParentId() == 0) {
-                return district.getName();
-            } else {
-                District parent = districtService.get(district.getParentId());
-                return parent.getName() + "," + district.getName();
-            }
+        if (rowData.get("parentId").toString().equals("0")) {
+            return rowData.get("name").toString();
+        } else {
+            District parent = districtService.get(Long.parseLong(rowData.get("parentId").toString()));
+            return parent.getName() + "," + rowData.get("name").toString();
         }
-        return null;
     }
 }

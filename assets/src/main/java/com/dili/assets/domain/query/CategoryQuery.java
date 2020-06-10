@@ -39,6 +39,10 @@ public class CategoryQuery extends Category {
     @Column(name = "`state`")
     private Integer stateFilter;
 
+    @Like
+    @Column(name = "`name`")
+    private String likeName;
+
     @Transient
     private String keyword;
 
@@ -59,6 +63,14 @@ public class CategoryQuery extends Category {
 
     public void setOrName(String orName) {
         this.orName = orName;
+    }
+
+    public String getLikeName() {
+        return likeName;
+    }
+
+    public void setLikeName(String likeName) {
+        this.likeName = likeName;
     }
 
     public String getQueryPath() {

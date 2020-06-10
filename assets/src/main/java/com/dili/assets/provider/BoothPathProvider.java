@@ -28,16 +28,11 @@ public class BoothPathProvider implements ValueProvider {
             return null;
         }
         HashMap rowData = (HashMap) metaMap.get("_rowData");
-        Booth booth = boothService.get(Long.parseLong(rowData.get("id").toString()));
-
-        if (booth != null) {
-            if (booth.getParentId() == 0) {
-                return booth.getName();
-            } else {
-                Booth parent = boothService.get(booth.getParentId());
-                return parent.getName() + "," + booth.getName();
-            }
+        if (rowData.get("parentId").toString().equals("0")) {
+            return rowData.get("name").toString();
+        } else {
+            Booth parent = boothService.get(Long.parseLong(rowData.get("parentId").toString()));
+            return parent.getName() + "," + rowData.get("name").toString();
         }
-        return null;
     }
 }
