@@ -89,6 +89,7 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
             countInput.setMarketId(input.getMarketId());
             input.setIsDelete(StateEnum.NO.getCode());
             countInput.setIsDelete(StateEnum.NO.getCode());
+            countInput.setBusinessType(input.getBusinessType());
             if (input.getStartTime() != null) {
                 input.setStartTime(DateUtils.formatDate2DateTimeStart(input.getStartTime()));
                 countInput.setStartTime(DateUtils.formatDate2DateTimeStart(input.getStartTime()));
@@ -204,6 +205,7 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
                 booth.setModifyTime(new Date());
                 booth.setCreatorId(parent.getCreatorId());
                 booth.setCorner(parent.getCorner());
+                booth.setBusinessType(parent.getBusinessType());
                 saveBooth(booth);
             }
         }
