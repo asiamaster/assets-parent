@@ -42,7 +42,7 @@ public class BusinessChargeItem extends BaseDomain {
      */
     @Column(name = "`business_type`")
     @NotNull(message = "所属业务不能为空")
-    private Long businessType;
+    private String businessType;
 
     /**
      * 所属费用项
