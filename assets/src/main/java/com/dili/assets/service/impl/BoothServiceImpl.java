@@ -33,9 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * 由MyBatis Generator工具自动生成
@@ -115,7 +113,7 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
                 input.setId(null);
             }
             List<Booth> booths = this.listByExample(input);
-            if(input.getParentId() == null){
+            if (input.getParentId() == null) {
                 count = booths.size();
             }
             List results = ValueProviderUtils.buildDataByProvider(input, booths);
@@ -213,31 +211,51 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
     public List<BoothDTO> search(BoothQuery query) {
         List<BoothDTO> result = new ArrayList<>();
         query.setPage(1);
-        query.setRows(10);
+        query.setRows(20);
         List<Booth> list = listPageByExample(query).getDatas();
         if (CollUtil.isNotEmpty(list)) {
+            Map<String, String> unitCache = new HashMap<>();
+            Map<String, String> disCache = new HashMap<>();
             list.forEach(obj -> {
                 BoothDTO dto = new BoothDTO();
                 BeanUtil.copyProperties(obj, dto);
-                // 转换单位
-                DataDictionaryValue dataDictionaryValue = DTOUtils.newDTO(DataDictionaryValue.class);
-                dataDictionaryValue.setCode(obj.getUnit());
 
-                BaseOutput<List<DataDictionaryValue>> listBaseOutput = dataDictionaryRpc.listDataDictionaryValue(dataDictionaryValue);
-                List<DataDictionaryValue> data = listBaseOutput.getData();
-                for (DataDictionaryValue datum : data) {
-                    if (datum.getCode().equals(obj.getUnit())) {
-                        dto.setUnitName(datum.getName());
+                // 转换单位
+                if (unitCache.containsKey(obj.getUnit())) {
+                    dto.setUnitName(unitCache.get(obj.getUnit()));
+                } else {
+                    DataDictionaryValue dataDictionaryValue = DTOUtils.newDTO(DataDictionaryValue.class);
+                    dataDictionaryValue.setCode(obj.getUnit());
+
+                    BaseOutput<List<DataDictionaryValue>> listBaseOutput = dataDictionaryRpc.listDataDictionaryValue(dataDictionaryValue);
+                    List<DataDictionaryValue> data = listBaseOutput.getData();
+                    for (DataDictionaryValue datum : data) {
+                        if (datum.getCode().equals(obj.getUnit())) {
+                            dto.setUnitName(datum.getName());
+                            unitCache.put(obj.getUnit(), datum.getName());
+                        }
                     }
                 }
                 // 转换一级区域
-                District district = districtService.get(obj.getArea().longValue());
-                dto.setAreaName(district.getName());
+                if (disCache.containsKey(obj.getArea().toString())) {
+                    dto.setAreaName(disCache.get(obj.getArea().toString()));
+                } else {
+                    District district = districtService.get(obj.getArea().longValue());
+                    dto.setAreaName(district.getName());
+                    disCache.put(obj.getArea().toString(), district.getName());
+                }
+
                 // 转换二级区域
                 if (obj.getSecondArea() != null) {
-                    District districtSecond = districtService.get(obj.getSecondArea().longValue());
-                    dto.setSecondAreaName(districtSecond.getName());
+                    if (disCache.containsKey(obj.getSecondArea().toString())) {
+                        dto.setAreaName(disCache.get(obj.getSecondArea().toString()));
+                    } else {
+                        District districtSecond = districtService.get(obj.getSecondArea().longValue());
+                        dto.setSecondAreaName(districtSecond.getName());
+                        disCache.put(obj.getSecondArea().toString(), districtSecond.getName());
+                    }
                 }
+
                 if (obj.getCorner() != null) {
                     dto.setCornerName(obj.getCorner() == 1 ? "是" : "否");
                 }
