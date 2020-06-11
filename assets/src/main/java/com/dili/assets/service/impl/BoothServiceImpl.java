@@ -212,7 +212,9 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
     @Override
     public List<BoothDTO> search(BoothQuery query) {
         List<BoothDTO> result = new ArrayList<>();
-        List<Booth> list = listByExample(query);
+        query.setPage(1);
+        query.setRows(10);
+        List<Booth> list = listPageByExample(query).getDatas();
         if (CollUtil.isNotEmpty(list)) {
             list.forEach(obj -> {
                 BoothDTO dto = new BoothDTO();
