@@ -114,6 +114,14 @@ public class BusinessChargeItemDto extends BaseDomain {
         this.chargeItem = chargeItem;
     }
 
+    public Integer getIsRequired() {
+        return isRequired;
+    }
+
+    public void setIsRequired(Integer isRequired) {
+        this.isRequired = isRequired;
+    }
+
     public Integer getIsEnable() {
         return isEnable;
     }
@@ -168,6 +176,7 @@ public class BusinessChargeItemDto extends BaseDomain {
                 .add("id", id)
                 .add("marketId", marketId)
                 .add("businessType", businessType)
+                .add("isRequired", isRequired)
                 .add("isEnable", isEnable)
                 .add("isDelete", isDelete)
                 .add("notes", notes)
