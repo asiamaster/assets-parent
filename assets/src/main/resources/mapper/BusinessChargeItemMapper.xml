@@ -9,6 +9,7 @@
     <result column="market_id"  property="marketId" />
     <result column="business_type"  property="businessType" />
     <result column="charge_item"  property="chargeItem" />
+    <result column="is_required"  property="isRequired" />
     <result column="is_enable"  property="isEnable" />
     <result column="is_delete"  property="isDelete" />
     <result column="notes"  property="notes" />
@@ -20,12 +21,12 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, market_id, business_type, charge_item, is_enable, is_delete, notes, operator_id, create_time,
+    id, market_id, business_type, charge_item, is_required, is_enable, is_delete, notes, operator_id, create_time,
     modify_time
   </sql>
 
   <select id="listItemByMarketAndBusiness" parameterType="hashmap" resultType="com.dili.assets.domain.ChargeItem">
-    SELECT ci.*
+    SELECT ci.*,bci.is_required AS isRequired
         FROM
     charge_item ci
         LEFT JOIN business_charge_item bci ON bci.charge_item = ci.id

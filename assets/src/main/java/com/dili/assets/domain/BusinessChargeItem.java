@@ -52,6 +52,13 @@ public class BusinessChargeItem extends BaseDomain {
     private Long chargeItem;
 
     /**
+     * 是否为必填项
+     */
+    @Column(name = "`is_required`")
+    @NotNull(message = "是否必填项不能为空")
+    private Integer isRequired;
+
+    /**
      * 是否启用
      */
     @Column(name = "`is_enable`")

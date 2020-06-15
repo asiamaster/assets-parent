@@ -5,6 +5,7 @@ import com.dili.ss.domain.BaseDomain;
 import com.google.common.base.MoreObjects;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.Column;
 import java.time.LocalDateTime;
 
 /**
@@ -36,6 +37,12 @@ public class BusinessChargeItemDto extends BaseDomain {
      * 所属费用项
      */
     private Long chargeItem;
+
+    /**
+     * 是否为必填项
+     * {@link com.dili.commons.glossary.YesOrNoEnum}
+     */
+    private Integer isRequired;
 
     /**
      * 是否启用
