@@ -75,6 +75,18 @@ public class CarTypePublicController {
     	carTypePublic.setTags(list);
     	return BaseOutput.success().setData(carTypePublicService.listCarTypePublicByTruck(carTypePublic));
     }
+    
+    /**
+     * 分页查询carTypePublic，返回easyui分页信息
+     * @param carTypePublic
+     * @return String
+     * @throws Exception
+     */
+    @RequestMapping(value="/listCarTypePublicByBusiness", method = {RequestMethod.GET, RequestMethod.POST})
+    public @ResponseBody BaseOutput<List<CarTypePublic>> listCarTypePublicByBusiness(@RequestBody CarTypePublicQuery carTypePublic) throws Exception {
+    	
+    	return BaseOutput.success().setData(carTypePublicService.listCarTypePublicByBusiness(carTypePublic));
+    }
 
     /**
      * 新增carTypePublic

@@ -21,6 +21,20 @@
     <result column="remark" jdbcType="VARCHAR" property="carType.remark" />
     <result column="tag" jdbcType="VARCHAR" property="tag" />
     <result column="auto_save" jdbcType="VARCHAR" property="autoSave" />
+    <association property="carType" column="car_type_id" javaType="com.dili.assets.domain.CarType">
+    	<id column="ct_id" jdbcType="BIGINT" property="id" />
+    	<result column="name" jdbcType="VARCHAR" property="name" />
+    	<result column="classify" jdbcType="VARCHAR" property="classify" />
+    	<result column="ct_remark" jdbcType="VARCHAR" property="remark" />
+    	<result column="creator_id" jdbcType="BIGINT" property="creatorId" />
+    </association>
+    <collection property="tagExt" ofType="com.dili.assets.domain.TagExt" column="car_type_public_id">
+    	<id column="te_id" jdbcType="BIGINT" property="id" />
+    	<result column="te_code" jdbcType="VARCHAR" property="code" />
+    	<result column="te_name" jdbcType="VARCHAR" property="name" />
+    	<result column="weight" jdbcType="BIGINT" property="weight" />
+    	<result column="car_type_public_id" jdbcType="BIGINT" property="carTypePublicId" />
+    </collection>
   </resultMap>
   <sql id="Base_Column_List">
     <!--
@@ -181,4 +195,24 @@
   <delete id="deleteTagExt">
       delete from tag_ext where car_type_public_id = #{id}
   </delete>
+  <select id="listCarTypePublicByBusiness" resultMap="BaseResultMap">
+  	  select ctp.id,ctp.market_id,ctp.car_type_id,ctp.`code`,ctp.tag,ctp.auto_pass,ctp.auto_save,ctp.`status`,ctp.remark,
+		ctp.creator_id,ct.id ct_id,ct.`name`,ct.classify,ct.remark ct_remark,ct.creator_id,te.id te_id,te.`code` te_code,
+		te.`name` te_name,te.weight,te.car_type_public_id
+		from car_type_public ctp 
+		left join car_type ct on ctp.car_type_id = ct.id
+		left join tag_ext te on ctp.id = te.car_type_public_id
+		<where>
+			and ct.status = 1
+			<if test="marketId != null">
+				and ctp.market_id = #{marketId}
+			</if>
+			<if test="businessCode != null and businessCode != ''">
+				and te.`code` = #{businessCode}
+			</if>
+			<if test="carName != null and carName != ''">
+				and ct.name like '%${carName}%'
+			</if>
+		</where>
+  </select>
 </mapper>

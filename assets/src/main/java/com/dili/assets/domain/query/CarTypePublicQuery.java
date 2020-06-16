@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.dili.ss.domain.BaseDomain;
 import com.dili.ss.metadata.FieldEditor;
@@ -118,6 +119,18 @@ public class CarTypePublicQuery extends BaseDomain {
     private Long number;
     
     private List<DataDictionaryValue> tags;
+    
+    /**
+     * 业务编码
+     */
+    @Transient
+    private String businessCode;
+    
+    /**
+     * 业务编码
+     */
+    @Transient
+    private String carName;
     /**
      * 获取id
      *
@@ -418,4 +431,19 @@ public class CarTypePublicQuery extends BaseDomain {
 		this.tags = tags;
 	}
 
+	public String getBusinessCode() {
+		return businessCode;
+	}
+
+	public void setBusinessCode(String businessCode) {
+		this.businessCode = businessCode;
+	}
+
+	public String getCarName() {
+		return carName;
+	}
+
+	public void setCarName(String carName) {
+		this.carName = carName;
+	}
 }

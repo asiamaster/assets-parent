@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -63,7 +64,7 @@ public class CarTypePublicDTO extends BaseDomain {
      * 备注
      */
     private String remark;
-
+    
     /**
      * 创建时间
      */
@@ -94,6 +95,17 @@ public class CarTypePublicDTO extends BaseDomain {
      */
     private List<TagExtDTO> tagExt;
     
+    /**
+     * 业务编码
+     */
+    @Transient
+    private String businessCode;
+    
+    /**
+     * 业务编码
+     */
+    @Transient
+    private String carName;
 
     /**
      * 获取id
@@ -304,5 +316,21 @@ public class CarTypePublicDTO extends BaseDomain {
 
 	public void setTagExt(List<TagExtDTO> tagExt) {
 		this.tagExt = tagExt;
+	}
+	
+	public String getBusinessCode() {
+		return businessCode;
+	}
+
+	public void setBusinessCode(String businessCode) {
+		this.businessCode = businessCode;
+	}
+
+	public String getCarName() {
+		return carName;
+	}
+
+	public void setCarName(String carName) {
+		this.carName = carName;
 	}
 }

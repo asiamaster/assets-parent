@@ -46,4 +46,10 @@ public interface CarTypePublicService extends BaseService<CarTypePublic, Long> {
 	 * @param carTypePublic 公共车型实体类
 	 */
 	List<Map<String, Object>> listCarTypePublicByTruck(CarTypePublicQuery carTypePublic);
+	
+	/**
+	 * 提供给业务系统使用的获取车型
+	 * @param carTypePublic 公共车型实体类
+	 */
+	List<CarTypePublic> listCarTypePublicByBusiness(CarTypePublicQuery carTypePublic);
 }
