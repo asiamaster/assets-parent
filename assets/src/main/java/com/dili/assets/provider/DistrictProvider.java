@@ -1,38 +1,39 @@
 package com.dili.assets.provider;
 
-import com.dili.assets.domain.District;
+import com.dili.assets.domain.query.DistrictQuery;
 import com.dili.assets.service.DistrictService;
-import com.dili.ss.domain.BaseOutput;
-import com.dili.ss.metadata.FieldMeta;
-import com.dili.ss.metadata.ValuePair;
-import com.dili.ss.metadata.ValueProvider;
-import com.dili.uap.sdk.domain.Department;
-import com.dili.uap.sdk.rpc.DepartmentRpc;
+import com.dili.ss.metadata.provider.BatchDisplayTextProviderAdaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 区域提供者
+ */
 @Component
-public class DistrictProvider implements ValueProvider {
+public class DistrictProvider extends BatchDisplayTextProviderAdaptor {
     @Autowired
     private DistrictService districtService;
 
+
     @Override
-    public List<ValuePair<?>> getLookupList(Object val, Map metaMap, FieldMeta fieldMeta) {
-        return null;
+    protected List getFkList(List<String> relationIds, Map metaMap) {
+        DistrictQuery query = new DistrictQuery();
+        query.setIds(relationIds);
+        return districtService.listByExample(query);
     }
 
     @Override
-    public String getDisplayText(Object val, Map metaMap, FieldMeta fieldMeta) {
-        if (val == null) {
-            return null;
+    protected Map<String, String> getEscapeFileds(Map metaMap) {
+        if (metaMap.get(ESCAPE_FILEDS_KEY) instanceof Map) {
+            return (Map) metaMap.get(ESCAPE_FILEDS_KEY);
+        } else {
+            Map<String, String> map = new HashMap<>();
+            map.put(metaMap.get(FIELD_KEY).toString(), "name");
+            return map;
         }
-        District district = districtService.get(Long.parseLong(val.toString()));
-        if (district != null) {
-            return district.getName();
-        }
-        return null;
     }
 }

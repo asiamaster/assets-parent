@@ -51,17 +51,22 @@ public class CustomCategoryController {
             return BaseOutput.failure("未知市场或参数");
         }
         Integer state = input.getState();
-        // 根据条件查询基础品类
-        input.setState(1); // 只查询基础品类中启用的数据
-        if (StrUtil.isNotBlank(input.getKeyword())) {
-            input.setOrName(input.getKeyword());
-            input.setKeyword(null);
-        }
-        List<Category> list = categoryMapper.listCategory(input);
+
         // 根据市场查询自定义品类
         CustomCategory customCategory = new CustomCategory();
         customCategory.setMarketId(input.getMarketId());
         List<CustomCategory> customCategories = customCategoryService.listByExample(customCategory);
+        // 根据条件查询基础品类
+        input.setState(1); // 只查询基础品类中启用的数据
+        if (StrUtil.isNotBlank(input.getKeyword())) {
+            // 如果市场没设置任何品类，则只需要过滤基础数据
+            if (CollUtil.isEmpty(customCategories)) {
+                input.setLikeName(input.getKeyword());
+            }
+            input.setOrName(input.getKeyword());
+            input.setKeyword(null);
+        }
+        List<Category> list = categoryMapper.listCategory(input);
         // 如果没有市场自定义品类则返回所有基础品类
         if (CollUtil.isNotEmpty(customCategories)) {
             List<CategoryDTO> result = new ArrayList<>();
@@ -113,7 +118,10 @@ public class CustomCategoryController {
     public BaseOutput save(@RequestBody CustomCategory input) {
         try {
             if (input.getId() != null) {
-                customCategoryMapper.updateByPrimaryKeySelective(input);
+                CustomCategory categoryUpdate = customCategoryService.get(input.getId());
+                categoryUpdate.setCusName(input.getCusName());
+                categoryUpdate.setKeycode(input.getKeycode());
+                customCategoryService.update(categoryUpdate);
             } else {
                 input.setState(1);
                 customCategoryMapper.insert(input);

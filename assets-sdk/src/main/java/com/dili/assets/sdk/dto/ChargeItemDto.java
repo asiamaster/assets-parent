@@ -68,6 +68,12 @@ public class ChargeItemDto extends BaseDomain {
      */
     private List<Long> idList;
 
+    /**
+     * 是否为必填项
+     * {@link com.dili.commons.glossary.YesOrNoEnum}
+     */
+    private Integer isRequired;
+
     @Override
     public Long getId() {
         return id;
@@ -140,5 +146,13 @@ public class ChargeItemDto extends BaseDomain {
 
     public void setIdList(List<Long> idList) {
         this.idList = idList;
+    }
+
+    public Integer getIsRequired() {
+        return isRequired;
+    }
+
+    public void setIsRequired(Integer isRequired) {
+        this.isRequired = isRequired;
     }
 }

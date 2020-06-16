@@ -105,6 +105,10 @@ public class Booth extends BaseDomain {
     @Column(name = "`modify_time`")
     private Date modifyTime;
 
+    /** 业务类型;1:摊位，2:冷库，3:公寓 */
+    @Column(name = "`business_type`")
+    private Integer businessType ;
+
     /**
      * id
      */
@@ -356,5 +360,14 @@ public class Booth extends BaseDomain {
      */
     public void setModifyTime(Date modifyTime) {
         this.modifyTime = modifyTime;
+    }
+
+    /** 业务类型;1:摊位，2:冷库，3:公寓 */
+    public Integer getBusinessType(){
+        return this.businessType;
+    }
+    /** 业务类型;1:摊位，2:冷库，3:公寓 */
+    public void setBusinessType(Integer businessType){
+        this.businessType = businessType;
     }
 }

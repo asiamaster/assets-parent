@@ -52,7 +52,7 @@ public class CategoryServiceImpl extends BaseServiceImpl<Category, Long> impleme
         } else {
             c.setPath(c.getPath() + c.getId() + ",");
         }
-        if(StrUtil.isNotBlank(c.getPath())){
+        if (StrUtil.isNotBlank(c.getPath())) {
             c.setCateLevel(c.getPath().split(",").length);
         }
         getActualDao().updateByPrimaryKey(c);

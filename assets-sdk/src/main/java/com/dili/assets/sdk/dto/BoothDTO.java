@@ -5,6 +5,7 @@ import com.dili.ss.domain.BaseDomain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.Column;
 import java.util.Date;
 
 /**
@@ -73,6 +74,9 @@ public class BoothDTO extends BaseDomain {
      * 创建人
      */
     private Long creatorId;
+
+    /** 业务类型;1:摊位，2:冷库，3:公寓 */
+    private Integer businessType ;
     /**
      * 创建时间
      */
@@ -318,6 +322,15 @@ public class BoothDTO extends BaseDomain {
      */
     public void setModifyTime(Date modifyTime) {
         this.modifyTime = modifyTime;
+    }
+
+    /** 业务类型;1:摊位，2:冷库，3:公寓 */
+    public Integer getBusinessType(){
+        return this.businessType;
+    }
+    /** 业务类型;1:摊位，2:冷库，3:公寓 */
+    public void setBusinessType(Integer businessType){
+        this.businessType = businessType;
     }
 
     public Integer getSecondArea() {

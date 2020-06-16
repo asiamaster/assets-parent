@@ -96,4 +96,11 @@ public class ChargeItem extends BaseDomain {
     @Operator(Operator.IN)
     @Column(name = "`id`")
     private List<Long> idList;
+
+    /**
+     * 在某业务中，是否为必填项
+     * 该字段为 业务-费用项 中的字段
+     */
+    @Transient
+    private Integer isRequired;
 }

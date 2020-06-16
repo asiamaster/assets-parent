@@ -40,9 +40,9 @@ public class BusinessChargeItem extends BaseDomain {
     /**
      * 所属业务
      */
-    @Column(name = "`business_id`")
+    @Column(name = "`business_type`")
     @NotNull(message = "所属业务不能为空")
-    private Long businessId;
+    private String businessType;
 
     /**
      * 所属费用项
@@ -50,6 +50,13 @@ public class BusinessChargeItem extends BaseDomain {
     @Column(name = "`charge_item`")
     @NotNull(message = "费用项不能为空")
     private Long chargeItem;
+
+    /**
+     * 是否为必填项
+     */
+    @Column(name = "`is_required`")
+    @NotNull(message = "是否必填项不能为空")
+    private Integer isRequired;
 
     /**
      * 是否启用

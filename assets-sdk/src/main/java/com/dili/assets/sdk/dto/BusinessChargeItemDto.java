@@ -5,6 +5,7 @@ import com.dili.ss.domain.BaseDomain;
 import com.google.common.base.MoreObjects;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.Column;
 import java.time.LocalDateTime;
 
 /**
@@ -30,12 +31,18 @@ public class BusinessChargeItemDto extends BaseDomain {
     /**
      * 所属业务
      */
-    private Long businessId;
+    private String businessType;
 
     /**
      * 所属费用项
      */
     private Long chargeItem;
+
+    /**
+     * 是否为必填项
+     * {@link com.dili.commons.glossary.YesOrNoEnum}
+     */
+    private Integer isRequired;
 
     /**
      * 是否启用
@@ -91,12 +98,12 @@ public class BusinessChargeItemDto extends BaseDomain {
         this.marketId = marketId;
     }
 
-    public Long getBusinessId() {
-        return businessId;
+    public String getBusinessType() {
+        return businessType;
     }
 
-    public void setBusinessId(Long businessId) {
-        this.businessId = businessId;
+    public void setBusinessType(String businessType) {
+        this.businessType = businessType;
     }
 
     public Long getChargeItem() {
@@ -105,6 +112,14 @@ public class BusinessChargeItemDto extends BaseDomain {
 
     public void setChargeItem(Long chargeItem) {
         this.chargeItem = chargeItem;
+    }
+
+    public Integer getIsRequired() {
+        return isRequired;
+    }
+
+    public void setIsRequired(Integer isRequired) {
+        this.isRequired = isRequired;
     }
 
     public Integer getIsEnable() {
@@ -160,7 +175,8 @@ public class BusinessChargeItemDto extends BaseDomain {
         return MoreObjects.toStringHelper(this)
                 .add("id", id)
                 .add("marketId", marketId)
-                .add("businessId", businessId)
+                .add("businessType", businessType)
+                .add("isRequired", isRequired)
                 .add("isEnable", isEnable)
                 .add("isDelete", isDelete)
                 .add("notes", notes)
