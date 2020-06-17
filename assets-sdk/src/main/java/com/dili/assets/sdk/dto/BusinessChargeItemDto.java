@@ -5,8 +5,8 @@ import com.dili.ss.domain.BaseDomain;
 import com.google.common.base.MoreObjects;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Column;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * <B></B>
@@ -24,6 +24,11 @@ public class BusinessChargeItemDto extends BaseDomain {
     private Long id;
 
     /**
+     * 父项目ID,本项目的关联费用项
+     */
+    private Long parentId;
+
+    /**
      * 所属市场
      */
     private Long marketId;
@@ -36,7 +41,13 @@ public class BusinessChargeItemDto extends BaseDomain {
     /**
      * 所属费用项
      */
-    private Long chargeItem;
+    private String chargeItem;
+
+    /**
+     * 费用项类型
+     * {@link com.dili.assets.sdk.enums.BusinessChargeItemEnum.ChargeType}
+     */
+    private Integer chargeType;
 
     /**
      * 是否为必填项
@@ -55,6 +66,11 @@ public class BusinessChargeItemDto extends BaseDomain {
      * {@link com.dili.commons.glossary.YesOrNoEnum}
      */
     private Integer isDelete;
+
+    /**
+     * 财务费用科目
+     */
+    private Long chargeSubject;
 
     /**
      * 备注
@@ -80,6 +96,11 @@ public class BusinessChargeItemDto extends BaseDomain {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime modifyTime;
 
+    /**
+     * ID数据集，可用于根据ID集合查询数据信息
+     */
+    private List<Long> idList;
+
     @Override
     public Long getId() {
         return id;
@@ -88,6 +109,14 @@ public class BusinessChargeItemDto extends BaseDomain {
     @Override
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
     }
 
     public Long getMarketId() {
@@ -106,12 +135,20 @@ public class BusinessChargeItemDto extends BaseDomain {
         this.businessType = businessType;
     }
 
-    public Long getChargeItem() {
+    public String getChargeItem() {
         return chargeItem;
     }
 
-    public void setChargeItem(Long chargeItem) {
+    public void setChargeItem(String chargeItem) {
         this.chargeItem = chargeItem;
+    }
+
+    public Integer getChargeType() {
+        return chargeType;
+    }
+
+    public void setChargeType(Integer chargeType) {
+        this.chargeType = chargeType;
     }
 
     public Integer getIsRequired() {
@@ -136,6 +173,14 @@ public class BusinessChargeItemDto extends BaseDomain {
 
     public void setIsDelete(Integer isDelete) {
         this.isDelete = isDelete;
+    }
+
+    public Long getChargeSubject() {
+        return chargeSubject;
+    }
+
+    public void setChargeSubject(Long chargeSubject) {
+        this.chargeSubject = chargeSubject;
     }
 
     public String getNotes() {
@@ -170,19 +215,32 @@ public class BusinessChargeItemDto extends BaseDomain {
         this.modifyTime = modifyTime;
     }
 
+    public List<Long> getIdList() {
+        return idList;
+    }
+
+    public void setIdList(List<Long> idList) {
+        this.idList = idList;
+    }
+
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
                 .add("id", id)
+                .add("parentId", parentId)
                 .add("marketId", marketId)
                 .add("businessType", businessType)
+                .add("chargeItem", chargeItem)
+                .add("chargeType", chargeType)
                 .add("isRequired", isRequired)
                 .add("isEnable", isEnable)
                 .add("isDelete", isDelete)
+                .add("chargeSubject", chargeSubject)
                 .add("notes", notes)
                 .add("operatorId", operatorId)
                 .add("createTime", createTime)
                 .add("modifyTime", modifyTime)
+                .add("idList", idList)
                 .toString();
     }
 }

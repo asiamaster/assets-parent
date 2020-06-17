@@ -6,9 +6,11 @@
       WARNING - @mbg.generated
     -->
     <id column="id"  property="id" />
+    <result column="parent_id"  property="parentId" />
     <result column="market_id"  property="marketId" />
     <result column="business_type"  property="businessType" />
     <result column="charge_item"  property="chargeItem" />
+    <result column="charge_type"  property="chargeType" />
     <result column="is_required"  property="isRequired" />
     <result column="is_enable"  property="isEnable" />
     <result column="is_delete"  property="isDelete" />
@@ -21,22 +23,8 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, market_id, business_type, charge_item, is_required, is_enable, is_delete, notes, operator_id, create_time,
+    id, parent_id, market_id, business_type, charge_item, charge_type, is_required, is_enable, is_delete, notes, operator_id, create_time,
     modify_time
   </sql>
-
-  <select id="listItemByMarketAndBusiness" parameterType="hashmap" resultType="com.dili.assets.domain.ChargeItem">
-    SELECT ci.*,bci.is_required AS isRequired
-        FROM
-    charge_item ci
-        LEFT JOIN business_charge_item bci ON bci.charge_item = ci.id
-    WHERE bci.market_id = #{marketId} AND bci.business_type = #{businessType}
-    <if test="null != isEnable">
-      AND bci.is_enable = #{isEnable} AND ci.is_enable = #{isEnable}
-    </if>
-    <if test="null != isDelete">
-      AND bci.is_delete = #{isDelete} AND ci.is_delete = #{isDelete}
-    </if>
-  </select>
 
 </mapper>
