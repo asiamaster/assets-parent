@@ -77,7 +77,7 @@ public class CarTypePublicController {
     }
     
     /**
-     * 分页查询carTypePublic，返回easyui分页信息
+     * 查询carTypePublic
      * @param carTypePublic
      * @return String
      * @throws Exception
