@@ -115,7 +115,10 @@ public class CarTypePublic extends BaseDomain {
      * 业务编码
      */
     @Transient
-    private String carName;
+    private String keyword;
+    
+    @Transient
+    private String number;
     
     /**
      * 获取id
@@ -357,11 +360,19 @@ public class CarTypePublic extends BaseDomain {
 		this.businessCode = businessCode;
 	}
 
-	public String getCarName() {
-		return carName;
+	public String getKeyword() {
+		return keyword;
 	}
 
-	public void setCarName(String carName) {
-		this.carName = carName;
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
+	}
+
+	public String getNumber() {
+		return number;
+	}
+
+	public void setNumber(String number) {
+		this.number = number;
 	}
 }

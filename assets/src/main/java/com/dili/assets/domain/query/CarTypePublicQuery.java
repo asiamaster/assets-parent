@@ -129,8 +129,8 @@ public class CarTypePublicQuery extends BaseDomain {
     /**
      * 业务编码
      */
-    @Transient
-    private String carName;
+    private String keyword;
+    
     /**
      * 获取id
      *
@@ -286,7 +286,7 @@ public class CarTypePublicQuery extends BaseDomain {
      */
     @FieldDef(label="自动放行")
     @EditMode(editor = FieldEditor.Number, required = false)
-    public Integer getAotuPass() {
+    public Integer getAutoPass() {
         return autoPass;
     }
 
@@ -295,7 +295,7 @@ public class CarTypePublicQuery extends BaseDomain {
      *
      * @param aotuPass 自动放行
      */
-    public void setAotuPass(Integer autoPass) {
+    public void setAutoPass(Integer autoPass) {
         this.autoPass = autoPass;
     }
 
@@ -439,11 +439,12 @@ public class CarTypePublicQuery extends BaseDomain {
 		this.businessCode = businessCode;
 	}
 
-	public String getCarName() {
-		return carName;
+	public String getKeyword() {
+		return keyword;
 	}
 
-	public void setCarName(String carName) {
-		this.carName = carName;
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
 	}
+
 }

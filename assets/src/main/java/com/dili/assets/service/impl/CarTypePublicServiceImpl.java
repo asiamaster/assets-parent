@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.dili.assets.domain.CarTypePublic;
 import com.dili.assets.domain.query.CarTypePublicQuery;
 import com.dili.assets.mapper.CarTypePublicMapper;
+import com.dili.assets.sdk.dto.CarTypeForJmsfDTO;
 import com.dili.assets.service.CarTypePublicService;
 import com.dili.ss.base.BaseServiceImpl;
 import com.dili.ss.domain.EasyuiPageOutput;
@@ -62,7 +63,7 @@ public class CarTypePublicServiceImpl extends BaseServiceImpl<CarTypePublic, Lon
 	}
 
 	@Override
-	public List<CarTypePublic> listCarTypePublicByBusiness(CarTypePublicQuery carTypePublic) {
+	public List<CarTypeForJmsfDTO> listCarTypePublicByBusiness(CarTypePublicQuery carTypePublic) {
 		return getActualDao().listCarTypePublicByBusiness(carTypePublic);
 	}
 }

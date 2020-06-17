@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.dili.assets.domain.CarTypePublic;
 import com.dili.assets.domain.query.CarTypePublicQuery;
+import com.dili.assets.sdk.dto.CarTypeForJmsfDTO;
 import com.dili.ss.base.BaseService;
 
 /**
@@ -51,5 +52,5 @@ public interface CarTypePublicService extends BaseService<CarTypePublic, Long> {
 	 * 提供给业务系统使用的获取车型
 	 * @param carTypePublic 公共车型实体类
 	 */
-	List<CarTypePublic> listCarTypePublicByBusiness(CarTypePublicQuery carTypePublic);
+	List<CarTypeForJmsfDTO> listCarTypePublicByBusiness(CarTypePublicQuery carTypePublic);
 }

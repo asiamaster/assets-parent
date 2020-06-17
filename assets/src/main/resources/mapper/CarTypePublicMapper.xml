@@ -67,7 +67,7 @@
       <if test="code != null">
         code = #{code,jdbcType=VARCHAR},
       </if>
-      <if test="aotuPass != null">
+      <if test="autoPass != null">
         auto_pass = #{autoPass,jdbcType=INTEGER},
       </if>
       <if test="status != null">
@@ -121,7 +121,7 @@
 	      <if test="code != null">
 	        and ctb.code = #{code,jdbcType=VARCHAR}
 	      </if>
-	      <if test="aotuPass != null">
+	      <if test="autoPass != null">
 	        and ctb.auto_pass = #{autoPass,jdbcType=INTEGER}
 	      </if>
 	      <if test="status != null">
@@ -195,23 +195,23 @@
   <delete id="deleteTagExt">
       delete from tag_ext where car_type_public_id = #{id}
   </delete>
-  <select id="listCarTypePublicByBusiness" resultMap="BaseResultMap">
-  	  select ctp.id,ctp.market_id,ctp.car_type_id,ctp.`code`,ctp.tag,ctp.auto_pass,ctp.auto_save,ctp.`status`,ctp.remark,
-		ctp.creator_id,ct.id ct_id,ct.`name`,ct.classify,ct.remark ct_remark,ct.creator_id,te.id te_id,te.`code` te_code,
-		te.`name` te_name,te.weight,te.car_type_public_id
-		from car_type_public ctp 
-		left join car_type ct on ctp.car_type_id = ct.id
-		left join tag_ext te on ctp.id = te.car_type_public_id
+  <select id="listCarTypePublicByBusiness" resultType="com.dili.assets.domain.result.CarTypeForJmsf">
+  	  SELECT ct.id as id ,ct.`name` as carTypeName , ct.number,ct.`status`, cp.auto_pass as autoPass,cp.auto_save as autoSave,cp.`code`, te.weight,te.`code` as tag
+		from tag_ext te
+		LEFT JOIN car_type_public cp
+		ON te.car_type_public_id =cp.id
+		LEFT JOIN car_type ct
+		ON ct.id = cp.car_type_id
 		<where>
 			and ct.status = 1
 			<if test="marketId != null">
-				and ctp.market_id = #{marketId}
+				and cp.market_id = #{marketId}
 			</if>
 			<if test="businessCode != null and businessCode != ''">
 				and te.`code` = #{businessCode}
 			</if>
-			<if test="carName != null and carName != ''">
-				and ct.name like '%${carName}%'
+			<if test="keyword != null and keyword != ''">
+				and (ct.name like '%${keyword}%' or ct.number like '%${keyword}%')
 			</if>
 		</where>
   </select>

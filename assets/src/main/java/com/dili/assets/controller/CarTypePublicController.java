@@ -3,6 +3,7 @@ package com.dili.assets.controller;
 import com.dili.assets.domain.CarTypePublic;
 import com.dili.assets.domain.TagExt;
 import com.dili.assets.domain.query.CarTypePublicQuery;
+import com.dili.assets.sdk.dto.CarTypeForJmsfDTO;
 import com.dili.assets.service.CarTypePublicService;
 import com.dili.assets.service.TagExtService;
 import com.dili.ss.domain.BaseOutput;
@@ -83,7 +84,7 @@ public class CarTypePublicController {
      * @throws Exception
      */
     @RequestMapping(value="/listCarTypePublicByBusiness", method = {RequestMethod.GET, RequestMethod.POST})
-    public @ResponseBody BaseOutput<List<CarTypePublic>> listCarTypePublicByBusiness(@RequestBody CarTypePublicQuery carTypePublic) throws Exception {
+    public @ResponseBody BaseOutput<List<CarTypeForJmsfDTO>> listCarTypePublicByBusiness(@RequestBody CarTypePublicQuery carTypePublic) throws Exception {
     	
     	return BaseOutput.success().setData(carTypePublicService.listCarTypePublicByBusiness(carTypePublic));
     }
