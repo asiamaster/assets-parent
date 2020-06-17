@@ -60,4 +60,9 @@ public class CarTypePublicServiceImpl extends BaseServiceImpl<CarTypePublic, Lon
 	public void deleteTagExt(CarTypePublicQuery carTypePublic) {
 		getActualDao().deleteTagExt(carTypePublic);
 	}
+
+	@Override
+	public List<CarTypePublic> listCarTypePublicByBusiness(CarTypePublicQuery carTypePublic) {
+		return getActualDao().listCarTypePublicByBusiness(carTypePublic);
+	}
 }

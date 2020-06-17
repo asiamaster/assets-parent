@@ -16,4 +16,6 @@ public interface CarTypePublicMapper extends MyMapper<CarTypePublic> {
 	void updateCarTypePublic(CarTypePublic carTypePublic);
 
 	void deleteTagExt(CarTypePublicQuery carTypePublic);
+
+	List<CarTypePublic> listCarTypePublicByBusiness(CarTypePublicQuery carTypePublic);
 }
