@@ -1,7 +1,6 @@
 package com.dili.assets.sdk.rpc;
 
 import com.dili.assets.sdk.dto.BusinessChargeItemDto;
-import com.dili.assets.sdk.dto.ChargeItemDto;
 import com.dili.ss.domain.BaseOutput;
 import com.dili.ss.domain.PageOutput;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -30,6 +29,13 @@ public interface BusinessChargeItemRpc {
     PageOutput<List<BusinessChargeItemDto>> listPage(BusinessChargeItemDto businessChargeItemDto);
 
     /**
+     * 获取业务收费项列表信息
+     * @param businessChargeItemDto
+     */
+    @RequestMapping(value = "/api/businessChargeItem/listByExample", method = RequestMethod.POST)
+    BaseOutput<List<BusinessChargeItemDto>> listByExample(BusinessChargeItemDto businessChargeItemDto);
+
+    /**
      * 获取单个收费项信息
      * @param id 收费项ID
      * @return
@@ -45,12 +51,4 @@ public interface BusinessChargeItemRpc {
     @RequestMapping(value = "/api/businessChargeItem/save", method = RequestMethod.POST)
     BaseOutput save(BusinessChargeItemDto businessChargeItemDto);
 
-    /**
-     * 根据市场及业务查询对应的费用项信息
-     * @param marketId   市场ID
-     * @param businessType 业务类型
-     * @param isEnable   是否已启用，如果为true/false，则会查询费用项本身及业务费用项都为启用/禁用 状态的数据，如果为空，则都会忽略此条件
-     */
-    @RequestMapping(value = "/api/businessChargeItem/listItemByMarketAndBusiness", method = RequestMethod.POST)
-    BaseOutput<List<ChargeItemDto>> listItemByMarketAndBusiness(@RequestParam("marketId") Long marketId, @RequestParam("businessType") String businessType, @RequestParam("isEnable") Boolean isEnable);
 }

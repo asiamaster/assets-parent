@@ -1,7 +1,6 @@
 package com.dili.assets.controller;
 
 import com.dili.assets.domain.BusinessChargeItem;
-import com.dili.assets.domain.ChargeItem;
 import com.dili.assets.service.BusinessChargeItemService;
 import com.dili.ss.domain.BaseOutput;
 import com.dili.ss.domain.PageOutput;
@@ -69,6 +68,19 @@ public class BusinessChargeItemController {
     }
 
     /**
+     * 分页查询收费项数据集
+     * @param businessChargeItem
+     * @return
+     */
+    @RequestMapping(value="/listByExample", method = {RequestMethod.POST})
+    public BaseOutput<List<BusinessChargeItem>> listByExample(@RequestBody(required = false) BusinessChargeItem businessChargeItem){
+        if (Objects.isNull(businessChargeItem)){
+            businessChargeItem = new BusinessChargeItem();
+        }
+        return BaseOutput.successData(businessChargeItemService.listByExample(businessChargeItem));
+    }
+
+    /**
      * 根据ID查询某收费项信息
      * @param id
      * @return
@@ -78,14 +90,4 @@ public class BusinessChargeItemController {
         return BaseOutput.success().setData(businessChargeItemService.get(id));
     }
 
-    /**
-     * 根据市场及业务查询对应的费用项信息
-     * @param marketId   市场ID
-     * @param businessType 业务类型
-     * @param isEnable   是否已启用，如果为true/false，则会查询费用项本身及业务费用项都为启用/禁用 状态的数据，如果为空，则都会忽略此条件
-     */
-    @RequestMapping(value = "/listItemByMarketAndBusiness", method = {RequestMethod.POST})
-    public BaseOutput<List<ChargeItem>> listItemByMarketAndBusiness(@RequestParam("marketId") Long marketId, @RequestParam("businessType") String businessType, @RequestParam(value = "isEnable", required = false) Boolean isEnable) {
-        return BaseOutput.success().setData(businessChargeItemService.listItemByMarketAndBusiness(marketId, businessType, isEnable));
-    }
 }

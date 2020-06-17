@@ -2,15 +2,18 @@ package com.dili.assets.domain;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.dili.ss.domain.BaseDomain;
+import com.dili.ss.domain.annotation.Operator;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 由MyBatis Generator工具自动生成
@@ -31,6 +34,12 @@ public class BusinessChargeItem extends BaseDomain {
     private Long id;
 
     /**
+     * 父项目ID,本项目的关联费用项
+     */
+    @Column(name = "`parent_id`")
+    private Long parentId;
+
+    /**
      * 所属市场
      */
     @Column(name = "`market_id`")
@@ -48,8 +57,15 @@ public class BusinessChargeItem extends BaseDomain {
      * 所属费用项
      */
     @Column(name = "`charge_item`")
-    @NotNull(message = "费用项不能为空")
-    private Long chargeItem;
+    @NotBlank(message = "费用项名称不能为空")
+    private String chargeItem;
+
+    /**
+     * 所属费用项
+     */
+    @Column(name = "`charge_type`")
+    @NotNull(message = "费用项类型不能为空")
+    private Integer chargeType;
 
     /**
      * 是否为必填项
@@ -69,6 +85,12 @@ public class BusinessChargeItem extends BaseDomain {
      */
     @Column(name = "`is_delete`")
     private Integer isDelete;
+
+    /**
+     * 财务费用科目
+     */
+    @Column(name = "`charge_subject`")
+    private Long chargeSubject;
 
     /**
      * 备注
@@ -98,5 +120,13 @@ public class BusinessChargeItem extends BaseDomain {
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime modifyTime;
+
+    /**
+     * ID 数据集
+     */
+    @Transient
+    @Column(name = "`id`")
+    @Operator(Operator.IN)
+    private List<Long> idList;
 
 }
