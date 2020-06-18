@@ -10,21 +10,18 @@ import com.dili.assets.mapper.CategoryMapper;
 import com.dili.assets.mapper.CustomCategoryMapper;
 import com.dili.assets.sdk.dto.CategoryDTO;
 import com.dili.assets.service.CustomCategoryService;
+import com.dili.commons.glossary.EnabledStateEnum;
 import com.dili.ss.domain.BaseOutput;
 import com.dili.ss.exception.BusinessException;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.*;
 
 /**
  * 由MyBatis Generator工具自动生成
@@ -57,7 +54,7 @@ public class CustomCategoryController {
         customCategory.setMarketId(input.getMarketId());
         List<CustomCategory> customCategories = customCategoryService.listByExample(customCategory);
         // 根据条件查询基础品类
-        input.setState(1); // 只查询基础品类中启用的数据
+        input.setState(EnabledStateEnum.ENABLED.getCode()); // 只查询基础品类中启用的数据
         if (StrUtil.isNotBlank(input.getKeyword())) {
             // 如果市场没设置任何品类，则只需要过滤基础数据
             if (CollUtil.isEmpty(customCategories)) {
@@ -86,12 +83,16 @@ public class CustomCategoryController {
                     CategoryDTO category = new CategoryDTO();
                     BeanUtil.copyProperties(obj, category);
                     // 如果是查询禁用的自定义品类则不展示基础品类数据
-                    if (state == null || state != 2) {
+                    if (state == null || !state.equals(EnabledStateEnum.DISABLED.getCode())) {
                         result.add(category);
                     }
                 }
             });
             return BaseOutput.success().setData(StrUtil.isNotBlank(input.getOrName()) ? searchCusName(result, input.getOrName()) : result);
+        }
+        // 如果没有市场自定义数据，且查询禁用则返回空
+        if (state != null && state.equals(EnabledStateEnum.DISABLED.getCode())) {
+            return BaseOutput.success().setData(new ArrayList<>());
         }
         return BaseOutput.success().setData(list);
     }
