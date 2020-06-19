@@ -1,5 +1,6 @@
 package com.dili.assets.sdk.dto;
 
+import com.dili.ss.domain.BaseDomain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
@@ -7,7 +8,7 @@ import java.util.Date;
 /**
  * 由PD Man工具自动生成
  */
-public class CategoryDTO {
+public class CategoryDTO extends BaseDomain{
     /**
      * id
      */
