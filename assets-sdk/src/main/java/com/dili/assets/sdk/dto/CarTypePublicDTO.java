@@ -33,7 +33,7 @@ public class CarTypePublicDTO extends BaseDomain {
     /**
      * 车型
      */
-    private String carTypeId;
+    private Long carTypeId;
 
     /**
      * 快捷编码
@@ -151,7 +151,7 @@ public class CarTypePublicDTO extends BaseDomain {
      *
      * @return car_type_id - 车型
      */
-    public String getCarTypeId() {
+    public Long getCarTypeId() {
         return carTypeId;
     }
 
@@ -160,7 +160,7 @@ public class CarTypePublicDTO extends BaseDomain {
      *
      * @param carTypeId 车型
      */
-    public void setCarTypeId(String carTypeId) {
+    public void setCarTypeId(Long carTypeId) {
         this.carTypeId = carTypeId;
     }
 
