@@ -18,7 +18,7 @@ import com.dili.commons.glossary.EnabledStateEnum;
 import com.dili.commons.glossary.YesOrNoEnum;
 import com.dili.ss.base.BaseServiceImpl;
 import com.dili.ss.domain.BaseOutput;
-import com.dili.ss.domain.EasyuiPageOutput;
+import com.dili.ss.domain.BasePage;
 import com.dili.ss.dto.DTOUtils;
 import com.dili.ss.dto.IDTO;
 import com.dili.ss.exception.BusinessException;
@@ -112,9 +112,10 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
                 input.setParentId(input.getId());
                 input.setId(null);
             }
-            List<Booth> booths = this.listByExample(input);
+            BasePage<Booth> boothBasePage = this.listPageByExample(input);
+            List<Booth> booths = boothBasePage.getDatas();
             if (input.getParentId() == null) {
-                count = booths.size();
+                count = boothBasePage.getTotalItem();
             }
             List results = ValueProviderUtils.buildDataByProvider(input, booths);
             List result = new ArrayList();
@@ -131,6 +132,7 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
             }
             JSONObject obj = new JSONObject();
             obj.put("rows", JSON.parseArray(resultJsonStr));
+            obj.put("total", count);
             obj.put("footer", JSON.parseArray("[{\"name\":\"总数:" + count + "\",\"iconCls\":\"icon-sum\"}]"));
             return obj.toJSONString();
         } catch (Exception e) {
