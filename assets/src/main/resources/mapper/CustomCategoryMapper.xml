@@ -51,4 +51,22 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <update id="batchUpdateCustomCategory">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    update custom_category
+    <set>
+
+      <if test="value != null">
+        state = #{value,jdbcType=TINYINT},
+      </if>
+
+    </set>
+    where id in
+    <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+        #{item}
+    </foreach>
+  </update>
 </mapper>
