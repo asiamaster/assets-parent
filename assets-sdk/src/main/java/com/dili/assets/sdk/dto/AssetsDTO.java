@@ -1,8 +1,10 @@
-package com.dili.assets.domain;
+package com.dili.assets.sdk.dto;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.dili.ss.domain.BaseDomain;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -10,104 +12,92 @@ import java.util.Date;
  * 摊位 ;
  * This file was generated on 2020-02-17 13:21:57.
  */
-@Table(name = "`booth`")
-public class Booth extends BaseDomain {
+public class AssetsDTO extends BaseDomain {
     /**
      * id
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "`id`")
     private Long id;
     /**
      * 摊位名称
      */
-    @Column(name = "`name`")
     private String name;
     /**
      * 数量
      */
-    @Column(name = "`number`")
     private Double number;
     /**
      * 单位
      */
-    @Column(name = "`unit`")
     private String unit;
     /**
      * 区域
      */
-    @Column(name = "`area`")
     private Integer area;
     /**
      * 区域
      */
-    @Column(name = "`second_area`")
     private Integer secondArea;
     /**
      * 摊位类型
      */
-    @Column(name = "`type`")
     private Integer type;
     /**
      * 所属部门
      */
-    @Column(name = "`department_id`")
     private Integer departmentId;
     /**
      * 市场
      */
-    @Column(name = "`market_id`")
     private Long marketId;
     /**
      * 父摊位
      */
-    @Column(name = "`parent_id`")
     private Long parentId;
     /**
      * 备注
      */
-    @Column(name = "`notes`")
     private String notes;
     /**
      * 状态
      */
-    @Column(name = "`state`")
     private Integer state;
-    /**
-     * 是否转角
-     */
-    @Column(name = "`corner`")
-    private Integer corner;
     /**
      * 是否删除
      */
-    @Column(name = "`is_delete`")
     private Integer isDelete;
     /**
      * 拆分备注
      */
-    @Column(name = "`split_notes`")
     private String splitNotes;
     /**
      * 创建人
      */
-    @Column(name = "`creator_id`")
     private Long creatorId;
+
+    /** 业务类型;1:摊位，2:冷库，3:公寓 */
+    private Integer businessType ;
     /**
      * 创建时间
      */
-    @Column(name = "`create_time`")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
     /**
      * 更新时间
      */
-    @Column(name = "`modify_time`")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date modifyTime;
 
-    /** 业务类型;1:摊位，2:冷库，3:公寓 */
-    @Column(name = "`business_type`")
-    private Integer businessType ;
+    private Integer corner;
+
+    private Date startTime;
+    private Date endTime;
+    private Double startNumber;
+    private Double endNumber;
+    private String deps;
 
     /**
      * id
@@ -177,20 +167,6 @@ public class Booth extends BaseDomain {
      */
     public void setArea(Integer area) {
         this.area = area;
-    }
-
-    /**
-     * 区域
-     */
-    public Integer getSecondArea() {
-        return this.secondArea;
-    }
-
-    /**
-     * 区域
-     */
-    public void setSecondArea(Integer secondArea) {
-        this.secondArea = secondArea;
     }
 
     /**
@@ -278,20 +254,6 @@ public class Booth extends BaseDomain {
     }
 
     /**
-     * 是否转角
-     */
-    public Integer getCorner() {
-        return this.corner;
-    }
-
-    /**
-     * 是否转角
-     */
-    public void setCorner(Integer corner) {
-        this.corner = corner;
-    }
-
-    /**
      * 是否删除
      */
     public Integer getIsDelete() {
@@ -318,7 +280,6 @@ public class Booth extends BaseDomain {
     public void setSplitNotes(String splitNotes) {
         this.splitNotes = splitNotes;
     }
-
 
     /**
      * 创建人
@@ -370,4 +331,118 @@ public class Booth extends BaseDomain {
     public void setBusinessType(Integer businessType){
         this.businessType = businessType;
     }
+
+    public Integer getSecondArea() {
+        return secondArea;
+    }
+
+    public void setSecondArea(Integer secondArea) {
+        this.secondArea = secondArea;
+    }
+
+    public Integer getCorner() {
+        return corner;
+    }
+
+    public void setCorner(Integer corner) {
+        this.corner = corner;
+    }
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
+    public Double getStartNumber() {
+        return startNumber;
+    }
+
+    public void setStartNumber(Double startNumber) {
+        this.startNumber = startNumber;
+    }
+
+    public Double getEndNumber() {
+        return endNumber;
+    }
+
+    public void setEndNumber(Double endNumber) {
+        this.endNumber = endNumber;
+    }
+
+    public String getDeps() {
+        return deps;
+    }
+
+    public void setDeps(String deps) {
+        this.deps = deps;
+    }
+
+    // ==========================字段转义==================================== //
+    private String unitName;
+    private String areaName;
+    private String secondAreaName;
+    private String departmentName;
+    private String cornerName;
+    private String creatorUser;
+
+    public String getCreatorUser() {
+        return creatorUser;
+    }
+
+    public void setCreatorUser(String creatorUser) {
+        this.creatorUser = creatorUser;
+    }
+
+    public String getUnitName() {
+        return unitName;
+    }
+
+    public void setUnitName(String unitName) {
+        this.unitName = unitName;
+    }
+
+    public String getAreaName() {
+        return areaName;
+    }
+
+    public void setAreaName(String areaName) {
+        this.areaName = areaName;
+    }
+
+    public String getSecondAreaName() {
+        return secondAreaName;
+    }
+
+    public void setSecondAreaName(String secondAreaName) {
+        this.secondAreaName = secondAreaName;
+    }
+
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
+    }
+
+    public String getCornerName() {
+        return cornerName;
+    }
+
+    public void setCornerName(String cornerName) {
+        this.cornerName = cornerName;
+    }
+
+    // ==========================字段转义==================================== //
 }
