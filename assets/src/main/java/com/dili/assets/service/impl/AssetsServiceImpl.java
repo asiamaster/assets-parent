@@ -5,20 +5,20 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.dili.assets.domain.Booth;
+import com.dili.assets.domain.Assets;
 import com.dili.assets.domain.BoothRent;
 import com.dili.assets.domain.District;
 import com.dili.assets.domain.query.BoothQuery;
 import com.dili.assets.glossary.StateEnum;
-import com.dili.assets.mapper.BoothMapper;
-import com.dili.assets.sdk.dto.BoothDTO;
-import com.dili.assets.service.BoothService;
+import com.dili.assets.mapper.AssetsMapper;
+import com.dili.assets.sdk.dto.AssetsDTO;
+import com.dili.assets.service.AssetsService;
 import com.dili.assets.service.DistrictService;
 import com.dili.commons.glossary.EnabledStateEnum;
 import com.dili.commons.glossary.YesOrNoEnum;
 import com.dili.ss.base.BaseServiceImpl;
 import com.dili.ss.domain.BaseOutput;
-import com.dili.ss.domain.EasyuiPageOutput;
+import com.dili.ss.domain.BasePage;
 import com.dili.ss.dto.DTOUtils;
 import com.dili.ss.dto.IDTO;
 import com.dili.ss.exception.BusinessException;
@@ -33,18 +33,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * 由MyBatis Generator工具自动生成
  * This file was generated on 2020-02-17 13:21:57.
  */
 @Service
-public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements BoothService {
+public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements AssetsService {
 
-    private final static Logger LOG = LoggerFactory.getLogger(BoothServiceImpl.class);
+    private final static Logger LOG = LoggerFactory.getLogger(AssetsServiceImpl.class);
 
     @Autowired
     DataDictionaryRpc dataDictionaryRpc;
@@ -58,17 +56,17 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
     @Autowired
     private BoothRentServiceImpl boothRentService;
 
-    public BoothMapper getActualDao() {
-        return (BoothMapper) getDao();
+    public AssetsMapper getActualDao() {
+        return (AssetsMapper) getDao();
     }
 
     @Override
     @Transactional
-    public void saveBooth(Booth booth) {
-        Booth query = new Booth();
+    public void saveBooth(Assets booth) {
+        Assets query = new Assets();
         query.setName(booth.getName());
         query.setIsDelete(YesOrNoEnum.NO.getCode());
-        List<Booth> check = this.listByExample(query);
+        List<Assets> check = this.listByExample(query);
         if (CollUtil.isNotEmpty(check)) {
             throw new BusinessException("5000", "摊位编号重复");
         }
@@ -115,9 +113,10 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
                 input.setParentId(input.getId());
                 input.setId(null);
             }
-            List<Booth> booths = this.listByExample(input);
-            if(input.getParentId() == null){
-                count = booths.size();
+            BasePage<Assets> boothBasePage = this.listPageByExample(input);
+            List<Assets> booths = boothBasePage.getDatas();
+            if (input.getParentId() == null) {
+                count = boothBasePage.getTotalItem();
             }
             List results = ValueProviderUtils.buildDataByProvider(input, booths);
             List result = new ArrayList();
@@ -134,6 +133,7 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
             }
             JSONObject obj = new JSONObject();
             obj.put("rows", JSON.parseArray(resultJsonStr));
+            obj.put("total", count);
             obj.put("footer", JSON.parseArray("[{\"name\":\"总数:" + count + "\",\"iconCls\":\"icon-sum\"}]"));
             return obj.toJSONString();
         } catch (Exception e) {
@@ -144,12 +144,12 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
 
     @Override
     public void deleteBooth(Long id) {
-        Booth booth = get(id);
+        Assets booth = get(id);
         booth.setIsDelete(YesOrNoEnum.YES.getCode());
-        Booth input = new Booth();
+        Assets input = new Assets();
         input.setParentId(id);
         input.setIsDelete(YesOrNoEnum.NO.getCode());
-        List<Booth> booths = this.listByExample(input);
+        List<Assets> booths = this.listByExample(input);
 
         if (CollUtil.isNotEmpty(booths)) {
             throw new BusinessException("500", "不能删除父摊位");
@@ -163,12 +163,12 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
         if (names == null || numbers == null) {
             return;
         }
-        Booth queryBooth = new Booth();
+        Assets queryBooth = new Assets();
         queryBooth.setParentId(parentId);
         queryBooth.setIsDelete(YesOrNoEnum.NO.getCode());
-        List<Booth> booths = this.listByExample(queryBooth);
+        List<Assets> booths = this.listByExample(queryBooth);
         if (CollUtil.isNotEmpty(booths)) {
-            for (Booth booth : booths) {
+            for (Assets booth : booths) {
                 BoothRent boothRent = new BoothRent();
                 boothRent.setBoothId(booth.getId());
                 List<BoothRent> boothRents = boothRentService.listByExample(boothRent);
@@ -184,12 +184,12 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
             throw new BusinessException("5000", "摊位已有租赁，不能拆分");
         }
         if (names.length == numbers.length) {
-            Booth parent = get(parentId);
+            Assets parent = get(parentId);
             if (parent.getState().equals(EnabledStateEnum.DISABLED.getCode()) || parent.getIsDelete().equals(YesOrNoEnum.YES.getCode())) {
                 throw new BusinessException("5000", "摊位禁用或删除，不能拆分");
             }
             for (int i = 0; i < names.length; i++) {
-                Booth booth = new Booth();
+                Assets booth = new Assets();
                 booth.setArea(parent.getArea());
                 booth.setName(names[i]);
                 booth.setNumber(Double.parseDouble(numbers[i]));
@@ -212,32 +212,54 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
     }
 
     @Override
-    public List<BoothDTO> search(BoothQuery query) {
-        List<BoothDTO> result = new ArrayList<>();
-        List<Booth> list = listByExample(query);
+    public List<AssetsDTO> search(BoothQuery query) {
+        List<AssetsDTO> result = new ArrayList<>();
+        query.setPage(1);
+        query.setRows(20);
+        List<Assets> list = listPageByExample(query).getDatas();
         if (CollUtil.isNotEmpty(list)) {
+            Map<String, String> unitCache = new HashMap<>();
+            Map<String, String> disCache = new HashMap<>();
             list.forEach(obj -> {
-                BoothDTO dto = new BoothDTO();
+                AssetsDTO dto = new AssetsDTO();
                 BeanUtil.copyProperties(obj, dto);
-                // 转换单位
-                DataDictionaryValue dataDictionaryValue = DTOUtils.newDTO(DataDictionaryValue.class);
-                dataDictionaryValue.setCode(obj.getUnit());
 
-                BaseOutput<List<DataDictionaryValue>> listBaseOutput = dataDictionaryRpc.listDataDictionaryValue(dataDictionaryValue);
-                List<DataDictionaryValue> data = listBaseOutput.getData();
-                for (DataDictionaryValue datum : data) {
-                    if (datum.getCode().equals(obj.getUnit())) {
-                        dto.setUnitName(datum.getName());
+                // 转换单位
+                if (unitCache.containsKey(obj.getUnit())) {
+                    dto.setUnitName(unitCache.get(obj.getUnit()));
+                } else {
+                    DataDictionaryValue dataDictionaryValue = DTOUtils.newDTO(DataDictionaryValue.class);
+                    dataDictionaryValue.setCode(obj.getUnit());
+
+                    BaseOutput<List<DataDictionaryValue>> listBaseOutput = dataDictionaryRpc.listDataDictionaryValue(dataDictionaryValue);
+                    List<DataDictionaryValue> data = listBaseOutput.getData();
+                    for (DataDictionaryValue datum : data) {
+                        if (datum.getCode().equals(obj.getUnit())) {
+                            dto.setUnitName(datum.getName());
+                            unitCache.put(obj.getUnit(), datum.getName());
+                        }
                     }
                 }
                 // 转换一级区域
-                District district = districtService.get(obj.getArea().longValue());
-                dto.setAreaName(district.getName());
+                if (disCache.containsKey(obj.getArea().toString())) {
+                    dto.setAreaName(disCache.get(obj.getArea().toString()));
+                } else {
+                    District district = districtService.get(obj.getArea().longValue());
+                    dto.setAreaName(district.getName());
+                    disCache.put(obj.getArea().toString(), district.getName());
+                }
+
                 // 转换二级区域
                 if (obj.getSecondArea() != null) {
-                    District districtSecond = districtService.get(obj.getSecondArea().longValue());
-                    dto.setSecondAreaName(districtSecond.getName());
+                    if (disCache.containsKey(obj.getSecondArea().toString())) {
+                        dto.setAreaName(disCache.get(obj.getSecondArea().toString()));
+                    } else {
+                        District districtSecond = districtService.get(obj.getSecondArea().longValue());
+                        dto.setSecondAreaName(districtSecond.getName());
+                        disCache.put(obj.getSecondArea().toString(), districtSecond.getName());
+                    }
                 }
+
                 if (obj.getCorner() != null) {
                     dto.setCornerName(obj.getCorner() == 1 ? "是" : "否");
                 }
@@ -249,12 +271,12 @@ public class BoothServiceImpl extends BaseServiceImpl<Booth, Long> implements Bo
 
     @Override
     public Double getBoothBalance(Long id) {
-        Booth booth = get(id);
+        Assets booth = get(id);
         if (booth.getParentId() == 0) {
-            Booth input = new Booth();
+            Assets input = new Assets();
             input.setParentId(id);
             input.setIsDelete(YesOrNoEnum.NO.getCode());
-            List<Booth> booths = this.listByExample(input);
+            List<Assets> booths = this.listByExample(input);
 
             var ref = new Object() {
                 Double number = 0D;

@@ -1,8 +1,8 @@
 package com.dili.assets.service;
 
-import com.dili.assets.domain.Booth;
+import com.dili.assets.domain.Assets;
 import com.dili.assets.domain.query.BoothQuery;
-import com.dili.assets.sdk.dto.BoothDTO;
+import com.dili.assets.sdk.dto.AssetsDTO;
 import com.dili.ss.base.BaseService;
 
 import java.util.List;
@@ -11,11 +11,11 @@ import java.util.List;
  * 由MyBatis Generator工具自动生成
  * This file was generated on 2020-02-17 13:21:57.
  */
-public interface BoothService extends BaseService<Booth, Long> {
+public interface AssetsService extends BaseService<Assets, Long> {
     /**
      * 新增摊位
      */
-    void saveBooth(Booth booth);
+    void saveBooth(Assets booth);
 
     /**
      * 获取摊位列表
@@ -35,7 +35,7 @@ public interface BoothService extends BaseService<Booth, Long> {
     /**
      * 搜索摊位
      */
-    List<BoothDTO> search(BoothQuery query);
+    List<AssetsDTO> search(BoothQuery query);
 
     /**
      * 获取摊位剩余面积

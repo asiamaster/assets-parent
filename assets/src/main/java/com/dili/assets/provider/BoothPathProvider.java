@@ -1,7 +1,7 @@
 package com.dili.assets.provider;
 
-import com.dili.assets.domain.Booth;
-import com.dili.assets.service.BoothService;
+import com.dili.assets.domain.Assets;
+import com.dili.assets.service.AssetsService;
 import com.dili.ss.metadata.FieldMeta;
 import com.dili.ss.metadata.ValuePair;
 import com.dili.ss.metadata.ValueProvider;
@@ -15,7 +15,7 @@ import java.util.Map;
 @Component
 public class BoothPathProvider implements ValueProvider {
     @Autowired
-    private BoothService boothService;
+    private AssetsService boothService;
 
     @Override
     public List<ValuePair<?>> getLookupList(Object val, Map metaMap, FieldMeta fieldMeta) {
@@ -31,7 +31,7 @@ public class BoothPathProvider implements ValueProvider {
         if (rowData.get("parentId").toString().equals("0")) {
             return rowData.get("name").toString();
         } else {
-            Booth parent = boothService.get(Long.parseLong(rowData.get("parentId").toString()));
+            Assets parent = boothService.get(Long.parseLong(rowData.get("parentId").toString()));
             return parent.getName() + "," + rowData.get("name").toString();
         }
     }

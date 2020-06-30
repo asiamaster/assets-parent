@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.dili.assets.mapper.BoothMapper">
-  <resultMap id="BaseResultMap" type="com.dili.assets.domain.Booth">
+<mapper namespace="com.dili.assets.mapper.AssetsMapper">
+  <resultMap id="BaseResultMap" type="com.dili.assets.domain.Assets">
     <!--
       WARNING - @mbg.generated
     -->
@@ -39,14 +39,14 @@
     -->
     select 
     <include refid="Base_Column_List" />
-    from booth
+    from assets
     where id = #{id,jdbcType=BIGINT}
   </select>
-  <update id="updateBy" parameterType="com.dili.assets.domain.Booth">
+  <update id="updateBy" parameterType="com.dili.assets.domain.Assets">
     <!--
       WARNING - @mbg.generated
     -->
-    update booth
+    update assets
     <set>
       <if test="name != null">
         name = #{name,jdbcType=VARCHAR},

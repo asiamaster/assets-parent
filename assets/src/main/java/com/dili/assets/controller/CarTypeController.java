@@ -1,6 +1,6 @@
 package com.dili.assets.controller;
 
-import com.dili.assets.domain.Booth;
+import com.dili.assets.domain.Assets;
 import com.dili.assets.domain.CarType;
 import com.dili.assets.domain.CarTypePublic;
 import com.dili.assets.service.CarTypeService;
@@ -97,7 +97,7 @@ public class CarTypeController {
      * @return
      */
     @RequestMapping("get")
-    public @ResponseBody BaseOutput<Booth> get(@RequestBody Long id) {
+    public @ResponseBody BaseOutput<Assets> get(@RequestBody Long id) {
         return BaseOutput.success().setData(carTypeService.get(id));
     }
 }
