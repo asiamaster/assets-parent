@@ -120,6 +120,8 @@ public class CarTypePublicQuery extends BaseDomain {
     
     private List<DataDictionaryValue> tags;
     
+    private List<Long> ids;
+    
     /**
      * 业务编码
      */
@@ -445,6 +447,14 @@ public class CarTypePublicQuery extends BaseDomain {
 
 	public void setKeyword(String keyword) {
 		this.keyword = keyword;
+	}
+
+	public List<Long> getIds() {
+		return ids;
+	}
+
+	public void setIds(List<Long> ids) {
+		this.ids = ids;
 	}
 
 }

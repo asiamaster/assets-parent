@@ -1,5 +1,7 @@
 package com.dili.assets.sdk.dto;
 
+import java.util.List;
+
 /**
  * 由MyBatis Generator工具自动生成
  * 车型
@@ -50,6 +52,8 @@ public class CarTypeForJmsfDTO {
      * 标签
      */
     private String tag;
+    
+    private List<Long> ids;
 
 	public Long getId() {
 		return id;
@@ -121,6 +125,14 @@ public class CarTypeForJmsfDTO {
 
 	public void setTag(String tag) {
 		this.tag = tag;
+	}
+
+	public List<Long> getIds() {
+		return ids;
+	}
+
+	public void setIds(List<Long> ids) {
+		this.ids = ids;
 	}
 
     
