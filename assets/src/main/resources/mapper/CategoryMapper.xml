@@ -111,6 +111,13 @@
             <if test="parent !=null">
                 and `parent`=#{parent}
             </if>
+             <if test="ids !=null">
+                 and id in
+                 <foreach item="item" collection="ids" separator="," open="(" close=")" index="">
+                     #{item, jdbcType=BIGINT}
+                 </foreach>
+            </if>
+
         </where>
     </select>
 </mapper>

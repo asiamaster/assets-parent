@@ -3,10 +3,10 @@ package com.dili.assets.domain.query;
 import com.dili.assets.domain.Category;
 import com.dili.ss.domain.annotation.Like;
 import com.dili.ss.domain.annotation.Operator;
-import com.dili.ss.domain.annotation.SqlOperator;
 
 import javax.persistence.Column;
 import javax.persistence.Transient;
+import java.util.List;
 
 /**
  * 用于构造查询条件的实体
@@ -48,6 +48,17 @@ public class CategoryQuery extends Category {
 
     @Transient
     private String orName;
+
+    @Transient
+    private List<String> ids;
+
+    public List<String> getIds() {
+        return ids;
+    }
+
+    public void setIds(List<String> ids) {
+        this.ids = ids;
+    }
 
     public String getKeyword() {
         return keyword;
