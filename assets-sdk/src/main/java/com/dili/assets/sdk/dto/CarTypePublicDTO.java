@@ -109,6 +109,8 @@ public class CarTypePublicDTO extends BaseDomain {
     
     @Transient
     private String number;
+    
+    private List<Long> ids;
 
     /**
      * 获取id
@@ -344,4 +346,13 @@ public class CarTypePublicDTO extends BaseDomain {
 	public void setNumber(String number) {
 		this.number = number;
 	}
+
+	public List<Long> getIds() {
+		return ids;
+	}
+
+	public void setIds(List<Long> ids) {
+		this.ids = ids;
+	}
+	
 }

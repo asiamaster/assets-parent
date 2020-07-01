@@ -54,7 +54,22 @@ public class CarTypeForJmsfDTO {
     private String tag;
     
     private List<Long> ids;
-
+    
+    /**
+     * 业务编码
+     */
+    private String businessCode;
+    
+    /**
+     * 业务编码
+     */
+    private String keyword;
+    
+    /**
+     * 市场
+     */
+    private Long marketId;
+    
 	public Long getId() {
 		return id;
 	}
@@ -133,6 +148,30 @@ public class CarTypeForJmsfDTO {
 
 	public void setIds(List<Long> ids) {
 		this.ids = ids;
+	}
+
+	public String getBusinessCode() {
+		return businessCode;
+	}
+
+	public void setBusinessCode(String businessCode) {
+		this.businessCode = businessCode;
+	}
+
+	public String getKeyword() {
+		return keyword;
+	}
+
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
+	}
+
+	public Long getMarketId() {
+		return marketId;
+	}
+
+	public void setMarketId(Long marketId) {
+		this.marketId = marketId;
 	}
 
     
