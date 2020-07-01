@@ -1,29 +1,24 @@
 package com.dili.assets.provider;
 
-import com.dili.commons.glossary.EnabledStateEnum;
-import com.dili.ss.metadata.FieldMeta;
-import com.dili.ss.metadata.ValuePair;
-import com.dili.ss.metadata.ValuePairImpl;
-import com.dili.ss.metadata.ValueProvider;
-import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-/**
- * <B>Description</B>
- * 本软件源代码版权归农丰时代及其团队所有,未经许可不得任意复制与传播
- * <B>农丰时代科技有限公司</B>
- *
- * @author qinkelan
- * @createTime 2020-02-11 17:38
- */
+import org.springframework.stereotype.Component;
+
+import com.dili.commons.glossary.EnabledStateEnum;
+import com.dili.ss.metadata.FieldMeta;
+import com.dili.ss.metadata.ValuePair;
+import com.dili.ss.metadata.ValuePairImpl;
+import com.dili.ss.metadata.ValueProvider;
+
+
 @Component
-public class BoothStateProvider implements ValueProvider {
+public class CarTypeStateProvider implements ValueProvider {
     private static final List<ValuePair<?>> BUFFER = new ArrayList<>();
+
 
     static {
         BUFFER.addAll(Stream.of(EnabledStateEnum.values())
@@ -42,7 +37,7 @@ public class BoothStateProvider implements ValueProvider {
             return null;
         }
         for (ValuePair<?> valuePair : BUFFER) {
-            if(valuePair.getValue().equals(object.toString())){
+            if (valuePair.getValue().equals(object.toString())) {
                 return valuePair.getText();
             }
         }

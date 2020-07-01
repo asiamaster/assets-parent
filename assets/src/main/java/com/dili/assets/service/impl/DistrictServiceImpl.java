@@ -5,7 +5,7 @@ import com.dili.assets.domain.District;
 import com.dili.assets.domain.query.BoothQuery;
 import com.dili.assets.glossary.StateEnum;
 import com.dili.assets.mapper.DistrictMapper;
-import com.dili.assets.service.BoothService;
+import com.dili.assets.service.AssetsService;
 import com.dili.assets.service.DistrictService;
 import com.dili.commons.glossary.YesOrNoEnum;
 import com.dili.ss.base.BaseServiceImpl;
@@ -29,7 +29,7 @@ public class DistrictServiceImpl extends BaseServiceImpl<District, Long> impleme
     }
 
     @Autowired
-    private BoothService boothService;
+    private AssetsService boothService;
 
     @Override
     public void saveDistrict(District input) {

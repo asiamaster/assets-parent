@@ -1,11 +1,17 @@
 package com.dili.assets.domain.query;
 
 import com.dili.assets.domain.District;
+import com.dili.ss.domain.annotation.Like;
 import com.dili.ss.domain.annotation.Operator;
 
 import javax.persistence.Column;
+import java.util.List;
 
 public class DistrictQuery extends District {
+
+    @Operator(Operator.IN)
+    @Column(name = "`id`")
+    private List<String> ids;
 
     private String deps;
 
@@ -15,5 +21,13 @@ public class DistrictQuery extends District {
 
     public void setDeps(String deps) {
         this.deps = deps;
+    }
+
+    public List<String> getIds() {
+        return ids;
+    }
+
+    public void setIds(List<String> ids) {
+        this.ids = ids;
     }
 }

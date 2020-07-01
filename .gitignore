@@ -1,7 +1,7 @@
 .idea/
 */target/
 *.iml
-*.log
+/logs
 .project
 **/rebel.xml
 **/.project

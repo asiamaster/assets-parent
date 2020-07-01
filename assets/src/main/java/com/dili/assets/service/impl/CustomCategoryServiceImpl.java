@@ -43,18 +43,19 @@ public class CustomCategoryServiceImpl extends BaseServiceImpl<CustomCategory, L
             child_ids.add(id);
         }
         List<CustomCategory> batchInsertList = new ArrayList<>();
+        List<Long> batchUpdatetList = new ArrayList<>();
+        // 构建条件
+        CustomCategory cc_condition = new CustomCategory();
+        cc_condition.setMarketId(marketId);
+        List<CustomCategory> list = this.listByExample(cc_condition);
         for (Long child_id : child_ids) {
-            // 构建条件
-            CustomCategory cc_condition = new CustomCategory();
-            cc_condition.setMarketId(marketId);
-            cc_condition.setCategory(child_id);
             // 处理当前更改的品类状态，如果自定义品类库没有则新增，否则直接改状态
-            List<CustomCategory> list = this.listByExample(cc_condition);
-
             if (CollUtil.isNotEmpty(list)) {
-                CustomCategory c_category = list.get(0);
-                c_category.setState(value);
-                batchInsertList.add(c_category);
+                for (CustomCategory c_category : list) {
+                    if (c_category.getCategory().equals(child_id)) {
+                        batchUpdatetList.add(c_category.getId());
+                    }
+                }
             } else {
                 CustomCategory c_category = new CustomCategory();
                 c_category.setState(value);
@@ -63,6 +64,14 @@ public class CustomCategoryServiceImpl extends BaseServiceImpl<CustomCategory, L
                 batchInsertList.add(c_category);
             }
         }
-        this.batchInsert(batchInsertList);
+        // 批量新增的数据
+        if (CollUtil.isNotEmpty(batchInsertList)) {
+            this.batchInsert(batchInsertList);
+        }
+        // 批量修改的数据
+        if (CollUtil.isNotEmpty(batchUpdatetList)) {
+            this.getActualDao().batchUpdateCustomCategory(value, batchUpdatetList);
+        }
+
     }
 }

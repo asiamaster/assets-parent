@@ -1,13 +1,15 @@
 package com.dili.assets.sdk.dto;
 
+import com.dili.ss.domain.BaseDomain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 由PD Man工具自动生成
  */
-public class CategoryDTO {
+public class CategoryDTO extends BaseDomain{
     /**
      * id
      */
@@ -239,6 +241,16 @@ public class CategoryDTO {
 
     private String keycode;
 
+    private List<String> ids;
+
+    public List<String> getIds() {
+        return ids;
+    }
+
+    public void setIds(List<String> ids) {
+        this.ids = ids;
+    }
+
     public String getCusName() {
         return cusName;
     }
@@ -274,4 +286,5 @@ public class CategoryDTO {
     public void setKeyword(String keyword) {
         this.keyword = keyword;
     }
+
 }

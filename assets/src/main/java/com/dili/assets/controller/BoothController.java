@@ -1,10 +1,9 @@
 package com.dili.assets.controller;
 
-import com.dili.assets.domain.Booth;
+import com.dili.assets.domain.Assets;
 import com.dili.assets.domain.query.BoothQuery;
-import com.dili.assets.sdk.dto.BoothDTO;
-import com.dili.assets.service.BoothService;
-import com.dili.commons.glossary.EnabledStateEnum;
+import com.dili.assets.sdk.dto.AssetsDTO;
+import com.dili.assets.service.AssetsService;
 import com.dili.commons.glossary.YesOrNoEnum;
 import com.dili.ss.domain.BaseOutput;
 import com.dili.ss.exception.BusinessException;
@@ -25,7 +24,7 @@ import java.util.List;
 @RequestMapping("/api/booth")
 public class BoothController {
     @Autowired
-    BoothService boothService;
+    AssetsService boothService;
 
     /**
      * 新增摊位
@@ -34,7 +33,7 @@ public class BoothController {
      * @return
      */
     @RequestMapping("save")
-    public BaseOutput save(@RequestBody Booth booth) {
+    public BaseOutput save(@RequestBody Assets booth) {
         try {
             booth.setCreateTime(new Date());
             booth.setModifyTime(new Date());
@@ -49,7 +48,7 @@ public class BoothController {
      * 搜索摊位
      */
     @RequestMapping("search")
-    public BaseOutput<List<BoothDTO>> search(@RequestBody BoothQuery query) {
+    public BaseOutput<List<AssetsDTO>> search(@RequestBody BoothQuery query) {
         query.setIsDelete(YesOrNoEnum.NO.getCode());
         return BaseOutput.success().setData(boothService.search(query));
     }
@@ -61,7 +60,7 @@ public class BoothController {
      * @return
      */
     @RequestMapping("get")
-    public BaseOutput<Booth> get(@RequestBody Long id) {
+    public BaseOutput<Assets> get(@RequestBody Long id) {
         return BaseOutput.success().setData(boothService.get(id));
     }
 
@@ -72,7 +71,7 @@ public class BoothController {
      * @return
      */
     @RequestMapping("update")
-    public BaseOutput update(@RequestBody Booth booth) {
+    public BaseOutput update(@RequestBody Assets booth) {
         boothService.updateSelective(booth);
         return BaseOutput.success();
     }

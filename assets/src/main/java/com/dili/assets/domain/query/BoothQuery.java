@@ -1,6 +1,6 @@
 package com.dili.assets.domain.query;
 
-import com.dili.assets.domain.Booth;
+import com.dili.assets.domain.Assets;
 import com.dili.ss.domain.annotation.Like;
 import com.dili.ss.domain.annotation.Operator;
 
@@ -10,7 +10,7 @@ import java.util.Date;
 /**
  * @author shaofan
  */
-public class BoothQuery extends Booth {
+public class BoothQuery extends Assets {
 
 
     // ==========================动态SQL过滤字段==================================== //
