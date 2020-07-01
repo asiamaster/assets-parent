@@ -12,12 +12,9 @@ import com.dili.assets.domain.BankUnionInfo;
 import com.dili.assets.service.BankUnionInfoService;
 import com.dili.ss.domain.BaseOutput;
 
-import io.swagger.annotations.Api;
-
 /**
  * 由MyBatis Generator工具自动生成 This file was generated on 2020-05-25 16:11:17.
  */
-@Api("/bankUnionInfo")
 @RestController
 @RequestMapping("/api/bankUnionInfo")
 public class BankUnionInfoController {

@@ -1,8 +1,15 @@
 package com.dili.assets.controller;
 
-import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.StrUtil;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.dili.assets.domain.Category;
 import com.dili.assets.domain.CustomCategory;
 import com.dili.assets.domain.query.CategoryQuery;
@@ -12,19 +19,9 @@ import com.dili.assets.sdk.dto.CategoryDTO;
 import com.dili.assets.service.CustomCategoryService;
 import com.dili.ss.domain.BaseOutput;
 import com.dili.ss.exception.BusinessException;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.*;
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
 
 /**
  * 由MyBatis Generator工具自动生成

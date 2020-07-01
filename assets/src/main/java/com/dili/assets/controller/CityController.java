@@ -12,12 +12,9 @@ import com.dili.assets.domain.City;
 import com.dili.assets.service.CityService;
 import com.dili.ss.domain.BaseOutput;
 
-import io.swagger.annotations.Api;
-
 /**
  * 由MyBatis Generator工具自动生成 This file was generated on 2020-05-21 15:27:39.
  */
-@Api("/city")
 @RestController
 @RequestMapping("/api/city")
 public class CityController {
