@@ -17,7 +17,6 @@ import com.dili.assets.service.DistrictService;
 import com.dili.commons.glossary.EnabledStateEnum;
 import com.dili.commons.glossary.YesOrNoEnum;
 import com.dili.ss.base.BaseServiceImpl;
-import com.dili.ss.domain.BaseOutput;
 import com.dili.ss.domain.BasePage;
 import com.dili.ss.dto.DTOUtils;
 import com.dili.ss.dto.IDTO;
@@ -33,7 +32,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * 由MyBatis Generator工具自动生成
@@ -63,10 +65,10 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
     @Override
     @Transactional
     public void saveBooth(Assets booth) {
-        Assets query = new Assets();
+        var query = new Assets();
         query.setName(booth.getName());
         query.setIsDelete(YesOrNoEnum.NO.getCode());
-        List<Assets> check = this.listByExample(query);
+        var check = this.listByExample(query);
         if (CollUtil.isNotEmpty(check)) {
             throw new BusinessException("5000", "摊位编号重复");
         }
@@ -80,7 +82,7 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
     @Override
     public String listForPage(BoothQuery input) {
         try {
-            BoothQuery countInput = new BoothQuery();
+            var countInput = new BoothQuery();
             if (input == null) {
                 input = new BoothQuery();
             }
@@ -114,24 +116,24 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
                 input.setId(null);
             }
             BasePage<Assets> boothBasePage = this.listPageByExample(input);
-            List<Assets> booths = boothBasePage.getDatas();
+            var booths = boothBasePage.getDatas();
             if (input.getParentId() == null) {
                 count = boothBasePage.getTotalItem();
             }
-            List results = ValueProviderUtils.buildDataByProvider(input, booths);
-            List result = new ArrayList();
+            var results = ValueProviderUtils.buildDataByProvider(input, booths);
+            var result = new ArrayList();
 
-            for (Object district : results) {
-                JSONObject json = JSON.parseObject(JSON.toJSONString(district));
+            for (var district : results) {
+                var json = JSON.parseObject(JSON.toJSONString(district));
                 json.put("status", json.getString("state"));
                 json.put("state", "closed");
                 result.add(json);
             }
-            String resultJsonStr = JSONObject.toJSONString(result);
+            var resultJsonStr = JSONObject.toJSONString(result);
             if (expand) {
                 return resultJsonStr;
             }
-            JSONObject obj = new JSONObject();
+            var obj = new JSONObject();
             obj.put("rows", JSON.parseArray(resultJsonStr));
             obj.put("total", count);
             obj.put("footer", JSON.parseArray("[{\"name\":\"总数:" + count + "\",\"iconCls\":\"icon-sum\"}]"));
@@ -144,12 +146,12 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
 
     @Override
     public void deleteBooth(Long id) {
-        Assets booth = get(id);
+        var booth = get(id);
         booth.setIsDelete(YesOrNoEnum.YES.getCode());
-        Assets input = new Assets();
+        var input = new Assets();
         input.setParentId(id);
         input.setIsDelete(YesOrNoEnum.NO.getCode());
-        List<Assets> booths = this.listByExample(input);
+        var booths = this.listByExample(input);
 
         if (CollUtil.isNotEmpty(booths)) {
             throw new BusinessException("500", "不能删除父摊位");
@@ -163,33 +165,33 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
         if (names == null || numbers == null) {
             return;
         }
-        Assets queryBooth = new Assets();
+        var queryBooth = new Assets();
         queryBooth.setParentId(parentId);
         queryBooth.setIsDelete(YesOrNoEnum.NO.getCode());
-        List<Assets> booths = this.listByExample(queryBooth);
+        var booths = this.listByExample(queryBooth);
         if (CollUtil.isNotEmpty(booths)) {
-            for (Assets booth : booths) {
-                BoothRent boothRent = new BoothRent();
+            for (var booth : booths) {
+                var boothRent = new BoothRent();
                 boothRent.setBoothId(booth.getId());
-                List<BoothRent> boothRents = boothRentService.listByExample(boothRent);
+                var boothRents = boothRentService.listByExample(boothRent);
                 if (CollUtil.isNotEmpty(boothRents)) {
                     throw new BusinessException("5000", "摊位已有租赁，不能拆分");
                 }
             }
         }
-        BoothRent boothRent = new BoothRent();
+        var boothRent = new BoothRent();
         boothRent.setBoothId(parentId);
-        List<BoothRent> boothRents = boothRentService.listByExample(boothRent);
+        var boothRents = boothRentService.listByExample(boothRent);
         if (CollUtil.isNotEmpty(boothRents)) {
             throw new BusinessException("5000", "摊位已有租赁，不能拆分");
         }
         if (names.length == numbers.length) {
-            Assets parent = get(parentId);
+            var parent = get(parentId);
             if (parent.getState().equals(EnabledStateEnum.DISABLED.getCode()) || parent.getIsDelete().equals(YesOrNoEnum.YES.getCode())) {
                 throw new BusinessException("5000", "摊位禁用或删除，不能拆分");
             }
             for (int i = 0; i < names.length; i++) {
-                Assets booth = new Assets();
+                var booth = new Assets();
                 booth.setArea(parent.getArea());
                 booth.setName(names[i]);
                 booth.setNumber(Double.parseDouble(numbers[i]));
@@ -213,13 +215,13 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
 
     @Override
     public List<AssetsDTO> search(BoothQuery query) {
-        List<AssetsDTO> result = new ArrayList<>();
+        var result = new ArrayList<AssetsDTO>();
         query.setPage(1);
         query.setRows(20);
-        List<Assets> list = listPageByExample(query).getDatas();
+        var list = listPageByExample(query).getDatas();
         if (CollUtil.isNotEmpty(list)) {
-            Map<String, String> unitCache = new HashMap<>();
-            Map<String, String> disCache = new HashMap<>();
+            var unitCache = new HashMap<String, String>();
+            var disCache = new HashMap<String, String>();
             list.forEach(obj -> {
                 AssetsDTO dto = new AssetsDTO();
                 BeanUtil.copyProperties(obj, dto);
@@ -231,7 +233,7 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
                     DataDictionaryValue dataDictionaryValue = DTOUtils.newDTO(DataDictionaryValue.class);
                     dataDictionaryValue.setCode(obj.getUnit());
 
-                    BaseOutput<List<DataDictionaryValue>> listBaseOutput = dataDictionaryRpc.listDataDictionaryValue(dataDictionaryValue);
+                    var listBaseOutput = dataDictionaryRpc.listDataDictionaryValue(dataDictionaryValue);
                     List<DataDictionaryValue> data = listBaseOutput.getData();
                     for (DataDictionaryValue datum : data) {
                         if (datum.getCode().equals(obj.getUnit())) {
