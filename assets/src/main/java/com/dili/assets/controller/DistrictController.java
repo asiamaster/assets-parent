@@ -3,14 +3,12 @@ package com.dili.assets.controller;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.dili.assets.domain.District;
 import com.dili.assets.domain.query.DistrictQuery;
 import com.dili.assets.glossary.StateEnum;
 import com.dili.assets.service.DistrictService;
 import com.dili.ss.domain.BaseOutput;
-import com.dili.ss.domain.EasyuiPageOutput;
 import com.dili.ss.dto.IDTO;
 import com.dili.ss.exception.BusinessException;
 import com.dili.ss.metadata.ValueProviderUtils;
@@ -22,8 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * 由MyBatis Generator工具自动生成
@@ -68,6 +64,27 @@ public class DistrictController {
     public BaseOutput<District> get(@RequestBody Long id) {
         District district = districtService.get(id);
         return BaseOutput.success().setData(district);
+    }
+
+    /**
+     * 获取单个区域
+     */
+    @RequestMapping("listChild")
+    public BaseOutput<List<District>> listChild(@RequestBody Long id) {
+        List<District> result = new ArrayList<>();
+        District district = districtService.get(id);
+        if (district != null) {
+            result.add(district);
+            if (district.getParentId() == 0) {
+                District query = new District();
+                query.setParentId(district.getId());
+                List<District> districts = districtService.listByExample(query);
+                if (CollUtil.isNotEmpty(districts)) {
+                    result.addAll(districts);
+                }
+            }
+        }
+        return BaseOutput.success().setData(result);
     }
 
     /**
@@ -118,7 +135,7 @@ public class DistrictController {
                 input.setId(null);
             }
             List<District> districts = districtService.listByExample(input);
-            if(input.getParentId() == null){
+            if (input.getParentId() == null) {
                 count = districts.size();
             }
             List results = ValueProviderUtils.buildDataByProvider(input, districts);
