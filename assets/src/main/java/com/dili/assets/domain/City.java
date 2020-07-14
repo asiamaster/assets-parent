@@ -2,11 +2,14 @@ package com.dili.assets.domain;
 
 import com.dili.ss.domain.BaseDomain;
 import com.dili.ss.domain.annotation.Like;
+import com.dili.ss.domain.annotation.Operator;
 import com.dili.ss.metadata.FieldEditor;
 import com.dili.ss.metadata.annotation.EditMode;
 import com.dili.ss.metadata.annotation.FieldDef;
-import java.util.Date;
+
 import javax.persistence.*;
+import java.util.Date;
+import java.util.List;
 
 /**
  * 由MyBatis Generator工具自动生成
@@ -95,6 +98,14 @@ public class City extends BaseDomain {
      */
     @Column(name = "`yn`")
     private Boolean yn;
+
+    /**
+     * 根据ID集合查询
+     */
+    @Transient
+    @Column(name = "`id`")
+    @Operator(Operator.IN)
+    private List<Long> idList;
 
     /**
      * @return id
@@ -362,5 +373,13 @@ public class City extends BaseDomain {
      */
     public void setYn(Boolean yn) {
         this.yn = yn;
+    }
+
+    public List<Long> getIdList() {
+        return idList;
+    }
+
+    public void setIdList(List<Long> idList) {
+        this.idList = idList;
     }
 }

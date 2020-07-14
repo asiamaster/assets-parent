@@ -1,6 +1,7 @@
 package com.dili.assets.sdk.dto;
 
 import java.util.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -68,6 +69,11 @@ public class CityDto {
 	 * 是否有效（1：有效 -1：无效）
 	 */
 	private Boolean yn;
+
+	/**
+	 * ID集查询
+	 */
+	private List<Long> idList;
 
 	/**
 	 * @return id
@@ -307,5 +313,13 @@ public class CityDto {
 	 */
 	public void setYn(Boolean yn) {
 		this.yn = yn;
+	}
+
+	public List<Long> getIdList() {
+		return idList;
+	}
+
+	public void setIdList(List<Long> idList) {
+		this.idList = idList;
 	}
 }
