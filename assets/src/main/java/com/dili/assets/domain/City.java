@@ -1,6 +1,7 @@
 package com.dili.assets.domain;
 
 import com.dili.ss.domain.BaseDomain;
+import com.dili.ss.domain.annotation.Like;
 import com.dili.ss.metadata.FieldEditor;
 import com.dili.ss.metadata.annotation.EditMode;
 import com.dili.ss.metadata.annotation.FieldDef;
@@ -35,6 +36,7 @@ public class City extends BaseDomain {
      * 名称
      */
     @Column(name = "`name`")
+    @Like
     private String name;
 
     /**
@@ -47,6 +49,7 @@ public class City extends BaseDomain {
      * 简称
      */
     @Column(name = "`short_name`")
+    @Like
     private String shortName;
 
     /**
@@ -65,6 +68,7 @@ public class City extends BaseDomain {
      * 合并名称
      */
     @Column(name = "`merger_name`")
+    @Like
     private String mergerName;
 
     @Column(name = "`lng`")
@@ -77,6 +81,7 @@ public class City extends BaseDomain {
      * 拼音
      */
     @Column(name = "`pinyin`")
+    @Like
     private String pinyin;
 
     /**

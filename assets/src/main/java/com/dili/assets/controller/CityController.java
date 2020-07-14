@@ -32,4 +32,15 @@ public class CityController {
 	public BaseOutput<List<City>> list(@RequestBody City city) {
 		return BaseOutput.success().setData(this.cityService.list(city));
 	}
+
+	/**
+	 * 城市查询接口
+	 *
+	 * @param city
+	 * @return
+	 */
+	@PostMapping("/listByExample")
+	public BaseOutput<List<City>> listByExample(@RequestBody City city) {
+		return BaseOutput.success().setData(this.cityService.listByExample(city));
+	}
 }
