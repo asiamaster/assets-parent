@@ -9,6 +9,7 @@ import com.dili.assets.service.CategoryService;
 import com.dili.ss.base.BaseServiceImpl;
 import com.dili.ss.exception.BusinessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,7 @@ public class CategoryServiceImpl extends BaseServiceImpl<Category, Long> impleme
     }
 
     @Override
+    @Transactional
     public void saveCategory(Category c) {
         if (c.getParent() != null) {
             Category p = this.get(c.getParent());
