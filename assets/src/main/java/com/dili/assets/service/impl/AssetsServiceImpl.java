@@ -68,6 +68,7 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
         var query = new Assets();
         query.setName(booth.getName());
         query.setIsDelete(YesOrNoEnum.NO.getCode());
+        query.setBusinessType(booth.getBusinessType());
         var check = this.listByExample(query);
         if (CollUtil.isNotEmpty(check)) {
             throw new BusinessException("5000", "摊位编号重复");

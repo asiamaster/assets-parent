@@ -21,7 +21,7 @@ import java.util.List;
  * This file was generated on 2020-02-17 13:21:57.
  */
 @RestController
-@RequestMapping("/api/booth")
+@RequestMapping("/api/assets")
 public class BoothController {
     @Autowired
     AssetsService boothService;
