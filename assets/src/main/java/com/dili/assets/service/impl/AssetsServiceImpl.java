@@ -17,6 +17,7 @@ import com.dili.assets.service.DistrictService;
 import com.dili.commons.glossary.EnabledStateEnum;
 import com.dili.commons.glossary.YesOrNoEnum;
 import com.dili.ss.base.BaseServiceImpl;
+import com.dili.ss.domain.BaseOutput;
 import com.dili.ss.domain.BasePage;
 import com.dili.ss.dto.DTOUtils;
 import com.dili.ss.dto.IDTO;
@@ -24,6 +25,7 @@ import com.dili.ss.exception.BusinessException;
 import com.dili.ss.metadata.ValueProviderUtils;
 import com.dili.ss.util.DateUtils;
 import com.dili.uap.sdk.domain.DataDictionaryValue;
+import com.dili.uap.sdk.domain.Department;
 import com.dili.uap.sdk.rpc.DataDictionaryRpc;
 import com.dili.uap.sdk.rpc.DepartmentRpc;
 import org.slf4j.Logger;
@@ -223,10 +225,24 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
         if (CollUtil.isNotEmpty(list)) {
             var unitCache = new HashMap<String, String>();
             var disCache = new HashMap<String, String>();
+            var depCache = new HashMap<String, String>();
             list.forEach(obj -> {
                 AssetsDTO dto = new AssetsDTO();
                 BeanUtil.copyProperties(obj, dto);
 
+                // 转换部门
+                if (dto.getDepartmentId() != null) {
+                    if (depCache.containsKey(dto.getDepartmentId().toString())) {
+                        dto.setDepartmentName(depCache.get(dto.getDepartmentId().toString()));
+                    } else {
+                        BaseOutput<Department> departmentBaseOutput = departmentRpc.get(dto.getDepartmentId().longValue());
+                        Department dep = departmentBaseOutput.getData();
+                        if (dep != null) {
+                            dto.setDepartmentName(dep.getName());
+                            depCache.put(dto.getDepartmentId().toString(), dep.getName());
+                        }
+                    }
+                }
                 // 转换单位
                 if (unitCache.containsKey(obj.getUnit())) {
                     dto.setUnitName(unitCache.get(obj.getUnit()));
