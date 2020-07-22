@@ -164,7 +164,7 @@ public class DistrictController {
      * 区域搜索
      */
     @RequestMapping("search")
-    public BaseOutput<List<District>> search(@RequestBody District input) {
+    public BaseOutput<List<District>> search(@RequestBody DistrictQuery input) {
         try {
             if (input != null && input.getIsDelete() == null) {
                 input.setIsDelete(StateEnum.NO.getCode());

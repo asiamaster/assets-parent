@@ -240,4 +240,14 @@ public class DistrictDTO extends BaseDomain {
     public void setDeps(String deps) {
         this.deps = deps;
     }
+
+    private String nameLike;
+
+    public String getNameLike() {
+        return nameLike;
+    }
+
+    public void setNameLike(String nameLike) {
+        this.nameLike = nameLike;
+    }
 }

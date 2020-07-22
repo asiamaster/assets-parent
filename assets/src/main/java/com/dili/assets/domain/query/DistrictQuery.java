@@ -30,4 +30,16 @@ public class DistrictQuery extends District {
     public void setIds(List<String> ids) {
         this.ids = ids;
     }
+
+    @Like
+    @Column(name = "`name`")
+    private String nameLike;
+
+    public String getNameLike() {
+        return nameLike;
+    }
+
+    public void setNameLike(String nameLike) {
+        this.nameLike = nameLike;
+    }
 }
