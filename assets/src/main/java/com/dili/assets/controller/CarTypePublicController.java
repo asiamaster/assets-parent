@@ -7,9 +7,12 @@ import com.dili.assets.sdk.dto.CarTypeForBusinessDTO;
 import com.dili.assets.service.CarTypePublicService;
 import com.dili.assets.service.TagExtService;
 import com.dili.ss.domain.BaseOutput;
+import com.dili.ss.domain.PageOutput;
 import com.dili.ss.dto.DTOUtils;
 import com.dili.uap.sdk.domain.DataDictionaryValue;
 import com.dili.uap.sdk.rpc.DataDictionaryRpc;
+import com.github.pagehelper.Page;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -51,14 +54,23 @@ public class CarTypePublicController {
      * @throws Exception
      */
     @RequestMapping(value="/listPage", method = {RequestMethod.GET, RequestMethod.POST})
-    public @ResponseBody List<Map<String, Object>> listPage(@RequestBody CarTypePublicQuery carTypePublic) throws Exception {
+    public @ResponseBody PageOutput listPage(@RequestBody CarTypePublicQuery carTypePublic) throws Exception {
     	DataDictionaryValue dataDictionaryValue = DTOUtils.newInstance(DataDictionaryValue.class);
     	dataDictionaryValue.setDdCode("cartype_tag");
-    	dataDictionaryValue.setId(carTypePublic.getMarketId());
+    	dataDictionaryValue.setFirmId(carTypePublic.getMarketId());
     	
     	List<DataDictionaryValue> list = dataDictionaryRpc.listDataDictionaryValue(dataDictionaryValue).getData();
     	carTypePublic.setTags(list);
-        return carTypePublicService.listCarTypePublic(carTypePublic, true);
+    	List<Map<String, Object>> listCarTypePublic = carTypePublicService.listCarTypePublic(carTypePublic, true);
+    	 //总记录
+        Long total = listCarTypePublic instanceof Page ? ((Page) listCarTypePublic).getTotal() : listCarTypePublic.size();
+        //总页数
+        int totalPage = listCarTypePublic instanceof Page ? ((Page) listCarTypePublic).getPages() : 1;
+        //当前页数
+        int pageNum = listCarTypePublic instanceof Page ? ((Page) listCarTypePublic).getPageNum() : 1;
+        PageOutput output = PageOutput.success();
+        output.setData(listCarTypePublic).setPageNum(pageNum).setTotal(total.intValue()).setPageSize(carTypePublic.getPage()).setPages(totalPage);
+        return output;
     }
     /**
      * 分页查询carTypePublic，返回easyui分页信息

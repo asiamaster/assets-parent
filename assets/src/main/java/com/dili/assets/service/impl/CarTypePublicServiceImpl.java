@@ -29,16 +29,8 @@ public class CarTypePublicServiceImpl extends BaseServiceImpl<CarTypePublic, Lon
 
 	@Override
 	public List<Map<String, Object>> listCarTypePublic(CarTypePublicQuery carTypePublic, boolean b) throws Exception {
-		//设置分页信息
-		Integer page = carTypePublic.getPage();
-		page = (page == null) ? Integer.valueOf(1) : page;
-		if(carTypePublic.getRows() != null && carTypePublic.getRows() >= 1) {
-			PageHelper.startPage(page, carTypePublic.getRows());
-		}
+		
 		List<Map<String, Object>> list = getActualDao().listCarTypePublic(carTypePublic);
-//		long total = list instanceof Page ? ( (Page) list).getTotal() : list.size();
-//        List results = b ? ValueProviderUtils.buildDataByProvider(carTypePublic, list) : list;
-//		return new EasyuiPageOutput(Integer.parseInt(String.valueOf(total)), results).toString();
 		return list;
 	}
 	@Override
