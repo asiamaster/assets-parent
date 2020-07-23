@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.dili.assets.domain.CarTypePublic;
 import com.dili.assets.domain.query.CarTypePublicQuery;
 import com.dili.assets.mapper.CarTypePublicMapper;
-import com.dili.assets.sdk.dto.CarTypeForJmsfDTO;
+import com.dili.assets.sdk.dto.CarTypeForBusinessDTO;
 import com.dili.assets.service.CarTypePublicService;
 import com.dili.ss.base.BaseServiceImpl;
 import com.dili.ss.domain.EasyuiPageOutput;
@@ -28,7 +28,7 @@ public class CarTypePublicServiceImpl extends BaseServiceImpl<CarTypePublic, Lon
     }
 
 	@Override
-	public String listCarTypePublic(CarTypePublicQuery carTypePublic, boolean b) throws Exception {
+	public List<Map<String, Object>> listCarTypePublic(CarTypePublicQuery carTypePublic, boolean b) throws Exception {
 		//设置分页信息
 		Integer page = carTypePublic.getPage();
 		page = (page == null) ? Integer.valueOf(1) : page;
@@ -36,9 +36,10 @@ public class CarTypePublicServiceImpl extends BaseServiceImpl<CarTypePublic, Lon
 			PageHelper.startPage(page, carTypePublic.getRows());
 		}
 		List<Map<String, Object>> list = getActualDao().listCarTypePublic(carTypePublic);
-		long total = list instanceof Page ? ( (Page) list).getTotal() : list.size();
-        List results = b ? ValueProviderUtils.buildDataByProvider(carTypePublic, list) : list;
-		return new EasyuiPageOutput(Integer.parseInt(String.valueOf(total)), results).toString();
+//		long total = list instanceof Page ? ( (Page) list).getTotal() : list.size();
+//        List results = b ? ValueProviderUtils.buildDataByProvider(carTypePublic, list) : list;
+//		return new EasyuiPageOutput(Integer.parseInt(String.valueOf(total)), results).toString();
+		return list;
 	}
 	@Override
 	public List<Map<String, Object>> listCarTypePublicByTruck(CarTypePublicQuery carTypePublic){
@@ -63,7 +64,12 @@ public class CarTypePublicServiceImpl extends BaseServiceImpl<CarTypePublic, Lon
 	}
 
 	@Override
-	public List<CarTypeForJmsfDTO> listCarTypePublicByBusiness(CarTypePublicQuery carTypePublic) {
+	public List<CarTypeForBusinessDTO> listCarTypePublicByBusiness(CarTypePublicQuery carTypePublic) {
 		return getActualDao().listCarTypePublicByBusiness(carTypePublic);
+	}
+	
+	@Override
+	public List<CarTypeForBusinessDTO> queryCarType(CarTypePublicQuery carTypePublic) {
+		return getActualDao().queryCarType(carTypePublic);
 	}
 }

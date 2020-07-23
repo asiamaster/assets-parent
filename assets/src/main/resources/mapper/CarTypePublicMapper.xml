@@ -224,4 +224,28 @@
 			</if>
 		</where>
   </select>
+  <select id="queryCarType" resultType="com.dili.assets.domain.result.CarTypeForJmsf">
+  	  SELECT ct.id as id ,ct.`name` as carTypeName , ct.number,ct.`status`, cp.auto_pass as autoPass,cp.auto_save as autoSave,cp.`code`
+		car_type_public cp
+		LEFT JOIN car_type ct
+		ON ct.id = cp.car_type_id
+		<where>
+			and ct.status = 1
+			<if test="marketId != null">
+				and cp.market_id = #{marketId}
+			</if>
+			<if test="keyword != null and keyword != ''">
+				and (ct.name like '%${keyword}%' or ct.number like '%${keyword}%')
+			</if>
+			<if test="id != null">
+				and cp.id = #{id}
+			</if>
+			<if test="ids != null and ids.size() > 0">
+				and cp.id in 
+				<foreach collection="ids" item="c_id" open="(" separator="," close=")">
+					#{c_id}
+				</foreach>
+			</if>
+		</where>
+  </select>
 </mapper>

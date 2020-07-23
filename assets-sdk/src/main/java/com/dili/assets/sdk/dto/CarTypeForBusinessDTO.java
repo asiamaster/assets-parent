@@ -7,7 +7,7 @@ import java.util.List;
  * 车型
  * This file was generated on 2020-05-09 16:44:34.
  */
-public class CarTypeForJmsfDTO {
+public class CarTypeForBusinessDTO {
     /**
      * id
      */

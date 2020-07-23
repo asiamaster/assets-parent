@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.dili.assets.domain.CarTypePublic;
 import com.dili.assets.domain.query.CarTypePublicQuery;
-import com.dili.assets.sdk.dto.CarTypeForJmsfDTO;
+import com.dili.assets.sdk.dto.CarTypeForBusinessDTO;
 import com.dili.ss.base.MyMapper;
 
 public interface CarTypePublicMapper extends MyMapper<CarTypePublic> {
@@ -18,5 +18,7 @@ public interface CarTypePublicMapper extends MyMapper<CarTypePublic> {
 
 	void deleteTagExt(CarTypePublicQuery carTypePublic);
 
-	List<CarTypeForJmsfDTO> listCarTypePublicByBusiness(CarTypePublicQuery carTypePublic);
+	List<CarTypeForBusinessDTO> listCarTypePublicByBusiness(CarTypePublicQuery carTypePublic);
+
+	List<CarTypeForBusinessDTO> queryCarType(CarTypePublicQuery carTypePublic);
 }

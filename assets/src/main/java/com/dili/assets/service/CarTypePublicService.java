@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.dili.assets.domain.CarTypePublic;
 import com.dili.assets.domain.query.CarTypePublicQuery;
-import com.dili.assets.sdk.dto.CarTypeForJmsfDTO;
+import com.dili.assets.sdk.dto.CarTypeForBusinessDTO;
 import com.dili.ss.base.BaseService;
 
 /**
@@ -21,7 +21,7 @@ public interface CarTypePublicService extends BaseService<CarTypePublic, Long> {
 	 * @return
 	 * @throws Exception
 	 */
-	String listCarTypePublic(CarTypePublicQuery carTypePublic, boolean b) throws Exception;
+	List<Map<String, Object>> listCarTypePublic(CarTypePublicQuery carTypePublic, boolean b) throws Exception;
 
 	/**
 	 * 通过车型id车型车型
@@ -52,5 +52,11 @@ public interface CarTypePublicService extends BaseService<CarTypePublic, Long> {
 	 * 提供给业务系统使用的获取车型
 	 * @param carTypePublic 公共车型实体类
 	 */
-	List<CarTypeForJmsfDTO> listCarTypePublicByBusiness(CarTypePublicQuery carTypePublic);
+	List<CarTypeForBusinessDTO> listCarTypePublicByBusiness(CarTypePublicQuery carTypePublic);
+
+	/**
+	 * 提供给业务系统使用的获取车型（不包含标签的内容）
+	 * @param carTypePublic 公共车型实体类
+	 */
+	List<CarTypeForBusinessDTO> queryCarType(CarTypePublicQuery carTypePublic);
 }

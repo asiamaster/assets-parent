@@ -3,7 +3,7 @@ package com.dili.assets.controller;
 import com.dili.assets.domain.CarTypePublic;
 import com.dili.assets.domain.TagExt;
 import com.dili.assets.domain.query.CarTypePublicQuery;
-import com.dili.assets.sdk.dto.CarTypeForJmsfDTO;
+import com.dili.assets.sdk.dto.CarTypeForBusinessDTO;
 import com.dili.assets.service.CarTypePublicService;
 import com.dili.assets.service.TagExtService;
 import com.dili.ss.domain.BaseOutput;
@@ -51,7 +51,7 @@ public class CarTypePublicController {
      * @throws Exception
      */
     @RequestMapping(value="/listPage", method = {RequestMethod.GET, RequestMethod.POST})
-    public @ResponseBody String listPage(@RequestBody CarTypePublicQuery carTypePublic) throws Exception {
+    public @ResponseBody List<Map<String, Object>> listPage(@RequestBody CarTypePublicQuery carTypePublic) throws Exception {
     	DataDictionaryValue dataDictionaryValue = DTOUtils.newInstance(DataDictionaryValue.class);
     	dataDictionaryValue.setDdCode("cartype_tag");
     	dataDictionaryValue.setId(carTypePublic.getMarketId());
@@ -84,7 +84,7 @@ public class CarTypePublicController {
      * @throws Exception
      */
     @RequestMapping(value="/listCarTypePublicByBusiness", method = {RequestMethod.GET, RequestMethod.POST})
-    public @ResponseBody BaseOutput<List<CarTypeForJmsfDTO>> listCarTypePublicByBusiness(@RequestBody CarTypePublicQuery carTypePublic) throws Exception {
+    public @ResponseBody BaseOutput<List<CarTypeForBusinessDTO>> listCarTypePublicByBusiness(@RequestBody CarTypePublicQuery carTypePublic) throws Exception {
     	
     	return BaseOutput.success().setData(carTypePublicService.listCarTypePublicByBusiness(carTypePublic));
     }
@@ -171,5 +171,17 @@ public class CarTypePublicController {
     	List<DataDictionaryValue> list = dataDictionaryRpc.listDataDictionaryValue(dataDictionaryValue).getData();
     	carTypePublic.setTags(list);
         return BaseOutput.success().setData(carTypePublicService.getCarTypePublicById(carTypePublic).get(0));
+    }
+    
+    /**
+     * 查询carTypePublic
+     * @param carTypePublic
+     * @return String
+     * @throws Exception
+     */
+    @RequestMapping(value="/queryCarType", method = {RequestMethod.GET, RequestMethod.POST})
+    public @ResponseBody BaseOutput<List<CarTypeForBusinessDTO>> queryCarType(@RequestBody CarTypePublicQuery carTypePublic) throws Exception {
+    	
+    	return BaseOutput.success().setData(carTypePublicService.queryCarType(carTypePublic));
     }
 }
