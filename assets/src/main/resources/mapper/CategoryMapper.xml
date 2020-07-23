@@ -105,6 +105,9 @@
             <if test="likeName !=null and likeName !=''">
                 and (`name` like CONCAT('%',#{likeName},'%'))
             </if>
+            <if test="queryPath !=null and queryPath !=''">
+                and (`path` like CONCAT(#{queryPath},'%'))
+            </if>
             <if test="state !=null and state !=''">
                 and `state`=#{state}
             </if>
