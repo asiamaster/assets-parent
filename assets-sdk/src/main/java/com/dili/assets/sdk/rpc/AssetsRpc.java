@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-@FeignClient(name = "assets-service")
+@FeignClient(name = "assets-service", url = "${AssetsRpc.url:}")
 public interface AssetsRpc {
 
     /**
@@ -102,6 +102,12 @@ public interface AssetsRpc {
      */
     @RequestMapping(value = "/api/district/delete", method = RequestMethod.POST)
     BaseOutput delDistrictById(Long id);
+
+    /**
+     * 根据ID查询本身和子节点
+     */
+    @RequestMapping(value = "/api/district/listChild", method = RequestMethod.POST)
+    BaseOutput<List<DistrictDTO>> listDistrictChild(Long id);
 
     /**
      * 拆分区域
