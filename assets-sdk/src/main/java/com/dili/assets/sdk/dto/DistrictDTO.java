@@ -4,6 +4,7 @@ import com.dili.ss.domain.BaseDomain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 由MyBatis Generator工具自动生成
@@ -249,5 +250,15 @@ public class DistrictDTO extends BaseDomain {
 
     public void setNameLike(String nameLike) {
         this.nameLike = nameLike;
+    }
+
+    private List<String> ids;
+
+    public List<String> getIds() {
+        return ids;
+    }
+
+    public void setIds(List<String> ids) {
+        this.ids = ids;
     }
 }
