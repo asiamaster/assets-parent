@@ -226,7 +226,7 @@
   </select>
   <select id="queryCarType" resultType="com.dili.assets.domain.result.CarTypeForJmsf">
   	  SELECT ct.id as id ,ct.`name` as carTypeName , ct.number,ct.`status`, cp.auto_pass as autoPass,cp.auto_save as autoSave,cp.`code`
-		car_type_public cp
+		from car_type_public cp 
 		LEFT JOIN car_type ct
 		ON ct.id = cp.car_type_id
 		<where>
