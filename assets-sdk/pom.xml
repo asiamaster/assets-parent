@@ -6,6 +6,7 @@
     <modelVersion>4.0.0</modelVersion>
     <packaging>jar</packaging>
     <artifactId>assets-sdk</artifactId>
+    <name>资产SDK</name>
 
     <parent>
         <artifactId>assets-parent</artifactId>
