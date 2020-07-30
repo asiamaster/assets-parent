@@ -2,7 +2,6 @@ package com.dili.assets.sdk.dto;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.dili.ss.domain.BaseDomain;
-import com.google.common.base.MoreObjects;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
@@ -221,26 +220,5 @@ public class BusinessChargeItemDto extends BaseDomain {
 
     public void setIdList(List<Long> idList) {
         this.idList = idList;
-    }
-
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("id", id)
-                .add("parentId", parentId)
-                .add("marketId", marketId)
-                .add("businessType", businessType)
-                .add("chargeItem", chargeItem)
-                .add("chargeType", chargeType)
-                .add("isRequired", isRequired)
-                .add("isEnable", isEnable)
-                .add("isDelete", isDelete)
-                .add("chargeSubject", chargeSubject)
-                .add("notes", notes)
-                .add("operatorId", operatorId)
-                .add("createTime", createTime)
-                .add("modifyTime", modifyTime)
-                .add("idList", idList)
-                .toString();
     }
 }
