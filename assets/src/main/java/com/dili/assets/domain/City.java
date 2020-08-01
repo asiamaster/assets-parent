@@ -108,6 +108,14 @@ public class City extends BaseDomain {
     private List<Long> idList;
 
     /**
+     * 根据ID集合查询
+     */
+    @Transient
+    @Column(name = "`id`")
+    @Operator(Operator.NOT_IN)
+    private List<Long> idNotList;
+
+    /**
      * @return id
      */
     @FieldDef(label="id")
@@ -381,5 +389,13 @@ public class City extends BaseDomain {
 
     public void setIdList(List<Long> idList) {
         this.idList = idList;
+    }
+
+    public List<Long> getIdNotList() {
+        return idNotList;
+    }
+
+    public void setIdNotList(List<Long> idNotList) {
+        this.idNotList = idNotList;
     }
 }

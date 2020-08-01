@@ -76,6 +76,11 @@ public class CityDto {
 	private List<Long> idList;
 
 	/**
+	 * ID不在列表中的查询
+	 */
+	private List<Long> idNotList;
+
+	/**
 	 * @return id
 	 */
 	public Long getId() {
@@ -321,5 +326,13 @@ public class CityDto {
 
 	public void setIdList(List<Long> idList) {
 		this.idList = idList;
+	}
+
+	public List<Long> getIdNotList() {
+		return idNotList;
+	}
+
+	public void setIdNotList(List<Long> idNotList) {
+		this.idNotList = idNotList;
 	}
 }
