@@ -108,12 +108,12 @@ public class City extends BaseDomain {
     private List<Long> idList;
 
     /**
-     * 根据ID集合查询
+     * 级别集合查询
      */
     @Transient
-    @Column(name = "`id`")
-    @Operator(Operator.NOT_IN)
-    private List<Long> idNotList;
+    @Column(name = "`level_type`")
+    @Operator(Operator.IN)
+    private List<Integer> levelTypeList;
 
     /**
      * @return id
@@ -391,11 +391,10 @@ public class City extends BaseDomain {
         this.idList = idList;
     }
 
-    public List<Long> getIdNotList() {
-        return idNotList;
+    public List<Integer> getLevelTypeList() {
+        return levelTypeList;
     }
-
-    public void setIdNotList(List<Long> idNotList) {
-        this.idNotList = idNotList;
+    public void setLevelTypeList(List<Integer> levelTypeList) {
+        this.levelTypeList = levelTypeList;
     }
 }

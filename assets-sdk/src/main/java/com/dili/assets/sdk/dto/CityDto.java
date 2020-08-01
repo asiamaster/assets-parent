@@ -3,7 +3,11 @@ package com.dili.assets.sdk.dto;
 import java.util.Date;
 import java.util.List;
 
+import com.dili.ss.domain.annotation.Operator;
 import com.fasterxml.jackson.annotation.JsonFormat;
+
+import javax.persistence.Column;
+import javax.persistence.Transient;
 
 public class CityDto {
 
@@ -76,9 +80,9 @@ public class CityDto {
 	private List<Long> idList;
 
 	/**
-	 * ID不在列表中的查询
+	 * 级别集合查询
 	 */
-	private List<Long> idNotList;
+	private List<Integer> levelTypeList;
 
 	/**
 	 * @return id
@@ -328,11 +332,11 @@ public class CityDto {
 		this.idList = idList;
 	}
 
-	public List<Long> getIdNotList() {
-		return idNotList;
+	public List<Integer> getLevelTypeList() {
+		return levelTypeList;
 	}
 
-	public void setIdNotList(List<Long> idNotList) {
-		this.idNotList = idNotList;
+	public void setLevelTypeList(List<Integer> levelTypeList) {
+		this.levelTypeList = levelTypeList;
 	}
 }
