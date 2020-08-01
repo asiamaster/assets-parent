@@ -6,6 +6,7 @@ import com.dili.ss.domain.annotation.Operator;
 
 import javax.persistence.Column;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author shaofan
@@ -34,6 +35,10 @@ public class BoothQuery extends Assets {
     @Column(name = "`number`")
     private Double endNumber;
     private String deps;
+
+    @Operator(Operator.IN)
+    @Column(name = "`id`")
+    private List<String> ids;
 
     public String getKeyword() {
         return keyword;
@@ -82,5 +87,13 @@ public class BoothQuery extends Assets {
     public void setDeps(String deps) {
         this.deps = deps;
     }
-// ==========================动态SQL过滤字段==================================== //
+
+    public List<String> getIds() {
+        return ids;
+    }
+
+    public void setIds(List<String> ids) {
+        this.ids = ids;
+    }
+    // ==========================动态SQL过滤字段==================================== //
 }

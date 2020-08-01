@@ -220,7 +220,7 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
     public List<AssetsDTO> search(BoothQuery query) {
         var result = new ArrayList<AssetsDTO>();
         query.setPage(1);
-        query.setRows(20);
+        query.setRows(100);
         var list = listPageByExample(query).getDatas();
         if (CollUtil.isNotEmpty(list)) {
             var unitCache = new HashMap<String, String>();
