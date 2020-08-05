@@ -87,10 +87,22 @@ public class BusinessChargeItem extends BaseDomain {
     private Integer isDelete;
 
     /**
+     * 系统科目
+     */
+    @Column(name = "`system_subject`")
+    private Integer systemSubject;
+
+    /**
      * 财务费用科目
      */
     @Column(name = "`charge_subject`")
     private Long chargeSubject;
+
+    /**
+     * 财务费用科目名称
+     */
+    @Column(name = "`charge_subject_name`")
+    private String chargeSubjectName;
 
     /**
      * 备注

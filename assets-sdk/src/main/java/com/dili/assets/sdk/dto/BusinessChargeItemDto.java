@@ -3,6 +3,7 @@ package com.dili.assets.sdk.dto;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.dili.ss.domain.BaseDomain;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
@@ -16,6 +17,7 @@ import java.util.List;
  * @author yuehongbo
  * @date 2020/5/28 17:19
  */
+@Data
 public class BusinessChargeItemDto extends BaseDomain {
 
     /**
@@ -68,9 +70,19 @@ public class BusinessChargeItemDto extends BaseDomain {
     private Integer isDelete;
 
     /**
+     * 系统科目
+     */
+    private Integer systemSubject;
+
+    /**
      * 财务费用科目
      */
     private Long chargeSubject;
+
+    /**
+     * 财务费用科目名称
+     */
+    private String chargeSubjectName;
 
     /**
      * 备注
@@ -103,125 +115,4 @@ public class BusinessChargeItemDto extends BaseDomain {
      */
     private List<Long> idList;
 
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
-    }
-
-    public Long getMarketId() {
-        return marketId;
-    }
-
-    public void setMarketId(Long marketId) {
-        this.marketId = marketId;
-    }
-
-    public String getBusinessType() {
-        return businessType;
-    }
-
-    public void setBusinessType(String businessType) {
-        this.businessType = businessType;
-    }
-
-    public String getChargeItem() {
-        return chargeItem;
-    }
-
-    public void setChargeItem(String chargeItem) {
-        this.chargeItem = chargeItem;
-    }
-
-    public Integer getChargeType() {
-        return chargeType;
-    }
-
-    public void setChargeType(Integer chargeType) {
-        this.chargeType = chargeType;
-    }
-
-    public Integer getIsRequired() {
-        return isRequired;
-    }
-
-    public void setIsRequired(Integer isRequired) {
-        this.isRequired = isRequired;
-    }
-
-    public Integer getIsEnable() {
-        return isEnable;
-    }
-
-    public void setIsEnable(Integer isEnable) {
-        this.isEnable = isEnable;
-    }
-
-    public Integer getIsDelete() {
-        return isDelete;
-    }
-
-    public void setIsDelete(Integer isDelete) {
-        this.isDelete = isDelete;
-    }
-
-    public Long getChargeSubject() {
-        return chargeSubject;
-    }
-
-    public void setChargeSubject(Long chargeSubject) {
-        this.chargeSubject = chargeSubject;
-    }
-
-    public String getNotes() {
-        return notes;
-    }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
-
-    public Long getOperatorId() {
-        return operatorId;
-    }
-
-    public void setOperatorId(Long operatorId) {
-        this.operatorId = operatorId;
-    }
-
-    public LocalDateTime getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(LocalDateTime createTime) {
-        this.createTime = createTime;
-    }
-
-    public LocalDateTime getModifyTime() {
-        return modifyTime;
-    }
-
-    public void setModifyTime(LocalDateTime modifyTime) {
-        this.modifyTime = modifyTime;
-    }
-
-    public List<Long> getIdList() {
-        return idList;
-    }
-
-    public void setIdList(List<Long> idList) {
-        this.idList = idList;
-    }
 }

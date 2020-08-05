@@ -28,8 +28,8 @@ public class BusinessChargeItemController {
 
     /**
      * 新增ChargeItem
-     * @param businessChargeItem
-     * @return BaseOutput
+     * @param businessChargeItem 业务费用项新
+     * @return BaseOutput数据
      */
     @RequestMapping(value="/save", method = {RequestMethod.GET, RequestMethod.POST})
     public BaseOutput save(@Validated @RequestBody BusinessChargeItem businessChargeItem, BindingResult bindingResult) {
@@ -47,8 +47,8 @@ public class BusinessChargeItemController {
 
     /**
      * 分页查询收费项数据集
-     * @param businessChargeItem
-     * @return
+     * @param businessChargeItem 业务费用项信息
+     * @return 分页数据信息
      */
     @RequestMapping(value="/listPage", method = {RequestMethod.POST})
     public PageOutput<List<BusinessChargeItem>> listPage(@RequestBody(required = false) BusinessChargeItem businessChargeItem){
