@@ -8,6 +8,8 @@
                         property="name"/>
                 <result column="creator_id" jdbcType="BIGINT"
                         property="creatorId"/>
+                <result column="creator_user" jdbcType="VARCHAR"
+                        property="creatorUser"/>
                 <result column="created_time" jdbcType="TIMESTAMP"
                         property="createdTime"/>
                 <result column="modify_time" jdbcType="TIMESTAMP"
@@ -40,6 +42,7 @@
                     id,
                     name,
                     creator_id,
+                    creator_user,
                     created_time,
                     modify_time
     </sql>
