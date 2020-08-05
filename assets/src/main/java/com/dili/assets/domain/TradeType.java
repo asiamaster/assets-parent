@@ -47,6 +47,9 @@ public class TradeType extends BaseDomain implements Serializable {
     @Column(name = "creator_id")
     private Long creatorId;
 
+    @Column(name = "creator_user")
+    private String creatorUser;
+
     @Column(name = "created_time")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")

@@ -43,6 +43,9 @@ public class TradeRoomDto extends BaseDomain implements Serializable {
     /** 创建人 */
     private Long creatorId;
 
+    /** 创建人 */
+    private String creatorUser;
+
     /** 创建时间 */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
