@@ -39,7 +39,7 @@ public class TradeTypeQuery{
     private String isAsc;//排序字符 asc desc
 
     /** 模糊 */
-    private String name;
+    private String keyword;
     /** BETWEEN */
     private List<LocalDateTime> createdTime;
 }

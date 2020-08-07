@@ -6,6 +6,8 @@
                         property="id"/>
                 <result column="name" jdbcType="VARCHAR"
                         property="name"/>
+                <result column="code" jdbcType="VARCHAR"
+                        property="code"/>
                 <result column="creator_id" jdbcType="BIGINT"
                         property="creatorId"/>
                 <result column="creator_user" jdbcType="VARCHAR"
@@ -18,9 +20,11 @@
     <sql id="Example_Where_Clause">
         <where>
 
-                        <if test="name != null">
+                        <if test="keyword != null">
                             and name like
-                            concat('%', #{name}, '%')
+                            concat('%', #{keyword}, '%')
+                            or code like
+                            concat('%', #{keyword}, '%')
                         </if>
                                 <if test="createdTime != null">
                                     and created_time between
@@ -41,6 +45,7 @@
     <sql id="Base_Column_List">
                     id,
                     name,
+                    code,
                     creator_id,
                     creator_user,
                     created_time,

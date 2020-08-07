@@ -44,6 +44,9 @@ public class TradeType extends BaseDomain implements Serializable {
     @Column(name = "name",nullable = false)
     private String name;
 
+    @Column(name = "code",nullable = false)
+    private String code;
+
     @Column(name = "creator_id")
     private Long creatorId;
 
