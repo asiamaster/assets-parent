@@ -3,12 +3,15 @@ package com.dili.assets.sdk.rpc;
 import com.alibaba.fastjson.JSONObject;
 import com.dili.assets.sdk.dto.*;
 import com.dili.ss.domain.BaseOutput;
+import com.dili.ss.domain.PageOutput;
+
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Map;
 
 @FeignClient(name = "assets-service", url = "${AssetsRpc.url:}")
 public interface AssetsRpc {
@@ -215,7 +218,7 @@ public interface AssetsRpc {
      * 获取车型列表
      */
     @RequestMapping(value = "/api/carTypePublic/listPage", method = RequestMethod.GET)
-    String listPage(CarTypePublicDTO input);
+    PageOutput<List<Map<String, Object>>> listPage(CarTypePublicDTO input);
 
     /**
      * 根据@param{车型id}获取车型
