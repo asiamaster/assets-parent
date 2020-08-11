@@ -1,15 +1,7 @@
 package com.dili.assets.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
 import com.dili.assets.domain.Category;
 import com.dili.assets.domain.CustomCategory;
 import com.dili.assets.domain.query.CategoryQuery;
@@ -17,13 +9,16 @@ import com.dili.assets.mapper.CategoryMapper;
 import com.dili.assets.mapper.CustomCategoryMapper;
 import com.dili.assets.sdk.dto.CategoryDTO;
 import com.dili.assets.service.CustomCategoryService;
-import com.dili.commons.glossary.EnabledStateEnum;
 import com.dili.ss.domain.BaseOutput;
 import com.dili.ss.exception.BusinessException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.StrUtil;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 由MyBatis Generator工具自动生成 This file was generated on 2020-05-18 15:42:05.
@@ -48,53 +43,9 @@ public class CustomCategoryController {
 		if (input == null || input.getMarketId() == null) {
 			return BaseOutput.failure("未知市场或参数");
 		}
-		Integer state = input.getState();
 
-		// 根据市场查询自定义品类
-		CustomCategory customCategory = new CustomCategory();
-		customCategory.setMarketId(input.getMarketId());
-		List<CustomCategory> customCategories = customCategoryService.listByExample(customCategory);
-		// 根据条件查询基础品类
-		input.setState(EnabledStateEnum.ENABLED.getCode()); // 只查询基础品类中启用的数据
-		if (StrUtil.isNotBlank(input.getKeyword())) {
-			// 如果市场没设置任何品类，则只需要过滤基础数据
-			if (CollUtil.isEmpty(customCategories)) {
-				input.setLikeName(input.getKeyword());
-			}
-			input.setOrName(input.getKeyword());
-			input.setKeyword(null);
-		}
-		List<Category> list = categoryMapper.listCategory(input);
-		// 如果没有市场自定义品类则返回所有基础品类
-		if (CollUtil.isNotEmpty(customCategories)) {
-			List<CategoryDTO> result = new ArrayList<>();
-			list.forEach(obj -> {
-				Optional<CustomCategory> first = customCategories.stream().filter(customCategory1 -> customCategory1.getCategory().equals(obj.getId())).findFirst();
-				if (first.isPresent()) {
-					CustomCategory custom = first.get();
-					CategoryDTO category = new CategoryDTO();
-					BeanUtil.copyProperties(obj, category);
-					category.setCusName(custom.getCusName());
-					category.setKeycode(custom.getKeycode());
-					category.setState(custom.getState());
-					if (state == null || state.equals(category.getState())) {
-						result.add(category);
-					}
-				} else {
-					CategoryDTO category = new CategoryDTO();
-					BeanUtil.copyProperties(obj, category);
-					// 如果是查询禁用的自定义品类则不展示基础品类数据
-					if (state == null || !state.equals(EnabledStateEnum.DISABLED.getCode())) {
-						result.add(category);
-					}
-				}
-			});
-			return BaseOutput.success().setData(StrUtil.isNotBlank(input.getOrName()) ? searchCusName(result, input.getOrName()) : result);
-		}
-		// 如果没有市场自定义数据，且查询禁用则返回空
-		if (state != null && state.equals(EnabledStateEnum.DISABLED.getCode())) {
-			return BaseOutput.success().setData(new ArrayList<>());
-		}
+		List<CategoryDTO> list = customCategoryMapper.listCategory(input);
+
 		return BaseOutput.success().setData(list);
 	}
 
