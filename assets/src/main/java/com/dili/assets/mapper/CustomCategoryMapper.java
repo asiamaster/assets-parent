@@ -16,4 +16,13 @@ public interface CustomCategoryMapper extends MyMapper<CustomCategory> {
      * @return
      */
     List<CategoryDTO> listCategory(CategoryQuery condition);
+
+    /**
+     * list
+     * @param condition
+     * @return
+     */
+    List<CategoryDTO> listCusCategory(CategoryQuery condition);
+
+
 }

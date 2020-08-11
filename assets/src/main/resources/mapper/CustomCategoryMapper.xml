@@ -85,17 +85,30 @@
                 and (a.`name` like CONCAT('%',#{keyword},'%')
                     or a.`code` like CONCAT('%',#{keyword},'%')
                     or a.`py_initials` like CONCAT('%',#{keyword},'%')
-                    or b.`cus_name` like CONCAT('%',#{keyword},'%')
-                    or b.`keycode` like CONCAT('%',#{keyword},'%')
                     )
-            </if>
-            <if test="state !=null and state !=''">
-                and b.`state`=#{state}
             </if>
             <if test="parent !=null">
                 and a.`parent`=#{parent}
             </if>
-            or b.market_id = #{marketId}
+        </where>
+    </select>
+
+    <select id="listCusCategory" parameterType="com.dili.assets.domain.query.CategoryQuery" resultMap="BaseResultMap">
+        select a.* ,b.cus_name,b.keycode from category a left join custom_category b on a.id = b.category
+        <where>
+            a.state = 1
+            <if test="keyword !=null and keyword !=''">
+                and (b.`cus_name` like CONCAT('%',#{keyword},'%')
+                    or b.`keycode` like CONCAT('%',#{keyword},'%')
+                )
+            </if>
+            <if test="parent !=null">
+                and a.`parent`=#{parent}
+            </if>
+            <if test="state !=null and state !=''">
+                and b.`state`=#{state}
+            </if>
+            and b.market_id = #{marketId}
         </where>
     </select>
 </mapper>
