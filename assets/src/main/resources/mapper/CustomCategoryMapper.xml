@@ -78,17 +78,17 @@
     </update>
 
     <select id="listCategory" parameterType="com.dili.assets.domain.query.CategoryQuery" resultMap="BaseResultMap">
-        select a.* ,b.cus_name,b.keycode from category a left join custom_category b on a.id = b.category
+        select * from category
         <where>
-            a.state = 1
+            state = 1
             <if test="keyword !=null and keyword !=''">
-                and (a.`name` like CONCAT('%',#{keyword},'%')
-                    or a.`code` like CONCAT('%',#{keyword},'%')
-                    or a.`py_initials` like CONCAT('%',#{keyword},'%')
+                and (`name` like CONCAT('%',#{keyword},'%')
+                    or `code` like CONCAT('%',#{keyword},'%')
+                    or `py_initials` like CONCAT('%',#{keyword},'%')
                     )
             </if>
             <if test="parent !=null">
-                and a.`parent`=#{parent}
+                and `parent`=#{parent}
             </if>
         </where>
     </select>

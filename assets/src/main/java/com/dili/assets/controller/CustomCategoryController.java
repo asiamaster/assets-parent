@@ -46,23 +46,30 @@ public class CustomCategoryController {
             return BaseOutput.failure("未知市场或参数");
         }
 
+        // 先查询基础品类
         List<CategoryDTO> list = customCategoryMapper.listCategory(input);
 
+        // 查询自定义品类
         List<CategoryDTO> cusList = customCategoryMapper.listCusCategory(input);
+
         Integer state = input.getState();
+
+        // 如果状态是查询禁用则只返回自定品类
         if (state != null && state.equals(EnabledStateEnum.DISABLED.getCode())) {
             return BaseOutput.success().setData(cusList);
         }
-        if (CollUtil.isNotEmpty(cusList)) {
-            cusList.forEach(obj -> {
-                Optional<CategoryDTO> first = list.stream().filter(customCategory1 -> customCategory1.getId().equals(obj.getId())).findFirst();
+
+        // 聚合两个集合
+        if (CollUtil.isNotEmpty(list)) {
+            list.forEach(obj -> {
+                Optional<CategoryDTO> first = cusList.stream().filter(it -> it.getId().equals(obj.getId())).findFirst();
                 if (first.isEmpty()) {
-                    list.add(obj);
+                    cusList.add(obj);
                 }
             });
         }
 
-        return BaseOutput.success().setData(list);
+        return BaseOutput.success().setData(cusList);
     }
 
     /**
