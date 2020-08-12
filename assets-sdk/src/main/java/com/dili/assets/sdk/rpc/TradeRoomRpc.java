@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @website http://shaofan.org
  * @date 2020-07-30
  **/
-@FeignClient(name = "tradeRoom-service", url = "${AssetsRpc.url:}")
+@FeignClient(name = "assets-service", contextId = "tradeRoom-service", url = "${AssetsRpc.url:}")
 public interface TradeRoomRpc {
 
     /**
