@@ -28,7 +28,7 @@ public class BoothRentController {
         try {
             boothRentService.add(input);
         } catch (BusinessException be) {
-            return BaseOutput.failure(be.getErrorMsg());
+            return BaseOutput.failure(be.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
             return BaseOutput.failure("系统错误");
@@ -46,7 +46,7 @@ public class BoothRentController {
             boothRent.setFreeze(RentEnum.rent.getCode());
             boothRentService.updateSelectiveByExample(boothRent, input);
         } catch (BusinessException be) {
-            return BaseOutput.failure(be.getErrorMsg());
+            return BaseOutput.failure(be.getMessage());
         } catch (Exception e) {
             return BaseOutput.failure("系统错误");
         }
@@ -73,7 +73,7 @@ public class BoothRentController {
             input.setEnd(null);
             boothRentService.updateSelectiveByExample(boothRent, input);
         } catch (BusinessException be) {
-            return BaseOutput.failure(be.getErrorMsg());
+            return BaseOutput.failure(be.getMessage());
         } catch (Exception e) {
             return BaseOutput.failure("系统错误");
         }
