@@ -58,7 +58,7 @@ public class CategoryController {
                 categoryService.saveCategory(input);
             }
         } catch (BusinessException e) {
-            return BaseOutput.failure(e.getErrorMsg());
+            return BaseOutput.failure(e.getMessage());
         } catch (Exception e) {
             return BaseOutput.failure("保存失败");
         }

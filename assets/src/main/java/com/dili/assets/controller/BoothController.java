@@ -39,7 +39,7 @@ public class BoothController {
             booth.setModifyTime(new Date());
             boothService.saveBooth(booth);
         }catch (BusinessException be){
-            return BaseOutput.failure(be.getErrorMsg());
+            return BaseOutput.failure(be.getMessage());
         }
         return BaseOutput.success();
     }
@@ -103,7 +103,7 @@ public class BoothController {
         try {
             boothService.deleteBooth(id);
         } catch (BusinessException be) {
-            return BaseOutput.failure(be.getErrorMsg());
+            return BaseOutput.failure(be.getMessage());
         }
         return BaseOutput.success();
     }
@@ -116,7 +116,7 @@ public class BoothController {
         try {
             boothService.boothSplit(parentId, names, notes, numbers);
         } catch (BusinessException be) {
-            return BaseOutput.failure(be.getErrorMsg());
+            return BaseOutput.failure(be.getMessage());
         }
         return BaseOutput.success();
     }

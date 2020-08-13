@@ -1,72 +1,114 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dili.assets.mapper.CustomCategoryMapper">
-  <resultMap id="BaseResultMap" type="com.dili.assets.domain.CustomCategory">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="category" jdbcType="BIGINT" property="category" />
-    <result column="market_id" jdbcType="BIGINT" property="marketId" />
-    <result column="cus_name" jdbcType="VARCHAR" property="cusName" />
-    <result column="keycode" jdbcType="VARCHAR" property="keycode" />
-    <result column="state" jdbcType="TINYINT" property="state" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    id, category, market_id, cus_name, keycode, state
-  </sql>
-  <select id="selectBy" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    select 
-    <include refid="Base_Column_List" />
-    from custom_category
-    where id = #{id,jdbcType=BIGINT}
-  </select>
-  <update id="updateBy" parameterType="com.dili.assets.domain.CustomCategory">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    update custom_category
-    <set>
-      <if test="category != null">
-        category = #{category,jdbcType=BIGINT},
-      </if>
-      <if test="marketId != null">
-        market_id = #{marketId,jdbcType=BIGINT},
-      </if>
-      <if test="cusName != null">
-        cus_name = #{cusName,jdbcType=VARCHAR},
-      </if>
-      <if test="keycode != null">
-        keycode = #{keycode,jdbcType=VARCHAR},
-      </if>
-      <if test="state != null">
-        state = #{state,jdbcType=TINYINT},
-      </if>
-    </set>
-    where id = #{id,jdbcType=BIGINT}
-  </update>
+    <resultMap id="BaseResultMap" type="com.dili.assets.sdk.dto.CategoryDTO">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="pingying" jdbcType="VARCHAR" property="pingying"/>
+        <result column="py_initials" jdbcType="VARCHAR" property="pyInitials"/>
+        <result column="state" jdbcType="TINYINT" property="state"/>
+        <result column="parent" jdbcType="BIGINT" property="parent"/>
+        <result column="path" jdbcType="VARCHAR" property="path"/>
+        <result column="code" jdbcType="VARCHAR" property="code"/>
+        <result column="creator_id" jdbcType="BIGINT" property="creatorId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime"/>
+        <result column="cus_name" jdbcType="VARCHAR" property="cusName"/>
+        <result column="keycode" jdbcType="VARCHAR" property="keycode"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        id, category, market_id, cus_name, keycode, state
+    </sql>
+    <select id="selectBy" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        select
+        <include refid="Base_Column_List"/>
+        from custom_category
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <update id="updateBy" parameterType="com.dili.assets.domain.CustomCategory">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        update custom_category
+        <set>
+            <if test="category != null">
+                category = #{category,jdbcType=BIGINT},
+            </if>
+            <if test="marketId != null">
+                market_id = #{marketId,jdbcType=BIGINT},
+            </if>
+            <if test="cusName != null">
+                cus_name = #{cusName,jdbcType=VARCHAR},
+            </if>
+            <if test="keycode != null">
+                keycode = #{keycode,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                state = #{state,jdbcType=TINYINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
 
-  <update id="batchUpdateCustomCategory">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    update custom_category
-    <set>
+    <update id="batchUpdateCustomCategory">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        update custom_category
+        <set>
 
-      <if test="value != null">
-        state = #{value,jdbcType=TINYINT},
-      </if>
+            <if test="value != null">
+                state = #{value,jdbcType=TINYINT},
+            </if>
 
-    </set>
-    where id in
-    <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
-        #{item}
-    </foreach>
-  </update>
+        </set>
+        where id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <select id="listCategory" parameterType="com.dili.assets.domain.query.CategoryQuery" resultMap="BaseResultMap">
+        select * from category
+        <where>
+            state = 1
+            <if test="keyword !=null and keyword !=''">
+                and (`name` like CONCAT('%',#{keyword},'%')
+                    or `code` like CONCAT('%',#{keyword},'%')
+                    or `py_initials` like CONCAT('%',#{keyword},'%')
+                    )
+            </if>
+            <if test="parent !=null">
+                and `parent`=#{parent}
+            </if>
+        </where>
+    </select>
+
+    <select id="listCusCategory" parameterType="com.dili.assets.domain.query.CategoryQuery" resultMap="BaseResultMap">
+        select a.* ,b.cus_name,b.keycode from category a left join custom_category b on a.id = b.category
+        <where>
+            a.state = 1
+            <if test="keyword !=null and keyword !=''">
+                and (b.`cus_name` like CONCAT('%',#{keyword},'%')
+                    or b.`keycode` like CONCAT('%',#{keyword},'%')
+                )
+            </if>
+            <if test="parent !=null">
+                and a.`parent`=#{parent}
+            </if>
+            <if test="state !=null and state !=''">
+                and b.`state`=#{state}
+            </if>
+            and b.market_id = #{marketId}
+        </where>
+    </select>
 </mapper>

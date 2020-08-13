@@ -39,7 +39,7 @@ public class DistrictController {
         try {
             districtService.saveDistrict(input);
         } catch (BusinessException e) {
-            return BaseOutput.failure(e.getErrorMsg());
+            return BaseOutput.failure(e.getMessage());
         }
         return BaseOutput.success();
     }
@@ -52,7 +52,7 @@ public class DistrictController {
         try {
             districtService.editDistrict(input);
         } catch (BusinessException e) {
-            return BaseOutput.failure(e.getErrorMsg());
+            return BaseOutput.failure(e.getMessage());
         }
         return BaseOutput.success();
     }
@@ -96,7 +96,7 @@ public class DistrictController {
             districtService.delDistrict(id);
             return BaseOutput.success();
         } catch (BusinessException be) {
-            return BaseOutput.failure(be.getErrorMsg());
+            return BaseOutput.failure(be.getMessage());
         } catch (Exception e) {
             return BaseOutput.failure(e.getMessage());
         }
@@ -191,7 +191,7 @@ public class DistrictController {
             districtService.division(parentId, names, notes, numbers);
             return BaseOutput.success();
         } catch (BusinessException be) {
-            return BaseOutput.failure(be.getErrorMsg());
+            return BaseOutput.failure(be.getMessage());
         } catch (Exception e) {
             return BaseOutput.failure(e.getMessage());
         }
