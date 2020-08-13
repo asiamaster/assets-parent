@@ -251,6 +251,37 @@ public interface AssetsRpc {
     BaseOutput deleteTagExt(CarTypePublicDTO carTypePublic);
 
     /**
+     * 获取车型
+     */
+    @RequestMapping(value = "/api/carTypePublic/listCarTypePublic", method = RequestMethod.POST)
+    BaseOutput<List<Map<String, Object>>> listCarTypePublic(CarTypePublicDTO carTypePublicDTO);
+    
+    /**
+    * 获取车型
+    */
+    @RequestMapping(value = "/api/carType/listCarType", method = RequestMethod.POST)
+    BaseOutput<List<CarTypeDTO>> listCarType(CarTypePublicDTO carTypePublicDTO);
+    
+    /**
+     * 获取默认车型的重量
+     */
+    @RequestMapping(value = "/api/tagExt/get", method = RequestMethod.POST)
+    BaseOutput<TagExtDTO> getWeight(TagExtDTO input);
+
+    /**
+     * 获取车型（进门业务）
+     */
+    @RequestMapping(value = "/api/carTypePublic/listCarTypePublicByBusiness", method = RequestMethod.POST)
+	BaseOutput<List<CarTypeForBusinessDTO>> listCarTypePublicByBusiness(CarTypeForBusinessDTO c);
+
+
+    /**
+     * 获取车型（不包含标签内容）
+     */
+    @RequestMapping(value = "/api/carTypePublic/queryCarType", method = RequestMethod.POST)
+    BaseOutput<List<CarTypeForBusinessDTO>> queryCarType(CarTypeForBusinessDTO carTypePublicDTO);
+    
+    /**
      * 获取客户列表信息
      */
     @RequestMapping(value = "/api/subject/getTree", method = RequestMethod.POST)
