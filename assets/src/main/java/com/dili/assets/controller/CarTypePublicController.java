@@ -176,12 +176,6 @@ public class CarTypePublicController {
      */
     @RequestMapping("get")
     public @ResponseBody BaseOutput get(@RequestBody CarTypePublicQuery carTypePublic) {
-    	DataDictionaryValue dataDictionaryValue = DTOUtils.newInstance(DataDictionaryValue.class);
-    	dataDictionaryValue.setDdCode("cartype_tag");
-    	dataDictionaryValue.setId(carTypePublic.getMarketId());
-    	
-    	List<DataDictionaryValue> list = dataDictionaryRpc.listDataDictionaryValue(dataDictionaryValue).getData();
-    	carTypePublic.setTags(list);
         return BaseOutput.success().setData(carTypePublicService.getCarTypePublicById(carTypePublic).get(0));
     }
     

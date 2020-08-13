@@ -11,6 +11,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.dili.ss.domain.BaseDomain;
+import com.dili.uap.sdk.domain.DataDictionaryValue;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
@@ -111,6 +112,9 @@ public class CarTypePublicDTO extends BaseDomain {
     private String number;
     
     private List<Long> ids;
+    
+    @Transient
+    private List<DataDictionaryValue> tags;
 
     /**
      * 获取id
@@ -353,6 +357,14 @@ public class CarTypePublicDTO extends BaseDomain {
 
 	public void setIds(List<Long> ids) {
 		this.ids = ids;
+	}
+
+	public List<DataDictionaryValue> getTags() {
+		return tags;
+	}
+
+	public void setTags(List<DataDictionaryValue> tags) {
+		this.tags = tags;
 	}
 	
 }
