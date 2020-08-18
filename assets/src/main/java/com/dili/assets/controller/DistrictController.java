@@ -1,5 +1,6 @@
 package com.dili.assets.controller;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
@@ -7,6 +8,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.dili.assets.domain.District;
 import com.dili.assets.domain.query.DistrictQuery;
 import com.dili.assets.glossary.StateEnum;
+import com.dili.assets.sdk.dto.DistrictDTO;
 import com.dili.assets.service.DistrictService;
 import com.dili.ss.domain.BaseOutput;
 import com.dili.ss.dto.IDTO;
@@ -169,7 +171,22 @@ public class DistrictController {
             if (input != null && input.getIsDelete() == null) {
                 input.setIsDelete(StateEnum.NO.getCode());
             }
-            return BaseOutput.success().setData(districtService.listByExample(input));
+            List<DistrictDTO> result = new ArrayList<>();
+            List<District> districts = districtService.listByExample(input);
+            if (CollUtil.isNotEmpty(districts)) {
+                for (District district : districts) {
+                    DistrictDTO dto = new DistrictDTO();
+                    BeanUtil.copyProperties(district, dto);
+                    if (dto.getParentId() != null && dto.getParentId() != 0) {
+                        District parent = districtService.get(dto.getParentId());
+                        if (parent != null) {
+                            dto.setParentName(parent.getName());
+                        }
+                    }
+                    result.add(dto);
+                }
+            }
+            return BaseOutput.success().setData(result);
         } catch (Exception e) {
             e.printStackTrace();
         }

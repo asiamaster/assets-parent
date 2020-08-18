@@ -2,6 +2,7 @@ package com.dili.assets.sdk.dto;
 
 import com.dili.ss.domain.BaseDomain;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
 
 import java.util.Date;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
  * 区域 ;
  * This file was generated on 2020-02-17 11:17:18.
  */
+@Data
 public class DistrictDTO extends BaseDomain {
     /**
      * id
@@ -66,199 +68,11 @@ public class DistrictDTO extends BaseDomain {
 
     private String deps;
 
-    /**
-     * id
-     */
-    public Long getId() {
-        return this.id;
-    }
-
-    /**
-     * id
-     */
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    /**
-     * 创建人
-     */
-    public Long getCreatorId() {
-        return this.creatorId;
-    }
-
-    /**
-     * 创建人
-     */
-    public void setCreatorId(Long creatorId) {
-        this.creatorId = creatorId;
-    }
-
-    /**
-     * 创建时间
-     */
-    public Date getCreateTime() {
-        return this.createTime;
-    }
-
-    /**
-     * 创建时间
-     */
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    /**
-     * 更新时间
-     */
-    public Date getModifyTime() {
-        return this.modifyTime;
-    }
-
-    /**
-     * 更新时间
-     */
-    public void setModifyTime(Date modifyTime) {
-        this.modifyTime = modifyTime;
-    }
-
-    /**
-     * 区域名称
-     */
-    public String getName() {
-        return this.name;
-    }
-
-    /**
-     * 区域名称
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * 备注
-     */
-    public String getNotes() {
-        return this.notes;
-    }
-
-    /**
-     * 备注
-     */
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
-
-    /**
-     * 部门
-     */
-    public Long getDepartmentId() {
-        return this.departmentId;
-    }
-
-    /**
-     * 部门
-     */
-    public void setDepartmentId(Long departmentId) {
-        this.departmentId = departmentId;
-    }
-
-    /**
-     * 负责人
-     */
-    public Long getOwner() {
-        return this.owner;
-    }
-
-    /**
-     * 负责人
-     */
-    public void setOwner(Long owner) {
-        this.owner = owner;
-    }
-
-    /**
-     * 市场
-     */
-    public Long getMarketId() {
-        return this.marketId;
-    }
-
-    /**
-     * 市场
-     */
-    public void setMarketId(Long marketId) {
-        this.marketId = marketId;
-    }
-
-    /**
-     * 父区域
-     */
-    public Long getParentId() {
-        return this.parentId;
-    }
-
-    /**
-     * 父区域
-     */
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
-    }
-
-    /**
-     * 编号
-     */
-    public String getNumber() {
-        return this.number;
-    }
-
-    /**
-     * 编号
-     */
-    public void setNumber(String number) {
-        this.number = number;
-    }
-
-    /**
-     * 状态
-     */
-    public Integer getIsDelete() {
-        return this.isDelete;
-    }
-
-    /**
-     * 状态
-     */
-    public void setIsDelete(Integer isDelete) {
-        this.isDelete = isDelete;
-    }
-
-    public String getDeps() {
-        return deps;
-    }
-
-    public void setDeps(String deps) {
-        this.deps = deps;
-    }
 
     private String nameLike;
 
-    public String getNameLike() {
-        return nameLike;
-    }
-
-    public void setNameLike(String nameLike) {
-        this.nameLike = nameLike;
-    }
 
     private List<String> ids;
 
-    public List<String> getIds() {
-        return ids;
-    }
-
-    public void setIds(List<String> ids) {
-        this.ids = ids;
-    }
+    private String parentName;
 }
