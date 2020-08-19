@@ -187,6 +187,7 @@
     	<set>
           code = #{code,jdbcType=VARCHAR},
           auto_pass = #{autoPass,jdbcType=INTEGER},
+          auto_save = #{autoSave,jdbcType=INTEGER},
           remark = #{remark,jdbcType=VARCHAR},
           tag = #{tag,jdbcType=VARCHAR},
       </set>
