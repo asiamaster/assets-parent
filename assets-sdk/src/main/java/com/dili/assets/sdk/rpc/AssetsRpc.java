@@ -282,6 +282,18 @@ public interface AssetsRpc {
     BaseOutput<List<CarTypeForBusinessDTO>> queryCarType(CarTypeForBusinessDTO carTypePublicDTO);
     
     /**
+     * 检车快捷编码是否重复
+     */
+    @RequestMapping(value = "/api/carTypePublic/checkRepeat", method = RequestMethod.POST)
+	Boolean checkRepeat(CarTypePublicDTO carTypePublic);
+    
+    /**
+     * 检车快捷编码是否重复
+     */
+    @RequestMapping(value = "/api/carType/checkRepeat", method = RequestMethod.POST)
+    Boolean checkRepeat(CarTypeDTO carType);
+    
+    /**
      * 获取客户列表信息
      */
     @RequestMapping(value = "/api/subject/getTree", method = RequestMethod.POST)
@@ -310,4 +322,5 @@ public interface AssetsRpc {
      */
     @RequestMapping(value = "/api/subject/batchUpdate", method = RequestMethod.POST)
     BaseOutput batchUpdateSubject(@RequestParam("id") Long id, @RequestParam("value") Integer value);
+
 }

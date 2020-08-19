@@ -146,7 +146,7 @@
 	        and ct.number = #{number,jdbcType=BIGINT}
 	      </if>
 	      <if test="name != null">
-	        and ct.name = #{name,jdbcType=VARCHAR}
+	        and ct.name like concat('%',#{name,jdbcType=VARCHAR},'%')
 	      </if>
 	      <if test="tag != null">
 	        and position(#{tag,jdbcType=VARCHAR} in tag)
