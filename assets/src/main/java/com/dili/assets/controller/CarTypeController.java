@@ -5,6 +5,8 @@ import com.dili.assets.domain.CarType;
 import com.dili.assets.domain.CarTypePublic;
 import com.dili.assets.service.CarTypeService;
 import com.dili.ss.domain.BaseOutput;
+import com.dili.ss.dto.IDTO;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -43,6 +45,9 @@ public class CarTypeController {
      */
     @RequestMapping(value="/listPage", method = {RequestMethod.GET, RequestMethod.POST})
     public @ResponseBody String listPage(@RequestBody CarType carType) throws Exception {
+    	if(carType.getKeyword() != null && !"".equals(carType.getKeyword())) {
+    		carType.setMetadata(IDTO.AND_CONDITION_EXPR, "( name like '%"+ carType.getKeyword() +"%')");
+    	}
     	return carTypeService.listEasyuiPageByExample(carType, true).toString();
     }
     
@@ -99,5 +104,22 @@ public class CarTypeController {
     @RequestMapping("get")
     public @ResponseBody BaseOutput<Assets> get(@RequestBody Long id) {
         return BaseOutput.success().setData(carTypeService.get(id));
+    }
+    
+    /**
+     * 删除carTypePublic
+     * @param id
+     * @return BaseOutput
+     */
+    @RequestMapping(value="/checkRepeat", method = {RequestMethod.GET, RequestMethod.POST})
+    public @ResponseBody Boolean checkRepeat(@RequestBody CarType carType) {
+    	Boolean b = true;
+        List<CarType> list = carTypeService.checkRepeat(carType);
+        if(list != null && list.size() > 0) {
+        	b = false;
+        }else {
+        	b = true;
+        }
+        return b;
     }
 }

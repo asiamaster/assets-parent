@@ -46,4 +46,12 @@
 			and ctp.status = #{status}
 		</if>
   </select>
+  <select id="checkRepeat" resultMap="BaseResultMap">
+  	  select id, create_time, modify_time, creator_id, name, number, classify,
+    	status, remark from car_type
+    	where name = #{name}
+	    <if test="id != null">
+	       and id != #{id}
+	    </if>
+  </select>
 </mapper>

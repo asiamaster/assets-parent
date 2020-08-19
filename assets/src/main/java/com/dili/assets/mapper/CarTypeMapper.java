@@ -11,4 +11,6 @@ public interface CarTypeMapper extends MyMapper<CarType> {
 	void insertCarType(CarType carType);
 
 	List<CarType> listCarType(CarTypePublic carType);
+	
+	List<CarType> checkRepeat(CarType carType);
 }

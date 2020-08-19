@@ -111,6 +111,9 @@ public class CarTypePublicDTO extends BaseDomain {
     @Transient
     private String number;
     
+    @Transient
+    private String name;
+    
     private List<Long> ids;
     
     @Transient
@@ -365,6 +368,14 @@ public class CarTypePublicDTO extends BaseDomain {
 
 	public void setTags(List<DataDictionaryValue> tags) {
 		this.tags = tags;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 }

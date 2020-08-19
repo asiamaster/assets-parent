@@ -21,4 +21,7 @@ public interface CarTypePublicMapper extends MyMapper<CarTypePublic> {
 	List<CarTypeForBusinessDTO> listCarTypePublicByBusiness(CarTypePublicQuery carTypePublic);
 
 	List<CarTypeForBusinessDTO> queryCarType(CarTypePublicQuery carTypePublic);
+
+	List<CarTypePublic> checkRepeat(CarTypePublic carTypePublic);
+
 }

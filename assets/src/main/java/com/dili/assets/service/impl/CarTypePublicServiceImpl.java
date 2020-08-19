@@ -29,7 +29,6 @@ public class CarTypePublicServiceImpl extends BaseServiceImpl<CarTypePublic, Lon
 
 	@Override
 	public List<Map<String, Object>> listCarTypePublic(CarTypePublicQuery carTypePublic, boolean b) throws Exception {
-		
 		List<Map<String, Object>> list = getActualDao().listCarTypePublic(carTypePublic);
 		return list;
 	}
@@ -64,4 +63,10 @@ public class CarTypePublicServiceImpl extends BaseServiceImpl<CarTypePublic, Lon
 	public List<CarTypeForBusinessDTO> queryCarType(CarTypePublicQuery carTypePublic) {
 		return getActualDao().queryCarType(carTypePublic);
 	}
+
+	@Override
+	public List<CarTypePublic> checkRepeat(CarTypePublic carTypePublic) {
+		return getActualDao().checkRepeat(carTypePublic);
+	}
+
 }

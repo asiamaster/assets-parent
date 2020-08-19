@@ -249,4 +249,12 @@
 			</if>
 		</where>
   </select>
+  <select id="checkRepeat" resultMap="BaseResultMap">
+  	  select id, market_id, car_type_id, code, tag, auto_save,
+    auto_pass, status, remark, create_time, modify_time, creator_id from car_type_public
+    where code = #{code} and market_id = #{marketId} 
+    <if test="id != null">
+	    and id != #{id}
+    </if>
+  </select>
 </mapper>

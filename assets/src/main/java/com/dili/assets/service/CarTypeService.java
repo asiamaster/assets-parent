@@ -24,5 +24,10 @@ public interface CarTypeService extends BaseService<CarType, Long> {
 	 * @return
 	 */
 	List<CarType> listCarType(CarTypePublic carType);
+	
+	/**
+     * 检车车型名称是否重复
+     */
+	List<CarType> checkRepeat(CarType carType);
 
 }

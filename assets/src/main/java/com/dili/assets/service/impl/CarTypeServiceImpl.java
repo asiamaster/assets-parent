@@ -30,4 +30,9 @@ public class CarTypeServiceImpl extends BaseServiceImpl<CarType, Long> implement
 	public List<CarType> listCarType(CarTypePublic carType) {
 		return getActualDao().listCarType(carType);
 	}
+	
+	@Override
+	public List<CarType> checkRepeat(CarType carType) {
+		return getActualDao().checkRepeat(carType);
+	}
 }

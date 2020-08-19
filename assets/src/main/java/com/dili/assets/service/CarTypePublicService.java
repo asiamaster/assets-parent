@@ -59,4 +59,10 @@ public interface CarTypePublicService extends BaseService<CarTypePublic, Long> {
 	 * @param carTypePublic 公共车型实体类
 	 */
 	List<CarTypeForBusinessDTO> queryCarType(CarTypePublicQuery carTypePublic);
+
+	/**
+     * 检车快捷编码是否重复
+     */
+	List<CarTypePublic> checkRepeat(CarTypePublic carTypePublic);
+
 }

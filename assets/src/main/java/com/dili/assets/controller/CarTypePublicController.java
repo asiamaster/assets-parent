@@ -1,5 +1,16 @@
 package com.dili.assets.controller;
 
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.dili.assets.domain.CarTypePublic;
 import com.dili.assets.domain.TagExt;
 import com.dili.assets.domain.query.CarTypePublicQuery;
@@ -12,17 +23,7 @@ import com.dili.ss.dto.DTOUtils;
 import com.dili.uap.sdk.domain.DataDictionaryValue;
 import com.dili.uap.sdk.rpc.DataDictionaryRpc;
 import com.github.pagehelper.Page;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.List;
-import java.util.Map;
+import com.github.pagehelper.PageHelper;
 
 /**
  * 由MyBatis Generator工具自动生成
@@ -58,7 +59,13 @@ public class CarTypePublicController {
     	DataDictionaryValue dataDictionaryValue = DTOUtils.newInstance(DataDictionaryValue.class);
     	dataDictionaryValue.setDdCode("cartype_tag");
     	dataDictionaryValue.setFirmId(carTypePublic.getMarketId());
-    	
+    	Integer page = carTypePublic.getPage();
+		page = (page == null) ? Integer.valueOf(1) : page;
+		if(carTypePublic.getRows() != null && carTypePublic.getRows() >= 1) {
+			//为了线程安全,请勿改动下面两行代码的顺序
+			PageHelper.startPage(page, carTypePublic.getRows());
+		}
+		
     	List<DataDictionaryValue> list = dataDictionaryRpc.listDataDictionaryValue(dataDictionaryValue).getData();
     	carTypePublic.setTags(list);
     	List<Map<String, Object>> listCarTypePublic = carTypePublicService.listCarTypePublic(carTypePublic, true);
@@ -189,5 +196,22 @@ public class CarTypePublicController {
     public @ResponseBody BaseOutput<List<CarTypeForBusinessDTO>> queryCarType(@RequestBody CarTypePublicQuery carTypePublic) throws Exception {
     	
     	return BaseOutput.success().setData(carTypePublicService.queryCarType(carTypePublic));
+    }
+    
+    /**
+     * 删除carTypePublic
+     * @param id
+     * @return BaseOutput
+     */
+    @RequestMapping(value="/checkRepeat", method = {RequestMethod.GET, RequestMethod.POST})
+    public @ResponseBody Boolean checkRepeat(@RequestBody CarTypePublic carTypePublic) {
+    	Boolean b = true;
+        List<CarTypePublic> list = carTypePublicService.checkRepeat(carTypePublic);
+        if(list != null && list.size() > 0) {
+        	b = false;
+        }else {
+        	b = true;
+        }
+        return b;
     }
 }

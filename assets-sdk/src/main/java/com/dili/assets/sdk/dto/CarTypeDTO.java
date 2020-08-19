@@ -71,6 +71,11 @@ public class CarTypeDTO extends BaseDomain {
      * 备注
      */
     private String remark;
+    
+    /**
+     * 备注
+     */
+    private String keyword;
 
     /**
      * 获取id
@@ -211,7 +216,15 @@ public class CarTypeDTO extends BaseDomain {
         return remark;
     }
 
-    /**
+    public String getKeyword() {
+		return keyword;
+	}
+
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
+	}
+
+	/**
      * 设置备注
      *
      * @param remark 备注

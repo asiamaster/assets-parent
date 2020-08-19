@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.dili.ss.domain.BaseDomain;
 import com.dili.ss.metadata.FieldEditor;
@@ -75,6 +76,12 @@ public class CarType extends BaseDomain {
      */
     @Column(name = "`remark`")
     private String remark;
+    
+    /**
+     * 备注
+     */
+    @Transient
+    private String keyword;
 
     /**
      * 获取id
@@ -239,6 +246,14 @@ public class CarType extends BaseDomain {
 
 	public String getNumber() {
 		return number;
+	}
+
+	public String getKeyword() {
+		return keyword;
+	}
+
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
 	}
 
 	public void setNumber(String number) {
