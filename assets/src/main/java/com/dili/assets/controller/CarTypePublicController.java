@@ -153,6 +153,17 @@ public class CarTypePublicController {
     	carTypePublicService.updateSelective(carTypePublic);
     	return BaseOutput.success("修改成功");
     }
+    
+    /**
+     * 修改carTypePublic
+     * @param carTypePublic
+     * @return BaseOutput
+     */
+    @RequestMapping(value="/updateStatusByCarTypeId", method = {RequestMethod.GET, RequestMethod.POST})
+    public @ResponseBody BaseOutput updateStatusByCarTypeId(@RequestBody CarTypePublic carTypePublic) {
+    	carTypePublicService.updateStatusByCarTypeId(carTypePublic);
+    	return BaseOutput.success("修改成功");
+    }
 
     /**
      * 删除carTypePublic

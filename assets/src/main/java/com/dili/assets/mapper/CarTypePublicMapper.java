@@ -24,4 +24,6 @@ public interface CarTypePublicMapper extends MyMapper<CarTypePublic> {
 
 	List<CarTypePublic> checkRepeat(CarTypePublic carTypePublic);
 
+	void updateStatusByCarTypeId(CarTypePublic carTypePublic);
+
 }

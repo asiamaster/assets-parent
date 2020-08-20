@@ -114,7 +114,8 @@
 				car_type_public_id
 			) te on ctb.id = te.car_type_public_id
 		</if>
-		where ct.status = 1
+		<where>
+		  and ct.status = 1
 	      <if test="carTypeId != null">
 	        and ctb.car_type_id = #{carTypeId,jdbcType=BIGINT}
 	      </if>
@@ -151,6 +152,10 @@
 	      <if test="tag != null">
 	        and position(#{tag,jdbcType=VARCHAR} in tag)
 	      </if>
+	      <if test="businessCode != null and businessCode != ''">
+			and LOCATE(#{businessCode},ctb.tag)
+		  </if>
+	   </where>
 	      order by ct.number
   </select>
   <!-- 通过id获取公共车型 -->
@@ -217,6 +222,9 @@
 			<if test="id != null">
 				and cp.id = #{id}
 			</if>
+			<if test="status != null">
+		        and cp.status = #{status,jdbcType=INTEGER}
+		    </if>
 			<if test="ids != null and ids.size() > 0">
 				and cp.id in 
 				<foreach collection="ids" item="c_id" open="(" separator="," close=")">

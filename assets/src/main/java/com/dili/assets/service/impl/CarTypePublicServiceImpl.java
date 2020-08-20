@@ -11,10 +11,6 @@ import com.dili.assets.mapper.CarTypePublicMapper;
 import com.dili.assets.sdk.dto.CarTypeForBusinessDTO;
 import com.dili.assets.service.CarTypePublicService;
 import com.dili.ss.base.BaseServiceImpl;
-import com.dili.ss.domain.EasyuiPageOutput;
-import com.dili.ss.metadata.ValueProviderUtils;
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
 
 /**
  * 由MyBatis Generator工具自动生成
@@ -67,6 +63,11 @@ public class CarTypePublicServiceImpl extends BaseServiceImpl<CarTypePublic, Lon
 	@Override
 	public List<CarTypePublic> checkRepeat(CarTypePublic carTypePublic) {
 		return getActualDao().checkRepeat(carTypePublic);
+	}
+
+	@Override
+	public void updateStatusByCarTypeId(CarTypePublic carTypePublic) {
+		getActualDao().updateStatusByCarTypeId(carTypePublic);
 	}
 
 }

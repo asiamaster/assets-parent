@@ -65,4 +65,9 @@ public interface CarTypePublicService extends BaseService<CarTypePublic, Long> {
      */
 	List<CarTypePublic> checkRepeat(CarTypePublic carTypePublic);
 
+	/**
+     * 通过基础车型id修改车型状态
+     */
+	void updateStatusByCarTypeId(CarTypePublic carTypePublic);
+
 }
