@@ -50,6 +50,17 @@ public class CategoryQuery extends Category {
     private String orName;
 
     @Transient
+    private String keycode;
+
+    public String getKeycode() {
+        return keycode;
+    }
+
+    public void setKeycode(String keycode) {
+        this.keycode = keycode;
+    }
+
+    @Transient
     private List<String> ids;
 
     public List<String> getIds() {

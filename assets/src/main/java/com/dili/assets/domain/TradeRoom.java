@@ -44,6 +44,9 @@ public class TradeRoom extends BaseDomain implements Serializable {
     @Column(name = "name",nullable = false)
     private String name;
 
+    @Column(name = "code",nullable = false)
+    private String code;
+
     @Column(name = "trade_type",nullable = false)
     private Long tradeType;
 

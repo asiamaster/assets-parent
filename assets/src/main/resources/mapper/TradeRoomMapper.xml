@@ -6,6 +6,8 @@
                         property="id"/>
                 <result column="name" jdbcType="VARCHAR"
                         property="name"/>
+                <result column="code" jdbcType="VARCHAR"
+                        property="code"/>
                 <result column="trade_type" jdbcType="BIGINT"
                         property="tradeType"/>
                 <result column="creator_id" jdbcType="BIGINT"
@@ -18,15 +20,18 @@
     <sql id="Example_Where_Clause">
         <where>
 
-                        <if test="name != null">
-                            name like
-                            concat('%', #{name}, '%')
-                        </if>
+            <if test="keyword != null">
+                and name like
+                concat('%', #{keyword}, '%')
+                or code like
+                concat('%', #{keyword}, '%')
+            </if>
         </where>
     </sql>
     <sql id="Base_Column_List">
                     id,
                     name,
+                    code,
                     trade_type,
                     creator_id,
                     creator_user,

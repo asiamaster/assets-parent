@@ -37,6 +37,9 @@ public class TradeRoomDto extends BaseDomain implements Serializable {
     /** 交易厅名称 */
     private String name;
 
+    /** 编码 */
+    private String code;
+
     /** 关联交易类型 */
     private Long tradeType;
 

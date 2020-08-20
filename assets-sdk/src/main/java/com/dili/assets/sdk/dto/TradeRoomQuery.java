@@ -16,8 +16,7 @@
 package com.dili.assets.sdk.dto;
 
 import lombok.Data;
-import java.time.LocalDateTime;
-import java.util.List;
+
 import java.util.Map;
 
 /**
@@ -43,4 +42,7 @@ public class TradeRoomQuery{
 
     /** 模糊 */
     private String name;
+
+    /** 模糊 */
+    private String keyword;
 }

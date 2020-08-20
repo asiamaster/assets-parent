@@ -76,8 +76,7 @@ public class TradeTypeController {
      */
     @PostMapping("/add")
     public Object add(@RequestBody TradeType tradeType) {
-        tradeTypeService.saveOrUpdate(tradeType);
-        return BaseOutput.success();
+        return tradeTypeService.saveTradeType(tradeType);
     }
 
     /**
@@ -85,8 +84,7 @@ public class TradeTypeController {
      */
     @PostMapping("/update")
     public Object update(@RequestBody TradeType tradeType) {
-        tradeTypeService.updateSelective(tradeType);
-        return BaseOutput.success();
+        return tradeTypeService.updateTradeType(tradeType);
     }
 
     /**
