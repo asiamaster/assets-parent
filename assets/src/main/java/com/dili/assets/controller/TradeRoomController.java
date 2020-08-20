@@ -45,7 +45,7 @@ public class TradeRoomController {
      * @return PageInfo<TradeRoom>
      */
     @PostMapping("/query")
-    public Object query(TradeRoomQuery query) {
+    public Object query(@RequestBody TradeRoomQuery query) {
         PageInfo<TradeRoom> page = tradeRoomService.queryAll(query);
         TableResult<TradeRoom> result = new TableResult<>(page.getPageNum(), page.getTotal(), page.getList());
         return result;
