@@ -15,15 +15,19 @@
 */
 package com.dili.assets.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
 import com.dili.assets.domain.TradeRoom;
-import lombok.RequiredArgsConstructor;
+import com.dili.assets.mapper.TradeRoomMapper;
+import com.dili.assets.sdk.dto.TradeRoomQuery;
+import com.dili.assets.service.TradeRoomService;
+import com.dili.ss.base.BaseServiceImpl;
+import com.dili.ss.domain.BaseOutput;
+import com.dili.ss.dto.IDTO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.dili.assets.service.TradeRoomService;
-import com.dili.assets.sdk.dto.TradeRoomQuery;
-import com.dili.assets.mapper.TradeRoomMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import com.dili.ss.base.BaseServiceImpl;
+
 import java.util.List;
 
 /**
@@ -51,5 +55,34 @@ public class TradeRoomServiceImpl extends BaseServiceImpl<TradeRoom, Long> imple
         for (Long id : ids) {
             tradeRoomMapper.deleteByPrimaryKey(id);
         }
+    }
+
+    @Override
+    public BaseOutput saveTradeRoom(TradeRoom tradeRoom) {
+        TradeRoom query = new TradeRoom();
+        query.setName(tradeRoom.getName());
+        if (CollUtil.isNotEmpty(this.listByExample(query))) {
+            return BaseOutput.failure("名称重复");
+        }
+
+        query = new TradeRoom();
+        query.setCode(tradeRoom.getCode());
+        if (CollUtil.isNotEmpty(this.listByExample(query))) {
+            return BaseOutput.failure("编码重复");
+        }
+        this.saveOrUpdate(tradeRoom);
+        return BaseOutput.success();
+    }
+
+    @Override
+    public BaseOutput updateTradeRoom(TradeRoom tradeRoom) {
+        TradeRoom query = new TradeRoom();
+        query.setName(tradeRoom.getName());
+        query.setMetadata(IDTO.AND_CONDITION_EXPR, "id !=" + tradeRoom.getId());
+        if (CollUtil.isNotEmpty(this.listByExample(query))) {
+            return BaseOutput.failure("名称重复");
+        }
+        this.updateSelective(tradeRoom);
+        return BaseOutput.success();
     }
 }

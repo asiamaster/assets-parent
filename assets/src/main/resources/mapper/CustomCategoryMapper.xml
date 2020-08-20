@@ -102,6 +102,9 @@
                     or b.`keycode` like CONCAT('%',#{keyword},'%')
                 )
             </if>
+            <if test="keycode !=null and keycode !=''">
+                and b.`keycode`=#{keycode}
+            </if>
             <if test="parent !=null">
                 and a.`parent`=#{parent}
             </if>

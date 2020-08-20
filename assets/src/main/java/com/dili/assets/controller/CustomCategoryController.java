@@ -73,6 +73,23 @@ public class CustomCategoryController {
     }
 
     /**
+     * 获取品类列表
+     */
+    @RequestMapping(value = "/getByKeycode")
+    public BaseOutput<CategoryDTO> getByKeycode(@RequestBody(required = false) CategoryQuery input) {
+        if (input == null || input.getMarketId() == null) {
+            return BaseOutput.failure("未知市场或参数");
+        }
+        // 查询自定义品类
+        List<CategoryDTO> cusList = customCategoryMapper.listCusCategory(input);
+        if (CollUtil.isNotEmpty(cusList)) {
+            return BaseOutput.success().setData(cusList.get(0));
+        } else {
+            return BaseOutput.success();
+        }
+    }
+
+    /**
      * 获取单个品类
      */
     @RequestMapping(value = "/get")
