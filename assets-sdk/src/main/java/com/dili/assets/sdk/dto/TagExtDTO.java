@@ -1,5 +1,7 @@
 package com.dili.assets.sdk.dto;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Table;
 
 import com.dili.ss.domain.BaseDomain;
@@ -17,7 +19,7 @@ public class TagExtDTO extends BaseDomain {
 
     private String name;
 
-    private Long weight;
+    private BigDecimal weight;
 
     private Long carTypePublicId;
 
@@ -66,14 +68,14 @@ public class TagExtDTO extends BaseDomain {
     /**
      * @return weight
      */
-    public Long getWeight() {
+    public BigDecimal getWeight() {
         return weight;
     }
 
     /**
      * @param weight
      */
-    public void setWeight(Long weight) {
+    public void setWeight(BigDecimal weight) {
         this.weight = weight;
     }
 

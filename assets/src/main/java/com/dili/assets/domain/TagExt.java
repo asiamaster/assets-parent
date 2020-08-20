@@ -1,10 +1,17 @@
 package com.dili.assets.domain;
 
+import java.math.BigDecimal;
+
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import com.dili.ss.domain.BaseDomain;
 import com.dili.ss.metadata.FieldEditor;
 import com.dili.ss.metadata.annotation.EditMode;
 import com.dili.ss.metadata.annotation.FieldDef;
-import javax.persistence.*;
 
 /**
  * 由MyBatis Generator工具自动生成
@@ -25,7 +32,7 @@ public class TagExt extends BaseDomain {
     private String name;
 
     @Column(name = "`weight`")
-    private Long weight;
+    private BigDecimal weight;
 
     @Column(name = "`car_type_public_id`")
     private Long carTypePublicId;
@@ -83,14 +90,14 @@ public class TagExt extends BaseDomain {
      */
     @FieldDef(label="weight")
     @EditMode(editor = FieldEditor.Number, required = false)
-    public Long getWeight() {
+    public BigDecimal getWeight() {
         return weight;
     }
 
     /**
      * @param weight
      */
-    public void setWeight(Long weight) {
+    public void setWeight(BigDecimal weight) {
         this.weight = weight;
     }
 
