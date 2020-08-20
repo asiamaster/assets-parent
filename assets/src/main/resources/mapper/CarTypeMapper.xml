@@ -45,6 +45,9 @@
 		<if test="status != null">
 			and ctp.status = #{status}
 		</if>
+		<if test="businessCode != null and businessCode != ''">
+			and LOCATE(#{businessCode},ctp.tag)
+		</if>
   </select>
   <select id="checkRepeat" resultMap="BaseResultMap">
   	  select id, create_time, modify_time, creator_id, name, number, classify,
