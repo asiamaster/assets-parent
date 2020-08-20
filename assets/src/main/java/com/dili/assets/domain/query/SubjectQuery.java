@@ -44,6 +44,17 @@ public class SubjectQuery extends Subject {
     private String likeName;
 
     @Transient
+    private String keyword;
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
+    @Transient
     private List<String> ids;
 
     public List<String> getIds() {
