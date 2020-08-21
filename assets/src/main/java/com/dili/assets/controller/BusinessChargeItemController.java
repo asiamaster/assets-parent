@@ -1,12 +1,13 @@
 package com.dili.assets.controller;
 
 import com.dili.assets.domain.BusinessChargeItem;
+import com.dili.assets.domain.query.BusinessChargeItemQuery;
 import com.dili.assets.service.BusinessChargeItemService;
 import com.dili.ss.domain.BaseOutput;
 import com.dili.ss.domain.PageOutput;
 import com.github.pagehelper.Page;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -18,13 +19,13 @@ import java.util.Objects;
  * 由MyBatis Generator工具自动生成
  * This file was generated on 2020-05-28 17:14:10.
  */
+@RequiredArgsConstructor
 @Slf4j
 @RestController
 @RequestMapping("/api/businessChargeItem")
 public class BusinessChargeItemController {
-    @Autowired
-    private BusinessChargeItemService businessChargeItemService;
 
+    private final BusinessChargeItemService businessChargeItemService;
 
     /**
      * 新增ChargeItem
@@ -47,15 +48,15 @@ public class BusinessChargeItemController {
 
     /**
      * 分页查询收费项数据集
-     * @param businessChargeItem 业务费用项信息
+     * @param businessChargeItemQuery 业务费用项信息
      * @return 分页数据信息
      */
     @RequestMapping(value="/listPage", method = {RequestMethod.POST})
-    public PageOutput<List<BusinessChargeItem>> listPage(@RequestBody(required = false) BusinessChargeItem businessChargeItem){
-        if (Objects.isNull(businessChargeItem)){
-            businessChargeItem = new BusinessChargeItem();
+    public PageOutput<List<BusinessChargeItem>> listPage(@RequestBody(required = false) BusinessChargeItemQuery businessChargeItemQuery){
+        if (Objects.isNull(businessChargeItemQuery)){
+            businessChargeItemQuery = new BusinessChargeItemQuery();
         }
-        List<BusinessChargeItem> list = businessChargeItemService.listByExample(businessChargeItem);
+        List<BusinessChargeItem> list = businessChargeItemService.listByExample(businessChargeItemQuery);
         //总记录
         Long total = list instanceof Page ? ((Page) list).getTotal() : list.size();
         //总页数
@@ -63,21 +64,21 @@ public class BusinessChargeItemController {
         //当前页数
         int pageNum = list instanceof Page ? ((Page) list).getPageNum() : 1;
         PageOutput output = PageOutput.success();
-        output.setData(list).setPageNum(pageNum).setTotal(total.intValue()).setPageSize(businessChargeItem.getPage()).setPages(totalPage);
+        output.setData(list).setPageNum(pageNum).setTotal(total.intValue()).setPageSize(businessChargeItemQuery.getPage()).setPages(totalPage);
         return output;
     }
 
     /**
-     * 分页查询收费项数据集
-     * @param businessChargeItem
+     * 查询收费项数据集
+     * @param businessChargeItemQuery 查询条件
      * @return
      */
     @RequestMapping(value="/listByExample", method = {RequestMethod.POST})
-    public BaseOutput<List<BusinessChargeItem>> listByExample(@RequestBody(required = false) BusinessChargeItem businessChargeItem){
-        if (Objects.isNull(businessChargeItem)){
-            businessChargeItem = new BusinessChargeItem();
+    public BaseOutput<List<BusinessChargeItem>> listByExample(@RequestBody(required = false) BusinessChargeItemQuery businessChargeItemQuery){
+        if (Objects.isNull(businessChargeItemQuery)){
+            businessChargeItemQuery = new BusinessChargeItemQuery();
         }
-        return BaseOutput.successData(businessChargeItemService.listByExample(businessChargeItem));
+        return BaseOutput.successData(businessChargeItemService.listByExample(businessChargeItemQuery));
     }
 
     /**
@@ -85,8 +86,8 @@ public class BusinessChargeItemController {
      * @param id
      * @return
      */
-    @RequestMapping(value = "/getById", method = {RequestMethod.POST})
-    public BaseOutput<BusinessChargeItem> listPage(@RequestParam("id") Long id) {
+    @GetMapping(value = "/getById")
+    public BaseOutput<BusinessChargeItem> getById(@RequestParam("id") Long id) {
         return BaseOutput.success().setData(businessChargeItemService.get(id));
     }
 

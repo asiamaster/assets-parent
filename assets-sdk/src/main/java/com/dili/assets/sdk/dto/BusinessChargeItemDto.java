@@ -77,7 +77,7 @@ public class BusinessChargeItemDto extends BaseDomain {
     /**
      * 财务费用科目
      */
-    private Long chargeSubject;
+    private String chargeSubjectPath;
 
     /**
      * 财务费用科目名称

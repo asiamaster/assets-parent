@@ -2,7 +2,6 @@ package com.dili.assets.domain;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.dili.ss.domain.BaseDomain;
-import com.dili.ss.domain.annotation.Operator;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -13,7 +12,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * 由MyBatis Generator工具自动生成
@@ -93,10 +91,10 @@ public class BusinessChargeItem extends BaseDomain {
     private Integer systemSubject;
 
     /**
-     * 财务费用科目
+     * 财务费用科目路径,以逗号分隔
      */
-    @Column(name = "`charge_subject`")
-    private Long chargeSubject;
+    @Column(name = "`charge_subject_path`")
+    private String chargeSubjectPath;
 
     /**
      * 财务费用科目名称
@@ -132,13 +130,5 @@ public class BusinessChargeItem extends BaseDomain {
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime modifyTime;
-
-    /**
-     * ID 数据集
-     */
-    @Transient
-    @Column(name = "`id`")
-    @Operator(Operator.IN)
-    private List<Long> idList;
 
 }
