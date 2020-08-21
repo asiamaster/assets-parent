@@ -104,7 +104,7 @@
 			SELECT
 				tag_ext.car_type_public_id car_type_public_id
 			<foreach collection="tags" item="tag">
-				,SUM( IF ( CODE = #{tag.code}, weight, NULL ) ) AS ${tag.code}_weight,
+				,MAX( IF ( CODE = #{tag.code}, weight, NULL ) ) AS ${tag.code}_weight,
 				MAX( IF ( CODE = #{tag.code}, CODE, 0 ) ) AS ${tag.code}_code,
 				MAX( IF ( CODE = #{tag.code}, NAME, 0 ) ) AS ${tag.code}_name
 			</foreach>
@@ -173,7 +173,7 @@
 			SELECT
 				tag_ext.car_type_public_id car_type_public_id
 			<foreach collection="tags" item="tag">
-				,SUM( IF ( CODE = #{tag.code}, weight, NULL ) ) AS ${tag.code}_weight,
+				,MAX( IF ( CODE = #{tag.code}, weight, NULL ) ) AS ${tag.code}_weight,
 				MAX( IF ( CODE = #{tag.code}, CODE, 0 ) ) AS ${tag.code}_code,
 				MAX( IF ( CODE = #{tag.code}, NAME, 0 ) ) AS ${tag.code}_name
 			</foreach>
