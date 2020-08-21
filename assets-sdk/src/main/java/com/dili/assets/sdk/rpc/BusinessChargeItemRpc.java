@@ -4,8 +4,8 @@ import com.dili.assets.sdk.dto.BusinessChargeItemDto;
 import com.dili.ss.domain.BaseOutput;
 import com.dili.ss.domain.PageOutput;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -18,21 +18,21 @@ import java.util.List;
  * @author yuehongbo
  * @date 2020/6/5 16:03
  */
-@FeignClient(name = "assets-service", contextId = "businessChargeItemRpc")
+@FeignClient(name = "assets-service", contextId = "businessChargeItemRpc",url = "${AssetsRpc.url:}")
 public interface BusinessChargeItemRpc {
 
     /**
      * 获取业务收费项列表信息
      * @param businessChargeItemDto
      */
-    @RequestMapping(value = "/api/businessChargeItem/listPage", method = RequestMethod.POST)
+    @PostMapping(value = "/api/businessChargeItem/listPage")
     PageOutput<List<BusinessChargeItemDto>> listPage(BusinessChargeItemDto businessChargeItemDto);
 
     /**
      * 获取业务收费项列表信息
      * @param businessChargeItemDto
      */
-    @RequestMapping(value = "/api/businessChargeItem/listByExample", method = RequestMethod.POST)
+    @PostMapping(value = "/api/businessChargeItem/listByExample")
     BaseOutput<List<BusinessChargeItemDto>> listByExample(BusinessChargeItemDto businessChargeItemDto);
 
     /**
@@ -40,7 +40,7 @@ public interface BusinessChargeItemRpc {
      * @param id 收费项ID
      * @return
      */
-    @RequestMapping(value = "/api/businessChargeItem/getById", method = RequestMethod.POST)
+    @GetMapping(value = "/api/businessChargeItem/getById")
     BaseOutput<BusinessChargeItemDto> getById(@RequestParam("id") Long id);
 
     /**
@@ -48,7 +48,7 @@ public interface BusinessChargeItemRpc {
      * @param businessChargeItemDto
      * @return
      */
-    @RequestMapping(value = "/api/businessChargeItem/save", method = RequestMethod.POST)
+    @PostMapping(value = "/api/businessChargeItem/save")
     BaseOutput save(BusinessChargeItemDto businessChargeItemDto);
 
 }
