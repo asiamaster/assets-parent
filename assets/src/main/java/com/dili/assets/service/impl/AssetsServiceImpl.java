@@ -271,7 +271,7 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
                 // 转换二级区域
                 if (obj.getSecondArea() != null) {
                     if (disCache.containsKey(obj.getSecondArea().toString())) {
-                        dto.setAreaName(disCache.get(obj.getSecondArea().toString()));
+                        dto.setSecondAreaName(disCache.get(obj.getSecondArea().toString()));
                     } else {
                         District districtSecond = districtService.get(obj.getSecondArea().longValue());
                         dto.setSecondAreaName(districtSecond.getName());
@@ -284,6 +284,7 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
                 }
                 result.add(dto);
             });
+            System.out.println("aa");
         }
         return result;
     }
