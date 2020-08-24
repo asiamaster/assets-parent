@@ -3,6 +3,7 @@ package com.dili.assets.sdk.rpc;
 import com.dili.assets.sdk.dto.BusinessChargeItemDto;
 import com.dili.ss.domain.BaseOutput;
 import com.dili.ss.domain.PageOutput;
+import com.dili.ss.retrofitful.annotation.POST;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,7 +41,7 @@ public interface BusinessChargeItemRpc {
      * @param id 收费项ID
      * @return
      */
-    @GetMapping(value = "/api/businessChargeItem/getById")
+    @PostMapping(value = "/api/businessChargeItem/getById")
     BaseOutput<BusinessChargeItemDto> getById(@RequestParam("id") Long id);
 
     /**
