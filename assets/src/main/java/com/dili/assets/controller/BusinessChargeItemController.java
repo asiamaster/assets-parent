@@ -86,7 +86,7 @@ public class BusinessChargeItemController {
      * @param id
      * @return
      */
-    @GetMapping(value = "/getById")
+    @PostMapping(value = "/getById")
     public BaseOutput<BusinessChargeItem> getById(@RequestParam("id") Long id) {
         return BaseOutput.success().setData(businessChargeItemService.get(id));
     }
