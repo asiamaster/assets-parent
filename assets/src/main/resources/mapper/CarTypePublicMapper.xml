@@ -217,7 +217,7 @@
 				and te.`code` = #{businessCode}
 			</if>
 			<if test="keyword != null and keyword != ''">
-				and (ct.name like '%${keyword}%' or ct.number like '%${keyword}%')
+				and (ct.name like '%${keyword}%' or ct.number like '%${keyword}%' or cp.code like '%${keyword}%')
 			</if>
 			<if test="id != null">
 				and cp.id = #{id}
