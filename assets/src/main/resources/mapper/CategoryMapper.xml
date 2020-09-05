@@ -7,6 +7,7 @@
         -->
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="icon" jdbcType="VARCHAR" property="icon"/>
         <result column="pingying" jdbcType="VARCHAR" property="pingying"/>
         <result column="py_initials" jdbcType="VARCHAR" property="pyInitials"/>
         <result column="state" jdbcType="TINYINT" property="state"/>
@@ -21,7 +22,7 @@
         <!--
           WARNING - @mbg.generated
         -->
-        id, name, pingying, py_initials, state, parent, path, code, creator_id, create_time,
+        id, name, pingying, py_initials, state, parent, path, code, icon, creator_id, create_time,
         modify_time
     </sql>
     <select id="selectBy" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -69,6 +70,9 @@
             </if>
             <if test="path != null">
                 path = #{path,jdbcType=VARCHAR},
+            </if>
+            <if test="icon != null">
+                path = #{icon,jdbcType=VARCHAR},
             </if>
             <if test="code != null">
                 code = #{code,jdbcType=VARCHAR},
