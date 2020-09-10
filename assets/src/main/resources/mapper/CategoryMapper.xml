@@ -22,7 +22,7 @@
         <!--
           WARNING - @mbg.generated
         -->
-        id, name, pingying, py_initials, state, parent, path, code, icon, creator_id, create_time,
+        id, name, pingying, py_initials, state, parent, icon, path, code, icon, creator_id, create_time,
         modify_time
     </sql>
     <select id="selectBy" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -99,7 +99,7 @@
 
 
     <select id="listCategory" parameterType="com.dili.assets.domain.query.CategoryQuery" resultMap="BaseResultMap">
-        select id, name, pingying, py_initials, state, parent, path, code, creator_id, create_time,
+        select id, name, pingying, py_initials, state, parent, path, icon, code, creator_id, create_time,
         modify_time from category
         <where>
             `state`!=3
