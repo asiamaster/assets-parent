@@ -44,40 +44,45 @@ public class CategoryController {
      * @return
      */
     @PostMapping(value = "/test")
-    public BaseOutput test() {
-        ExcelReader reader = ExcelUtil.getReader(FileUtil.file("/Users/shaofan/Downloads/c.xlsx"),4);
-        List<Map<String,Object>> readAll = reader.readAll();
-        Set<String> erji = new HashSet<>();
-        readAll.forEach(obj -> erji.add(obj.get(obj.keySet().stream().findFirst().get()).toString()));
-        System.out.println(erji);
-        Map<String, Category> categoryDTOMap = new HashMap<>();
-        erji.forEach( o ->{
-            Category categoryDTO = new Category();
-            categoryDTO.setParent(3680L);
-            categoryDTO.setName(o);
-            categoryDTO.setCreateTime(new Date());
-            categoryDTO.setCreatorId(0L);
-            categoryDTO.setModifyTime(new Date());
-            categoryService.saveCategory(categoryDTO);
-            categoryDTOMap.put(o,categoryDTO);
-        });
-
-        readAll.forEach(obj -> {
-            Object[] objects = obj.keySet().stream().toArray();
-            String name = obj.get(objects[1].toString()).toString();
-            String code = obj.get(objects[2].toString()).toString();
-            Category parent = categoryDTOMap.get(obj.get(objects[0].toString()));
-            System.out.println("parent:" + parent.getId() + ";name:" + name + ";code:" + code);
-
-            Category categoryDTO = new Category();
-            categoryDTO.setParent(parent.getId());
-            categoryDTO.setName(name);
-            categoryDTO.setCode(code);
-            categoryDTO.setCreateTime(new Date());
-            categoryDTO.setCreatorId(0L);
-            categoryDTO.setModifyTime(new Date());
-            categoryService.saveCategory(categoryDTO);
-        });
+    public BaseOutput test(Long parentId ,Integer sheetindex) {
+//        ExcelReader reader = ExcelUtil.getReader(FileUtil.file("/Users/shaofan/Downloads/c.xlsx"),sheetindex);
+//        List<Map<String,Object>> readAll = reader.readAll();
+//        Set<String> erji = new HashSet<>();
+//        readAll.forEach(obj -> erji.add(obj.get(obj.keySet().stream().findFirst().get()).toString()));
+//        System.out.println(erji);
+//        Map<String, Category> categoryDTOMap = new HashMap<>();
+//        for (int i = erji.stream().toArray().length - 1; i >= 0; i--) {
+//            String o =erji.stream().toArray()[i].toString();
+//            Category categoryDTO = new Category();
+//            categoryDTO.setParent(parentId);
+//            categoryDTO.setName(o);
+//            categoryDTO.setPingying(PinyinUtil.converterToSpell(o));
+//            categoryDTO.setPyInitials(PinyinUtil.converterToFirstSpell(o));
+//            categoryDTO.setCreateTime(new Date());
+//            categoryDTO.setCreatorId(0L);
+//            categoryDTO.setModifyTime(new Date());
+//            categoryService.saveCategory(categoryDTO);
+//            categoryDTOMap.put(o,categoryDTO);
+//        }
+//
+//        readAll.forEach(obj -> {
+//            Object[] objects = obj.keySet().stream().toArray();
+//            String name = obj.get(objects[1].toString()).toString();
+//            String code = obj.get(objects[2].toString()).toString();
+//            Category parent = categoryDTOMap.get(obj.get(objects[0].toString()));
+//            System.out.println("parent:" + parent.getId() + ";name:" + name + ";code:" + code);
+//
+//            Category categoryDTO = new Category();
+//            categoryDTO.setParent(parent.getId());
+//            categoryDTO.setName(name);
+//            categoryDTO.setCode(code);
+//            categoryDTO.setPingying(PinyinUtil.converterToSpell(name));
+//            categoryDTO.setPyInitials(PinyinUtil.converterToFirstSpell(name));
+//            categoryDTO.setCreateTime(new Date());
+//            categoryDTO.setCreatorId(0L);
+//            categoryDTO.setModifyTime(new Date());
+//            categoryService.saveCategory(categoryDTO);
+//        });
 
         return BaseOutput.success();
     }
