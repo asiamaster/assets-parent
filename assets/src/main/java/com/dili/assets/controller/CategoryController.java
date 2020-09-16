@@ -1,19 +1,21 @@
 package com.dili.assets.controller;
 
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.poi.excel.ExcelReader;
+import cn.hutool.poi.excel.ExcelUtil;
 import com.dili.assets.domain.Category;
 import com.dili.assets.domain.query.CategoryQuery;
 import com.dili.assets.mapper.CategoryMapper;
+import com.dili.assets.sdk.dto.CategoryDTO;
 import com.dili.assets.service.CategoryService;
 import com.dili.ss.domain.BaseOutput;
 import com.dili.ss.exception.BusinessException;
+import com.dili.uap.sdk.session.SessionContext;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * 由MyBatis Generator工具自动生成
@@ -35,6 +37,49 @@ public class CategoryController {
     public BaseOutput<List<Category>> getTree(@RequestBody(required = false) CategoryQuery input) {
         List<Category> list = categoryMapper.listCategory(input);
         return BaseOutput.success().setData(list);
+    }
+
+    /**
+     * test
+     * @return
+     */
+    @PostMapping(value = "/test")
+    public BaseOutput test() {
+        ExcelReader reader = ExcelUtil.getReader(FileUtil.file("/Users/shaofan/Downloads/c.xlsx"),4);
+        List<Map<String,Object>> readAll = reader.readAll();
+        Set<String> erji = new HashSet<>();
+        readAll.forEach(obj -> erji.add(obj.get(obj.keySet().stream().findFirst().get()).toString()));
+        System.out.println(erji);
+        Map<String, Category> categoryDTOMap = new HashMap<>();
+        erji.forEach( o ->{
+            Category categoryDTO = new Category();
+            categoryDTO.setParent(3680L);
+            categoryDTO.setName(o);
+            categoryDTO.setCreateTime(new Date());
+            categoryDTO.setCreatorId(0L);
+            categoryDTO.setModifyTime(new Date());
+            categoryService.saveCategory(categoryDTO);
+            categoryDTOMap.put(o,categoryDTO);
+        });
+
+        readAll.forEach(obj -> {
+            Object[] objects = obj.keySet().stream().toArray();
+            String name = obj.get(objects[1].toString()).toString();
+            String code = obj.get(objects[2].toString()).toString();
+            Category parent = categoryDTOMap.get(obj.get(objects[0].toString()));
+            System.out.println("parent:" + parent.getId() + ";name:" + name + ";code:" + code);
+
+            Category categoryDTO = new Category();
+            categoryDTO.setParent(parent.getId());
+            categoryDTO.setName(name);
+            categoryDTO.setCode(code);
+            categoryDTO.setCreateTime(new Date());
+            categoryDTO.setCreatorId(0L);
+            categoryDTO.setModifyTime(new Date());
+            categoryService.saveCategory(categoryDTO);
+        });
+
+        return BaseOutput.success();
     }
 
     /**

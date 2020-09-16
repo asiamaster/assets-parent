@@ -40,4 +40,7 @@ public class ConfigQuery{
     /** provider */
     private Map metadata;
 
+    /** shichangid */
+    private Long marketId;
+
 }

@@ -44,7 +44,7 @@ public class ConfigController {
     * @return PageInfo<Config>
     */
     @PostMapping("/query")
-    public Object query(ConfigQuery query){
+    public Object query(@RequestBody ConfigQuery query){
         PageInfo<Config> page = configService.queryAll(query);
         TableResult<Config> result = new TableResult<>(page.getPageNum(), page.getTotal(), page.getList());
         return result;

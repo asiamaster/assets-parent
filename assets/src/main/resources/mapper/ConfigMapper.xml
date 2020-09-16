@@ -19,6 +19,9 @@
     </resultMap>
     <sql id="Example_Where_Clause">
         <where>
+            <if test="marketId != null">
+                and market_id = #{marketId}
+            </if>
         </where>
     </sql>
     <sql id="Base_Column_List">
