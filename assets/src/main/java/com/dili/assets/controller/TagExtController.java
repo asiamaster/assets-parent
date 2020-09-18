@@ -49,7 +49,11 @@ public class TagExtController {
     @RequestMapping(value="/get", method = {RequestMethod.GET, RequestMethod.POST})
     public @ResponseBody BaseOutput<TagExt> get(@RequestBody TagExt tagExt) throws Exception {
     	List<TagExt> list = tagExtService.list(tagExt);
-    	return BaseOutput.success().setData(tagExtService.list(tagExt).get(0));
+    	if(list.size() > 0) {
+    		return BaseOutput.success().setData(list.get(0));
+    	}else {
+    		return BaseOutput.failure();
+    	}
     }
 
     /**

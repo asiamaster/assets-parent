@@ -39,6 +39,10 @@ public class CategoryDTO extends BaseDomain{
      */
     private String path;
     /**
+     * icon
+     */
+    private String icon;
+    /**
      * 编码
      */
     private String code;
@@ -227,6 +231,14 @@ public class CategoryDTO extends BaseDomain{
      */
     public void setState(Integer state){
         this.state = state;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 
     /**

@@ -58,6 +58,16 @@ public class TradeTypeController {
     }
 
     /**
+     * 查询所有数据
+     *
+     * @return List<TradeType>
+     */
+    @PostMapping("/queryAll")
+    public Object queryAll() {
+        return BaseOutput.successData(tradeTypeService.listByExample(null));
+    }
+
+    /**
      * 根据编码查询交易类型
      */
     @PostMapping("/getByCode")

@@ -41,9 +41,9 @@ public class CategoryServiceImpl extends BaseServiceImpl<Category, Long> impleme
             c.setParent(0L);
         }
 
-        if (nameExists(c)) {
-            throw new BusinessException("1", "品类名称有重复,请重新输入");
-        }
+//        if (nameExists(c)) {
+//            throw new BusinessException("1", "品类名称有重复,请重新输入");
+//        }
         if (codeExists(c)) {
             throw new BusinessException("1", "品类代码有重复,请重新输入");
         }
@@ -69,9 +69,9 @@ public class CategoryServiceImpl extends BaseServiceImpl<Category, Long> impleme
         if (temp.getState().equals(3)) {
             throw new BusinessException("1", "要修改的品类已删除!");
         }
-        if (nameExists(input)) {
-            throw new BusinessException("1", "品类名称有重复,请重新输入");
-        }
+//        if (nameExists(input)) {
+//            throw new BusinessException("1", "品类名称有重复,请重新输入");
+//        }
         if (codeExists(input)) {
             throw new BusinessException("1", "品类代码有重复,请重新输入");
         }

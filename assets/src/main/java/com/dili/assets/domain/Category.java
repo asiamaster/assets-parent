@@ -36,6 +36,12 @@ public class Category extends BaseDomain {
     private String pyInitials;
 
     /**
+     * 拼音缩写
+     */
+    @Column(name = "`icon`")
+    private String icon;
+
+    /**
      * 父品类
      */
     @Column(name = "`parent`")
@@ -237,5 +243,13 @@ public class Category extends BaseDomain {
 
     public void setCateLevel(Integer cateLevel) {
         this.cateLevel = cateLevel;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 }
