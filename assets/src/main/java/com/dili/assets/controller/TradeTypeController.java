@@ -64,7 +64,7 @@ public class TradeTypeController {
      */
     @PostMapping("/queryAll")
     public Object queryAll() {
-        return tradeTypeService.listByExample(null);
+        return BaseOutput.successData(tradeTypeService.listByExample(null));
     }
 
     /**
