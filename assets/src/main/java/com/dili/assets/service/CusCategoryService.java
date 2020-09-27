@@ -1,0 +1,33 @@
+package com.dili.assets.service;
+
+import com.dili.assets.domain.Category;
+import com.dili.assets.domain.CusCategory;
+import com.dili.ss.base.BaseService;
+
+/**
+ * 由MyBatis Generator工具自动生成
+ * This file was generated on 2020-02-05 12:37:16.
+ */
+public interface CusCategoryService extends BaseService<CusCategory, Long> {
+    /**
+     * 新增品类
+     *
+     * @param input {@link CusCategory}
+     */
+    void saveCategory(CusCategory input);
+
+    /**
+     * 修改品类
+     *
+     * @param input {@link CusCategory}
+     */
+    void updateCategory(CusCategory input);
+
+    /**
+     * 批量修改品类状态
+     *
+     * @param id 主键
+     */
+    void batchUpdate(Long id, Integer value);
+
+}

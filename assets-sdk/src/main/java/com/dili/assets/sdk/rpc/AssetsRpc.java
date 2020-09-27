@@ -25,8 +25,8 @@ public interface AssetsRpc {
     /**
      * 获取客户列表信息
      */
-    @RequestMapping(value = "/api/customCategory/getTree", method = RequestMethod.POST)
-    BaseOutput<List<CategoryDTO>> listCusCategory(CategoryDTO categoryDTO);
+    @RequestMapping(value = "/api/cusCategory/getTree", method = RequestMethod.POST)
+    BaseOutput<List<CusCategoryDTO>> listCusCategory(CusCategoryQuery query);
 
     /**
      * 新增品类
@@ -37,8 +37,8 @@ public interface AssetsRpc {
     /**
      * 新增品类
      */
-    @RequestMapping(value = "/api/customCategory/save", method = RequestMethod.POST)
-    BaseOutput saveCusCategory(CustomCategoryDTO dto);
+    @RequestMapping(value = "/api/cusCategory/save", method = RequestMethod.POST)
+    BaseOutput saveCusCategory(CusCategoryDTO dto);
 
     /**
      * 获取单个品类
@@ -49,8 +49,8 @@ public interface AssetsRpc {
     /**
      * 获取单个品类
      */
-    @RequestMapping(value = "/api/customCategory/get", method = RequestMethod.POST)
-    BaseOutput<CustomCategoryDTO> getCusCategory(@RequestParam("id") Long id, @RequestParam("marketId") Long marketId);
+    @RequestMapping(value = "/api/cusCategory/get", method = RequestMethod.POST)
+    BaseOutput<CusCategoryDTO> getCusCategory(Long id);
 
     /**
      * 删除品类
@@ -61,8 +61,8 @@ public interface AssetsRpc {
     /**
      * 删除品类
      */
-    @RequestMapping(value = "/api/customCategory/batchUpdate", method = RequestMethod.POST)
-    BaseOutput batchCusCategoryUpdate(@RequestParam("id") Long id, @RequestParam("value") Integer value, @RequestParam("marketId") Long marketId);
+    @RequestMapping(value = "/api/cusCategory/batchUpdate", method = RequestMethod.POST)
+    BaseOutput batchCusCategoryUpdate(@RequestParam("id") Long id, @RequestParam("value") Integer value);
 
     /**
      * 新增摊位
@@ -255,13 +255,13 @@ public interface AssetsRpc {
      */
     @RequestMapping(value = "/api/carTypePublic/listCarTypePublic", method = RequestMethod.POST)
     BaseOutput<List<Map<String, Object>>> listCarTypePublic(CarTypePublicDTO carTypePublicDTO);
-    
+
     /**
-    * 获取车型
-    */
+     * 获取车型
+     */
     @RequestMapping(value = "/api/carType/listCarType", method = RequestMethod.POST)
     BaseOutput<List<CarTypeDTO>> listCarType(CarTypePublicDTO carTypePublicDTO);
-    
+
     /**
      * 获取默认车型的重量
      */
@@ -272,7 +272,7 @@ public interface AssetsRpc {
      * 获取车型（进门业务）
      */
     @RequestMapping(value = "/api/carTypePublic/listCarTypePublicByBusiness", method = RequestMethod.POST)
-	BaseOutput<List<CarTypeForBusinessDTO>> listCarTypePublicByBusiness(CarTypeForBusinessDTO c);
+    BaseOutput<List<CarTypeForBusinessDTO>> listCarTypePublicByBusiness(CarTypeForBusinessDTO c);
 
 
     /**
@@ -280,19 +280,19 @@ public interface AssetsRpc {
      */
     @RequestMapping(value = "/api/carTypePublic/queryCarType", method = RequestMethod.POST)
     BaseOutput<List<CarTypeForBusinessDTO>> queryCarType(CarTypeForBusinessDTO carTypePublicDTO);
-    
+
     /**
      * 检车快捷编码是否重复
      */
     @RequestMapping(value = "/api/carTypePublic/checkRepeat", method = RequestMethod.POST)
-	Boolean checkRepeat(CarTypePublicDTO carTypePublic);
-    
+    Boolean checkRepeat(CarTypePublicDTO carTypePublic);
+
     /**
      * 检车快捷编码是否重复
      */
     @RequestMapping(value = "/api/carType/checkRepeat", method = RequestMethod.POST)
     Boolean checkRepeat(CarTypeDTO carType);
-    
+
     /**
      * 获取客户列表信息
      */
