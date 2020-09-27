@@ -1,10 +1,13 @@
 package com.dili.assets.controller;
 
+import cn.hutool.core.collection.CollUtil;
 import com.dili.assets.domain.Category;
 import com.dili.assets.domain.CusCategory;
 import com.dili.assets.domain.query.CategoryQuery;
 import com.dili.assets.mapper.CategoryMapper;
 import com.dili.assets.mapper.CusCategoryMapper;
+import com.dili.assets.sdk.dto.CategoryDTO;
+import com.dili.assets.sdk.dto.CusCategoryDTO;
 import com.dili.assets.sdk.dto.CusCategoryQuery;
 import com.dili.assets.service.CategoryService;
 import com.dili.assets.service.CusCategoryService;
@@ -75,5 +78,22 @@ public class CusCategoryController {
     public BaseOutput batchUpdate(@RequestParam("id") Long id, @RequestParam("value") Integer value) {
         cusCategoryService.batchUpdate(id, value);
         return BaseOutput.success();
+    }
+
+    /**
+     * 获取品类列表
+     */
+    @RequestMapping(value = "/getByKeycode")
+    public BaseOutput<CusCategory> getByKeycode(@RequestBody(required = false) CusCategoryQuery input) {
+        if (input == null || input.getMarketId() == null) {
+            return BaseOutput.failure("未知市场或参数");
+        }
+        // 查询自定义品类
+        List<CusCategory> cusList = cusCategoryMapper.listCategory(input);
+        if (CollUtil.isNotEmpty(cusList)) {
+            return BaseOutput.success().setData(cusList.get(0));
+        } else {
+            return BaseOutput.success();
+        }
     }
 }

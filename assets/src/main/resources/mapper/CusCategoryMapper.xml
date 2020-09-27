@@ -64,6 +64,9 @@
             <if test="queryPath !=null and queryPath !=''">
                 and (`path` like CONCAT(#{queryPath},'%'))
             </if>
+            <if test="keycode !=null and keycode !=''">
+                and `keycode`=#{keycode}
+            </if>
             <if test="state !=null and state !=''">
                 and `state`=#{state}
             </if>
