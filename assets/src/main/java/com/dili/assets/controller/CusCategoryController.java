@@ -1,7 +1,15 @@
 package com.dili.assets.controller;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.lang.Snowflake;
+import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.dili.assets.common.PinyinUtil;
 import com.dili.assets.domain.Category;
+import com.dili.assets.domain.CategoryNew;
 import com.dili.assets.domain.CusCategory;
 import com.dili.assets.domain.query.CategoryQuery;
 import com.dili.assets.mapper.CategoryMapper;
@@ -16,7 +24,10 @@ import com.dili.ss.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * 由MyBatis Generator工具自动生成
@@ -30,6 +41,9 @@ public class CusCategoryController {
 
     @Autowired
     CusCategoryMapper cusCategoryMapper;
+
+    @Autowired
+    private CategoryMapper categoryMapper;
 
     /**
      * 获取品类列表
@@ -95,5 +109,80 @@ public class CusCategoryController {
         } else {
             return BaseOutput.success();
         }
+    }
+
+    /**
+     * 获取品类列表
+     */
+    @RequestMapping(value = "/test")
+    public BaseOutput test() {
+        List<CusCategory> list = this.cusCategoryService.list(null);
+        if (CollUtil.isNotEmpty(list)) {
+            return BaseOutput.success("已有数据无法导入");
+        }
+        Long id = 3675L;
+        List<Category> categories = categoryMapper.listCategory(null);
+        List<CategoryNew> categoryNews = JSON.parseArray(JSON.toJSONString(categories), CategoryNew.class);
+        Optional<CategoryNew> first = categoryNews.stream().filter(it -> it.getId().equals(id)).findFirst();
+
+        if (first.isPresent()) {
+            CategoryNew categoryNew = first.get();
+            find(categoryNews, categoryNew);
+            Snowflake snowflake = IdUtil.getSnowflake(1, 1);
+            savechildren(0L, categoryNew.getChildren(), snowflake);
+        }
+        return BaseOutput.success();
+    }
+
+    /**
+     * test
+     *
+     * @param parentId
+     * @param children
+     */
+    private void savechildren(Long parentId, List<CategoryNew> children, Snowflake snowflake) {
+        if (CollUtil.isNotEmpty(children)) {
+            for (CategoryNew categoryNew : children) {
+                CusCategory cusCategory = new CusCategory();
+                cusCategory.setName(categoryNew.getName());
+                if (StrUtil.isBlank(cusCategory.getPingying())) {
+                    cusCategory.setPingying(PinyinUtil.converterToSpell(categoryNew.getName()));
+                    cusCategory.setPyInitials(PinyinUtil.converterToFirstSpell(categoryNew.getName()));
+                } else {
+                    cusCategory.setPingying(categoryNew.getPingying());
+                    cusCategory.setPyInitials(categoryNew.getPyInitials());
+                }
+                cusCategory.setIcon(categoryNew.getIcon());
+                cusCategory.setParent(parentId);
+                cusCategory.setCreatorId(categoryNew.getCreatorId());
+                cusCategory.setCreateTime(new Date());
+                cusCategory.setModifyTime(new Date());
+                if (StrUtil.isBlank(categoryNew.getCode())) {
+                    cusCategory.setKeycode(snowflake.nextIdStr());
+                } else {
+                    cusCategory.setKeycode(categoryNew.getCode());
+                }
+                cusCategory.setCategoryId(1L);
+                cusCategory.setMarketId(1L);
+                cusCategoryService.saveCategory(cusCategory);
+                savechildren(cusCategory.getId(), categoryNew.getChildren(), snowflake);
+            }
+        }
+    }
+
+    /**
+     * te
+     *
+     * @param list
+     * @param categoryNew
+     */
+    private void find(List<CategoryNew> list, CategoryNew categoryNew) {
+        List<CategoryNew> collect = list.stream().filter(it -> it.getParent().equals(categoryNew.getId())).collect(Collectors.toList());
+        if (CollUtil.isNotEmpty(collect)) {
+            for (CategoryNew aNew : collect) {
+                find(list, aNew);
+            }
+        }
+        categoryNew.setChildren(collect);
     }
 }

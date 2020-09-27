@@ -41,11 +41,11 @@ public class CusCategoryServiceImpl extends BaseServiceImpl<CusCategory, Long> i
             c.setParent(0L);
         }
 
-        if (nameExists(c)) {
-            throw new BusinessException("1", "名称有重复,请重新输入");
-        }
+//        if (nameExists(c)) {
+//            throw new BusinessException("1", c.getName() + "名称有重复,请重新输入");
+//        }
         if (codeExists(c)) {
-            throw new BusinessException("1", "快捷编码有重复,请重新输入");
+            throw new BusinessException("1", c.getKeycode() + "快捷编码有重复,请重新输入");
         }
         c.setState(1);
         getActualDao().insert(c);
@@ -66,11 +66,11 @@ public class CusCategoryServiceImpl extends BaseServiceImpl<CusCategory, Long> i
         if (temp.getState().equals(3)) {
             throw new BusinessException("1", "要修改的品类已删除!");
         }
-        if (nameExists(input)) {
-            throw new BusinessException("1", "名称有重复,请重新输入");
-        }
+//        if (nameExists(input)) {
+//            throw new BusinessException("1", input.getName() + "名称有重复,请重新输入");
+//        }
         if (codeExists(input)) {
-            throw new BusinessException("1", "快捷编码有重复,请重新输入");
+            throw new BusinessException("1", input.getKeycode() + "快捷编码有重复,请重新输入");
         }
         getActualDao().updateByPrimaryKeySelective(input);
     }
