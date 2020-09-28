@@ -4,12 +4,17 @@ import cn.hutool.core.collection.CollUtil;
 import com.dili.assets.domain.Category;
 import com.dili.assets.domain.CusCategory;
 import com.dili.assets.mapper.CusCategoryMapper;
+import com.dili.assets.mapper.dynamic.CusCategoryDOMapper;
+import com.dili.assets.mapper.dynamic.CusCategoryTable;
 import com.dili.assets.sdk.dto.CusCategoryQuery;
 import com.dili.assets.service.CusCategoryService;
 import com.dili.ss.base.BaseServiceImpl;
 import com.dili.ss.exception.BusinessException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static com.dili.assets.mapper.dynamic.CusCategoryTable.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +29,9 @@ public class CusCategoryServiceImpl extends BaseServiceImpl<CusCategory, Long> i
     public CusCategoryMapper getActualDao() {
         return (CusCategoryMapper) getDao();
     }
+
+    @Autowired
+    private CusCategoryDOMapper cusCategoryDOMapper;
 
     @Override
     @Transactional
@@ -58,6 +66,7 @@ public class CusCategoryServiceImpl extends BaseServiceImpl<CusCategory, Long> i
     }
 
     @Override
+    @Transactional
     public void updateCategory(CusCategory input) {
         CusCategory temp = getActualDao().selectByPrimaryKey(input.getId());
         if (temp == null) {
@@ -72,7 +81,20 @@ public class CusCategoryServiceImpl extends BaseServiceImpl<CusCategory, Long> i
         if (codeExists(input)) {
             throw new BusinessException("1", input.getKeycode() + "快捷编码有重复,请重新输入");
         }
+
+        if (!temp.getParent().equals(input.getParent())) {
+            CusCategory p = this.get(input.getParent());
+            if (p == null) {
+                throw new BusinessException("1", "父品类不存在");
+            }
+            String oldPath = input.getPath();
+            input.setPath(p.getPath() + input.getId() + ",");
+            cusCategoryDOMapper.update(c -> c.set(path).equalToConstant("REPLACE(path, '" + oldPath + "', '" + input.getPath() + "')"));
+        }
+
         getActualDao().updateByPrimaryKeySelective(input);
+
+
     }
 
     @Override

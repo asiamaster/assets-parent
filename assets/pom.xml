@@ -123,7 +123,11 @@
             <artifactId>jackson-mapper-asl</artifactId>
             <version>1.9.13</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.github.liuhuagui</groupId>
+            <artifactId>mybatis-dynamic-sql-auxiliary</artifactId>
+            <version>1.2.1</version>
+        </dependency>
         <!-- =============== spring boot starters =============== -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>

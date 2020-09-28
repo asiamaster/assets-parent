@@ -163,7 +163,7 @@ public class CusCategoryController {
                     cusCategory.setKeycode(categoryNew.getCode());
                 }
                 cusCategory.setCategoryId(1L);
-                cusCategory.setMarketId(1L);
+                cusCategory.setMarketId(17L);
                 cusCategoryService.saveCategory(cusCategory);
                 savechildren(cusCategory.getId(), categoryNew.getChildren(), snowflake);
             }

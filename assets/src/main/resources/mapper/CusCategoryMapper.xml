@@ -82,7 +82,6 @@
                      #{item, jdbcType=BIGINT}
                  </foreach>
             </if>
-            order by create_time asc
         </where>
     </select>
 </mapper>
