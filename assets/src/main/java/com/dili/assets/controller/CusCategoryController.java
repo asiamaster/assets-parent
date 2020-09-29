@@ -1,28 +1,25 @@
 package com.dili.assets.controller;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Snowflake;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.dili.assets.common.PinyinUtil;
 import com.dili.assets.domain.Category;
 import com.dili.assets.domain.CategoryNew;
 import com.dili.assets.domain.CusCategory;
-import com.dili.assets.domain.query.CategoryQuery;
 import com.dili.assets.mapper.CategoryMapper;
 import com.dili.assets.mapper.CusCategoryMapper;
-import com.dili.assets.sdk.dto.CategoryDTO;
-import com.dili.assets.sdk.dto.CusCategoryDTO;
 import com.dili.assets.sdk.dto.CusCategoryQuery;
-import com.dili.assets.service.CategoryService;
 import com.dili.assets.service.CusCategoryService;
 import com.dili.ss.domain.BaseOutput;
 import com.dili.ss.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
 import java.util.List;
@@ -115,13 +112,10 @@ public class CusCategoryController {
      * 获取品类列表
      */
     @RequestMapping(value = "/test")
-    public BaseOutput test(Long marketId) {
-        CusCategory query = new CusCategory();
-        query.setMarketId(marketId);
-        List<CusCategory> list = this.cusCategoryService.listByExample(query);
-
+    public BaseOutput test() {
+        List<CusCategory> list = this.cusCategoryService.list(null);
         if (CollUtil.isNotEmpty(list)) {
-            cusCategoryService.deleteByExample(query);
+            return BaseOutput.success("已有数据无法导入");
         }
         Long id = 3675L;
         List<Category> categories = categoryMapper.listCategory(null);
@@ -132,7 +126,7 @@ public class CusCategoryController {
             CategoryNew categoryNew = first.get();
             find(categoryNews, categoryNew);
             Snowflake snowflake = IdUtil.getSnowflake(1, 1);
-            savechildren(0L, categoryNew.getChildren(), snowflake, marketId);
+            savechildren(0L, categoryNew.getChildren(), snowflake);
         }
         return BaseOutput.success();
     }
@@ -143,7 +137,7 @@ public class CusCategoryController {
      * @param parentId
      * @param children
      */
-    private void savechildren(Long parentId, List<CategoryNew> children, Snowflake snowflake, Long marketId) {
+    private void savechildren(Long parentId, List<CategoryNew> children, Snowflake snowflake) {
         if (CollUtil.isNotEmpty(children)) {
             for (CategoryNew categoryNew : children) {
                 CusCategory cusCategory = new CusCategory();
@@ -166,9 +160,9 @@ public class CusCategoryController {
                     cusCategory.setKeycode(categoryNew.getCode());
                 }
                 cusCategory.setCategoryId(1L);
-                cusCategory.setMarketId(marketId);
+                cusCategory.setMarketId(17L);
                 cusCategoryService.saveCategory(cusCategory);
-                savechildren(cusCategory.getId(), categoryNew.getChildren(), snowflake, marketId);
+                savechildren(cusCategory.getId(), categoryNew.getChildren(), snowflake);
             }
         }
     }
