@@ -115,10 +115,13 @@ public class CusCategoryController {
      * 获取品类列表
      */
     @RequestMapping(value = "/test")
-    public BaseOutput test() {
-        List<CusCategory> list = this.cusCategoryService.list(null);
+    public BaseOutput test(Long marketId) {
+        CusCategory query = new CusCategory();
+        query.setMarketId(marketId);
+        List<CusCategory> list = this.cusCategoryService.listByExample(query);
+
         if (CollUtil.isNotEmpty(list)) {
-            return BaseOutput.success("已有数据无法导入");
+            cusCategoryService.deleteByExample(query);
         }
         Long id = 3675L;
         List<Category> categories = categoryMapper.listCategory(null);
@@ -129,7 +132,7 @@ public class CusCategoryController {
             CategoryNew categoryNew = first.get();
             find(categoryNews, categoryNew);
             Snowflake snowflake = IdUtil.getSnowflake(1, 1);
-            savechildren(0L, categoryNew.getChildren(), snowflake);
+            savechildren(0L, categoryNew.getChildren(), snowflake, marketId);
         }
         return BaseOutput.success();
     }
@@ -140,7 +143,7 @@ public class CusCategoryController {
      * @param parentId
      * @param children
      */
-    private void savechildren(Long parentId, List<CategoryNew> children, Snowflake snowflake) {
+    private void savechildren(Long parentId, List<CategoryNew> children, Snowflake snowflake, Long marketId) {
         if (CollUtil.isNotEmpty(children)) {
             for (CategoryNew categoryNew : children) {
                 CusCategory cusCategory = new CusCategory();
@@ -163,9 +166,9 @@ public class CusCategoryController {
                     cusCategory.setKeycode(categoryNew.getCode());
                 }
                 cusCategory.setCategoryId(1L);
-                cusCategory.setMarketId(17L);
+                cusCategory.setMarketId(marketId);
                 cusCategoryService.saveCategory(cusCategory);
-                savechildren(cusCategory.getId(), categoryNew.getChildren(), snowflake);
+                savechildren(cusCategory.getId(), categoryNew.getChildren(), snowflake, marketId);
             }
         }
     }
