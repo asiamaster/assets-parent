@@ -53,6 +53,12 @@ public interface AssetsRpc {
     BaseOutput<CusCategoryDTO> getCusCategory(Long id);
 
     /**
+     * 根据市场清空品类
+     */
+    @RequestMapping(value = "/api/cusCategory/delByMarket", method = RequestMethod.POST)
+    BaseOutput<CusCategoryDTO> delByMarket(Long marketId);
+
+    /**
      * 删除品类
      */
     @RequestMapping(value = "/api/category/batchUpdate", method = RequestMethod.POST)

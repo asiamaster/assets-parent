@@ -79,7 +79,7 @@ public class CusCategoryController {
         } catch (Exception e) {
             return BaseOutput.failure("保存失败");
         }
-        return BaseOutput.success().setData(cusCategoryService.get(input.getId()));
+        return BaseOutput.success().setData(input.getId());
     }
 
     /**
@@ -92,7 +92,7 @@ public class CusCategoryController {
     }
 
     /**
-     * 获取品类列表
+     * 根据市场清空品类
      */
     @RequestMapping(value = "/getByKeycode")
     public BaseOutput<CusCategory> getByKeycode(@RequestBody(required = false) CusCategoryQuery input) {
@@ -106,6 +106,19 @@ public class CusCategoryController {
         } else {
             return BaseOutput.success();
         }
+    }
+
+    /**
+     * del
+     * @param marketId
+     * @return
+     */
+    @RequestMapping(value = "/delByMarket")
+    public BaseOutput delByMarket(@RequestBody Long marketId){
+        CusCategory example = new CusCategory();
+        example.setMarketId(marketId);
+        cusCategoryService.deleteByExample(example);
+        return BaseOutput.success();
     }
 
     /**
