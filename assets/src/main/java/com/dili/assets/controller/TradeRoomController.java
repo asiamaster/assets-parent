@@ -83,4 +83,12 @@ public class TradeRoomController {
         tradeRoomService.deleteAll(ids);
         return BaseOutput.success();
     }
+    
+    /**
+     * 获取
+     */
+    @PostMapping("/list")
+    public BaseOutput<TradeRoomDto> list(@RequestBody TradeRoom tradeRoom) {
+        return BaseOutput.success().setData(tradeRoomService.list(tradeRoom));
+    }
 }
