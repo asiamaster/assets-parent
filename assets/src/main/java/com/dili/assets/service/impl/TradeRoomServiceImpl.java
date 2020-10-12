@@ -85,4 +85,9 @@ public class TradeRoomServiceImpl extends BaseServiceImpl<TradeRoom, Long> imple
         this.updateSelective(tradeRoom);
         return BaseOutput.success();
     }
+
+	@Override
+	public List<TradeRoom> listTradeRoom(TradeRoom tradeRoom) {
+		return tradeRoomMapper.listTradeRoom(tradeRoom);
+	}
 }

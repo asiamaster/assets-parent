@@ -15,6 +15,8 @@
  */
 package com.dili.assets.service;
 
+import java.util.List;
+
 import com.dili.assets.domain.TradeRoom;
 import com.dili.assets.sdk.dto.TradeRoomQuery;
 import com.dili.ss.base.BaseService;
@@ -60,5 +62,13 @@ public interface TradeRoomService extends BaseService<TradeRoom, Long> {
      * @return
      */
     BaseOutput updateTradeRoom(TradeRoom tradeRoom);
+
+    /**
+     * 查询列表
+     *
+     * @param tradeRoom
+     * @return
+     */
+    List<TradeRoom> listTradeRoom(TradeRoom tradeRoom);
 
 }

@@ -89,6 +89,6 @@ public class TradeRoomController {
      */
     @PostMapping("/list")
     public BaseOutput<TradeRoomDto> list(@RequestBody TradeRoom tradeRoom) {
-        return BaseOutput.success().setData(tradeRoomService.list(tradeRoom));
+        return BaseOutput.success().setData(tradeRoomService.listTradeRoom(tradeRoom));
     }
 }

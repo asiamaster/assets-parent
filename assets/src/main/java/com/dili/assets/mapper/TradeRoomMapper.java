@@ -16,6 +16,7 @@
 package com.dili.assets.mapper;
 
 import com.dili.ss.base.MyMapper;
+import com.dili.ss.domain.BaseOutput;
 import com.dili.assets.domain.TradeRoom;
 import com.dili.assets.sdk.dto.TradeRoomQuery;
 import java.util.List;
@@ -28,4 +29,6 @@ import java.util.List;
 public interface TradeRoomMapper extends MyMapper<TradeRoom> {
 
     List<TradeRoom> selectByQuery(TradeRoomQuery query);
+
+	List<TradeRoom> listTradeRoom(TradeRoom tradeRoom);
 }

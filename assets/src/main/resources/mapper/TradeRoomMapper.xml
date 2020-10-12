@@ -45,4 +45,20 @@
             <include refid="Example_Where_Clause"/>
         </if>
     </select>
+    <select id="listTradeRoom" parameterType="com.dili.assets.sdk.dto.TradeRoomQuery" resultMap="BaseResultMap">
+        select
+	        tr.id,
+	        tr.name,
+	        tr.code,
+	        tr.trade_type,
+	        tr.creator_id,
+	        tr.creator_user,
+	        tr.created_time
+        from trade_room tr left join trade_type tt on tr.trade_type = tt.id
+        <where>
+	        <if test="tradeType != null and tradeType != ''">
+	        	and tt.code = #{tradeType}
+	        </if>
+        </where>
+    </select>
 </mapper>
