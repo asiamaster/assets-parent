@@ -2,6 +2,8 @@ package com.dili.assets.sdk.dto;
 
 import java.util.List;
 
+import javax.persistence.Column;
+
 /**
  * 由MyBatis Generator工具自动生成
  * 车型
@@ -42,6 +44,12 @@ public class CarTypeForBusinessDTO {
      * 快捷编码
      */
     private String code;
+    
+    /**
+     * 备注
+     */
+    @Column(name = "`remark`")
+    private String remark;
     
     /**
      * 重量
@@ -172,6 +180,14 @@ public class CarTypeForBusinessDTO {
 
 	public void setMarketId(Long marketId) {
 		this.marketId = marketId;
+	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 
     
