@@ -202,7 +202,7 @@
       delete from tag_ext where car_type_public_id = #{id}
   </delete>
   <select id="listCarTypePublicByBusiness" resultType="com.dili.assets.domain.result.CarTypeForJmsf">
-  	  SELECT cp.id as id ,ct.`name` as carTypeName , convert(ct.number,char) number,ct.`status`, cp.auto_pass as autoPass,cp.auto_save as autoSave,cp.`code`, te.weight,te.`code` as tag
+  	  SELECT cp.id as id ,ct.`name` as carTypeName , convert(ct.number,char) number,ct.`status`, cp.auto_pass as autoPass,cp.auto_save as autoSave,cp.`code`, cp.remark, te.weight,te.`code` as tag
 		from tag_ext te
 		LEFT JOIN car_type_public cp
 		ON te.car_type_public_id =cp.id
