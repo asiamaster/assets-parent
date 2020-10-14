@@ -1,5 +1,7 @@
 package com.dili.assets.domain.result;
 
+import javax.persistence.Column;
+
 /**
  * 由MyBatis Generator工具自动生成
  * 车型
@@ -40,6 +42,12 @@ public class CarTypeForJmsf {
      * 快捷编码
      */
     private String code;
+    
+    /**
+     * 备注
+     */
+    @Column(name = "`remark`")
+    private String remark;
     
     /**
      * 重量
@@ -123,5 +131,12 @@ public class CarTypeForJmsf {
 		this.tag = tag;
 	}
 
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
     
 }
