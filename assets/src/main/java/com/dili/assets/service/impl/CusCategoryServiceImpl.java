@@ -92,7 +92,7 @@ public class CusCategoryServiceImpl extends BaseServiceImpl<CusCategory, Long> i
             cusCategoryDOMapper.update(c -> c.set(path).equalToConstant("REPLACE(path, '" + oldPath + "', '" + input.getPath() + "')"));
         }
 
-        getActualDao().updateByPrimaryKeySelective(input);
+        getActualDao().updateByPrimaryKey(input);
 
 
     }
