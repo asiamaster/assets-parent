@@ -28,7 +28,7 @@
                 and `area`=#{area}
             </if>
             <if test="marketId !=null and marketId !=''">
-                and `marketId`=#{marketId}
+                and `market`=#{marketId}
             </if>
         </where>
     </sql>
