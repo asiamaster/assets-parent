@@ -17,16 +17,19 @@ package com.dili.assets.sdk.dto;
 
 import com.dili.commons.bstable.Tablepar;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author shaofan
  * @website http://shaofan.org
  * @date 2020-10-15
  **/
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class PosMarketQuery extends Tablepar {
 
     private String name;
     private String area;
     private Long marketId;
+    private String keyword;
 }

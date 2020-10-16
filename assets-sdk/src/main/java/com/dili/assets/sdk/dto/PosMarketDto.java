@@ -50,6 +50,9 @@ public class PosMarketDto extends BaseDomain implements Serializable {
 	/** 市场名称 */
 	private String name;
 
+	/** 区域名称 */
+	private String areaName;
+
 	/** 所属区域 */
 	private String area;
 

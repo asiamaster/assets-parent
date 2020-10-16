@@ -21,6 +21,8 @@ import cn.hutool.core.bean.copier.CopyOptions;
 import com.dili.ss.domain.BaseDomain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.alibaba.fastjson.annotation.JSONField;
+import lombok.EqualsAndHashCode;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.io.Serializable;
@@ -31,6 +33,7 @@ import java.io.Serializable;
 * @author shaofan
 * @date 2020-10-15
 **/
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @Table(name="pos_market")
@@ -65,6 +68,9 @@ public class PosMarket extends BaseDomain implements Serializable {
 
     @Column(name = "area")
     private String area;
+
+    @Column(name = "area_name")
+    private String areaName;
 
     @Column(name = "notes")
     private String notes;
