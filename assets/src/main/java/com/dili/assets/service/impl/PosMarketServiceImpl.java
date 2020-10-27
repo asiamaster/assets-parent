@@ -17,7 +17,6 @@ package com.dili.assets.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import com.dili.assets.domain.PosMarket;
-import com.dili.assets.sdk.dto.PosMarketDto;
 import com.dili.ss.domain.BaseOutput;
 import com.dili.ss.dto.IDTO;
 import lombok.RequiredArgsConstructor;
@@ -77,6 +76,7 @@ public class PosMarketServiceImpl extends BaseServiceImpl<PosMarket, Long> imple
         PosMarket query = new PosMarket();
         query.setName(posMarket.getName());
         query.setMarket(posMarket.getMarket());
+        query.setArea(posMarket.getArea());
         if (CollUtil.isNotEmpty(this.listByExample(query))) {
             return BaseOutput.failure("名称重复");
         }
@@ -89,6 +89,7 @@ public class PosMarketServiceImpl extends BaseServiceImpl<PosMarket, Long> imple
         PosMarket query = new PosMarket();
         query.setName(posMarket.getName());
         query.setMarket(posMarket.getMarket());
+        query.setArea(posMarket.getArea());
         query.setMetadata(IDTO.AND_CONDITION_EXPR, "id !=" + posMarket.getId());
         if (CollUtil.isNotEmpty(this.listByExample(query))) {
             return BaseOutput.failure("名称重复");
