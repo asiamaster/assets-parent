@@ -80,13 +80,6 @@ public class PosMarketServiceImpl extends BaseServiceImpl<PosMarket, Long> imple
         if (CollUtil.isNotEmpty(this.listByExample(query))) {
             return BaseOutput.failure("名称重复");
         }
-
-        query = new PosMarket();
-        query.setArea(posMarket.getArea());
-        query.setMarket(posMarket.getMarket());
-        if (CollUtil.isNotEmpty(this.listByExample(query))) {
-            return BaseOutput.failure("区域重复");
-        }
         this.saveOrUpdate(posMarket);
         return BaseOutput.success();
     }
@@ -99,14 +92,6 @@ public class PosMarketServiceImpl extends BaseServiceImpl<PosMarket, Long> imple
         query.setMetadata(IDTO.AND_CONDITION_EXPR, "id !=" + posMarket.getId());
         if (CollUtil.isNotEmpty(this.listByExample(query))) {
             return BaseOutput.failure("名称重复");
-        }
-
-        query = new PosMarket();
-        query.setArea(posMarket.getArea());
-        query.setMarket(posMarket.getMarket());
-        query.setMetadata(IDTO.AND_CONDITION_EXPR, "id !=" + posMarket.getId());
-        if (CollUtil.isNotEmpty(this.listByExample(query))) {
-            return BaseOutput.failure("区域重复");
         }
         this.updateSelective(posMarket);
         return BaseOutput.success();

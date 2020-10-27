@@ -29,10 +29,10 @@ public class SubjectServiceImpl extends BaseServiceImpl<Subject, Long> implement
         if (c.getParent() != null) {
             Subject p = this.get(c.getParent());
             if (p == null) {
-                throw new BusinessException("1", "父品类不存在");
+                throw new BusinessException("1", "父科目不存在");
             }
             if (p.getState().equals(3)) {
-                throw new BusinessException("1", "父品类已删除");
+                throw new BusinessException("1", "父科目已删除");
             }
             c.setPath(p.getPath());
         } else {
@@ -40,7 +40,7 @@ public class SubjectServiceImpl extends BaseServiceImpl<Subject, Long> implement
         }
 
         if (nameExists(c)) {
-            throw new BusinessException("1", "品类名称有重复,请重新输入");
+            throw new BusinessException("1", "科目名称有重复,请重新输入");
         }
         c.setState(1);
         getActualDao().insert(c);
@@ -56,13 +56,13 @@ public class SubjectServiceImpl extends BaseServiceImpl<Subject, Long> implement
     public void edit(Subject input) {
         Subject temp = getActualDao().selectByPrimaryKey(input.getId());
         if (temp == null) {
-            throw new BusinessException("1", "要修改的品类不存在!");
+            throw new BusinessException("1", "要修改的科目不存在!");
         }
         if (temp.getState().equals(3)) {
-            throw new BusinessException("1", "要修改的品类已删除!");
+            throw new BusinessException("1", "要修改的科目已删除!");
         }
         if (nameExists(input)) {
-            throw new BusinessException("1", "品类名称有重复,请重新输入");
+            throw new BusinessException("1", "科目名称有重复,请重新输入");
         }
         getActualDao().updateByPrimaryKeySelective(input);
     }
