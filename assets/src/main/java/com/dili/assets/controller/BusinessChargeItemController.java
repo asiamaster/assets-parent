@@ -64,7 +64,7 @@ public class BusinessChargeItemController {
         //当前页数
         int pageNum = list instanceof Page ? ((Page) list).getPageNum() : 1;
         PageOutput output = PageOutput.success();
-        output.setData(list).setPageNum(pageNum).setTotal(total.intValue()).setPageSize(businessChargeItemQuery.getPage()).setPages(totalPage);
+        output.setData(list).setPageNum(pageNum).setTotal(total.longValue()).setPageSize(businessChargeItemQuery.getPage()).setPages(totalPage);
         return output;
     }
 

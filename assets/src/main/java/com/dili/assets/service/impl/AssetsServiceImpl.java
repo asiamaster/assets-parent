@@ -113,7 +113,7 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
             countInput.setParentId(null);
             countInput.setPage(null);
             countInput.setRows(null);
-            int count = this.listByExample(countInput).size();
+            long count = this.listByExample(countInput).size();
             boolean expand = false;
             if (input.getId() != null) {
                 expand = true;

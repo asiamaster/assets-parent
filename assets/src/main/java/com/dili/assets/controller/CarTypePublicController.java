@@ -76,7 +76,7 @@ public class CarTypePublicController {
         //当前页数
         int pageNum = listCarTypePublic instanceof Page ? ((Page) listCarTypePublic).getPageNum() : 1;
         PageOutput output = PageOutput.success();
-        output.setData(listCarTypePublic).setPageNum(pageNum).setTotal(total.intValue()).setPageSize(carTypePublic.getPage()).setPages(totalPage);
+        output.setData(listCarTypePublic).setPageNum(pageNum).setTotal(total.longValue()).setPageSize(carTypePublic.getPage()).setPages(totalPage);
         return output;
     }
     /**
