@@ -113,7 +113,7 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
             countInput.setParentId(null);
             countInput.setPage(null);
             countInput.setRows(null);
-            int count = this.listByExample(countInput).size();
+            long count = this.listByExample(countInput).size();
             boolean expand = false;
             if (input.getId() != null) {
                 expand = true;
@@ -123,7 +123,7 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
             BasePage<Assets> boothBasePage = this.listPageByExample(input);
             var booths = boothBasePage.getDatas();
             if (input.getParentId() == null) {
-                count = boothBasePage.getTotalItem().intValue();
+                count = boothBasePage.getTotalItem();
             }
             var results = ValueProviderUtils.buildDataByProvider(input, booths);
             var result = new ArrayList();
