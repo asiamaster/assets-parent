@@ -61,4 +61,10 @@ public interface TradeTypeRpc {
     @RequestMapping(value = "/api/tradeType/get", method = RequestMethod.POST)
     BaseOutput<TradeTypeDto> get(Long id);
 
+    /**
+     * 通过编码唯一获取交易类型
+     */
+    @RequestMapping(value = "/api/tradeType/getByCode", method = RequestMethod.POST)
+    BaseOutput<TradeTypeDto> getByCode(String code);
+
 }
