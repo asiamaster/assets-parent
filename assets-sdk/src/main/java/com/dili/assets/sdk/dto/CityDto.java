@@ -339,4 +339,14 @@ public class CityDto {
 	public void setLevelTypeList(List<Integer> levelTypeList) {
 		this.levelTypeList = levelTypeList;
 	}
+
+	private String keyword;
+
+	public String getKeyword() {
+		return keyword;
+	}
+
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
+	}
 }

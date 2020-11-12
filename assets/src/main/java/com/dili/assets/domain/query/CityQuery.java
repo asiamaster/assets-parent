@@ -1,6 +1,7 @@
 package com.dili.assets.domain.query;
 
 import com.dili.assets.domain.City;
+import com.dili.ss.domain.annotation.Like;
 import com.dili.ss.domain.annotation.Operator;
 
 import javax.persistence.Column;
@@ -27,6 +28,18 @@ public class CityQuery extends City {
     @Column(name = "`level_type`")
     @Operator(Operator.IN)
     private List<Integer> levelTypeList;
+
+    @Column(name = "`name`")
+    @Like
+    private String keyword;
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
 
     public List<Long> getIdList() {
         return idList;
