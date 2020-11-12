@@ -15,6 +15,7 @@
 */
 package com.dili.assets.sdk.dto;
 
+import com.dili.commons.bstable.Tablepar;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -26,17 +27,7 @@ import java.util.List;
 * @date 2020-07-30
 **/
 @Data
-public class TradeTypeQuery{
-
-    /**
-    * boostrap table post 参数
-    * @author shaofan
-    *
-    */
-    private int pageNum;//页码
-    private int pageSize;//数量
-    private String orderByColumn;//排序字段
-    private String isAsc;//排序字符 asc desc
+public class TradeTypeQuery extends Tablepar {
 
     /** 模糊 */
     private String keyword;
