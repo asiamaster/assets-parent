@@ -26,6 +26,9 @@
                 or code like
                 concat('%', #{keyword}, '%')
             </if>
+            <if test="tradeType != null">
+                and trade_type = #{tradeType}
+            </if>
         </where>
     </sql>
     <sql id="Base_Column_List">

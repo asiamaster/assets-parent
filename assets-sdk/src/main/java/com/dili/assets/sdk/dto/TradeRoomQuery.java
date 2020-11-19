@@ -45,4 +45,6 @@ public class TradeRoomQuery{
 
     /** 模糊 */
     private String keyword;
+
+    private Long tradeType;
 }
