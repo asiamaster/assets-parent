@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dili.assets.mapper.FloorMapper">
+    <resultMap id="BaseResultMap" type="com.dili.assets.domain.Floor">
+                <result column="id" jdbcType="BIGINT"
+                        property="id"/>
+                <result column="creator_id" jdbcType="BIGINT"
+                        property="creatorId"/>
+                <result column="create_time" jdbcType="TIMESTAMP"
+                        property="createTime"/>
+                <result column="modify_time" jdbcType="TIMESTAMP"
+                        property="modifyTime"/>
+                <result column="name" jdbcType="VARCHAR"
+                        property="name"/>
+                <result column="notes" jdbcType="VARCHAR"
+                        property="notes"/>
+                <result column="area" jdbcType="BIGINT"
+                        property="area"/>
+                <result column="market_id" jdbcType="BIGINT"
+                        property="marketId"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+                    id,
+                    creator_id,
+                    create_time,
+                    modify_time,
+                    name,
+                    notes,
+                    area,
+                    market_id
+    </sql>
+    <select id="selectByQuery" parameterType="com.dili.assets.sdk.dto.FloorQuery" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from floor
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+</mapper>
