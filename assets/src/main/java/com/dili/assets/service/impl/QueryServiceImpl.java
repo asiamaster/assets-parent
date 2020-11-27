@@ -84,7 +84,7 @@ public class QueryServiceImpl extends BaseServiceImpl<Query, Long> implements Qu
         List<Query> data = this.queryAll(queryQuery).getData();
         if (CollUtil.isNotEmpty(data)) {
             Query domain = data.get(0);
-            domain.setContent(query.getContent());
+            query.setId(domain.getId());
         }
         this.saveOrUpdate(query);
         return BaseOutput.success();

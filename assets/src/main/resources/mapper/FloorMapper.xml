@@ -21,6 +21,14 @@
     </resultMap>
     <sql id="Example_Where_Clause">
         <where>
+            <if test="name != null">
+                and name like
+                concat('%', #{name}, '%')
+            </if>
+            <if test="area != null">
+                and area
+                = #{area}
+            </if>
         </where>
     </sql>
     <sql id="Base_Column_List">

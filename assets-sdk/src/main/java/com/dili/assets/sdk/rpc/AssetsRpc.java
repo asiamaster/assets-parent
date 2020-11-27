@@ -1,6 +1,5 @@
 package com.dili.assets.sdk.rpc;
 
-import com.alibaba.fastjson.JSONObject;
 import com.dili.assets.sdk.dto.*;
 import com.dili.ss.domain.BaseOutput;
 import com.dili.ss.domain.PageOutput;
@@ -164,7 +163,7 @@ public interface AssetsRpc {
      * 搜索摊位
      */
     @RequestMapping(value = "/api/assets/search", method = RequestMethod.POST)
-    BaseOutput<List<AssetsDTO>> searchBooth(JSONObject query);
+    BaseOutput<List<AssetsDTO>> searchBooth(AssetsQuery query);
 
     /**
      * 新增摊位租赁时间，默认为冻结

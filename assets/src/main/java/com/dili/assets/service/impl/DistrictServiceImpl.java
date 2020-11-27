@@ -145,6 +145,7 @@ public class DistrictServiceImpl extends BaseServiceImpl<District, Long> impleme
                     district.setNumber(StringUtils.trimToNull(numbers[i]));
                 }
                 district.setDepartmentId(parent.getDepartmentId());
+                district.setKind(parent.getKind());
                 district.setMarketId(parent.getMarketId());
 
                 this.saveOrUpdate(district);

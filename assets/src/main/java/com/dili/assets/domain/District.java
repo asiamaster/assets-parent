@@ -76,6 +76,12 @@ public class District extends BaseDomain {
     private Integer isDelete;
 
     /**
+     * 性质
+     */
+    @Column(name = "`kind`")
+    private Integer kind;
+
+    /**
      * id
      */
     public Long getId() {
@@ -241,5 +247,13 @@ public class District extends BaseDomain {
      */
     public void setIsDelete(Integer isDelete) {
         this.isDelete = isDelete;
+    }
+
+    public Integer getKind() {
+        return kind;
+    }
+
+    public void setKind(Integer kind) {
+        this.kind = kind;
     }
 }

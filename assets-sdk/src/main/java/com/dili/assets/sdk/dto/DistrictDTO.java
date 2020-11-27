@@ -75,4 +75,6 @@ public class DistrictDTO extends BaseDomain {
     private List<String> ids;
 
     private String parentName;
+
+    private Integer kind;
 }

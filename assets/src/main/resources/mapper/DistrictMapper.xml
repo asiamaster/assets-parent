@@ -18,13 +18,14 @@
     <result column="sort" jdbcType="VARCHAR" property="sort" />
     <result column="number" jdbcType="VARCHAR" property="number" />
     <result column="is_delete" jdbcType="TINYINT" property="isDelete" />
+    <result column="kind" jdbcType="TINYINT" property="kind" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
     id, creator_id, create_time, modify_time, name, notes, department_id, owner, market_id, 
-    parent_id, sort, number, is_delete
+    parent_id,kind, sort, number, is_delete
   </sql>
   <select id="selectBy" parameterType="java.lang.Long" resultMap="BaseResultMap">
     <!--
@@ -77,6 +78,9 @@
       <if test="isDelete != null">
         is_delete = #{isDelete,jdbcType=TINYINT},
       </if>
+      <if test="kind != null">
+        kind = #{kind,jdbcType=TINYINT},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -120,6 +124,9 @@
       </if>
       <if test="isDelete != null">
         is_delete = #{isDelete,jdbcType=TINYINT},
+      </if>
+      <if test="kind != null">
+        kind = #{kind,jdbcType=TINYINT},
       </if>
     </set>
     WHERE parent_id = #{parentId}

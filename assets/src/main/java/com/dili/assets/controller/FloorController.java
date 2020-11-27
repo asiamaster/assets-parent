@@ -40,11 +40,10 @@ public class FloorController {
     /**
      * 查询数据分页
      * @param query 条件
-     * @param pageable 分页参数
      * @return PageInfo<Floor>
      */
     @PostMapping("/query")
-    public Object query(FloorQuery query){
+    public Object query(@RequestBody FloorQuery query){
         PageInfo<Floor> page = floorService.query(query);
         TableResult<Floor> result = new TableResult<>(page.getPageNum(), page.getTotal(), page.getList());
         return result;
@@ -55,7 +54,7 @@ public class FloorController {
      * @param query 条件
      */
     @PostMapping("/queryAll")
-    public Object queryAll(FloorQuery query){
+    public Object queryAll(@RequestBody FloorQuery query){
         return floorService.queryAll(query);
     }
 
@@ -109,6 +108,17 @@ public class FloorController {
     @PostMapping("/disableAll")
     public BaseOutput disableAll(@RequestBody Long[] ids) {
         floorService.disableAll(ids);
+        return BaseOutput.success();
+    }
+
+    /**
+     * 删除区域下楼层
+     */
+    @PostMapping("/deleteByArea")
+    public BaseOutput deleteByArea(@RequestBody Long areaId) {
+        Floor floor = new Floor();
+        floor.setArea(areaId);
+        floorService.deleteByExample(floor);
         return BaseOutput.success();
     }
 }

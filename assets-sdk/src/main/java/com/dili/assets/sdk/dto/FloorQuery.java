@@ -26,4 +26,10 @@ import lombok.Data;
 @Data
 public class FloorQuery extends Tablepar {
 
+    /** 模糊 */
+    private String name;
+
+    /** 精确 */
+    private Long area;
+
 }
