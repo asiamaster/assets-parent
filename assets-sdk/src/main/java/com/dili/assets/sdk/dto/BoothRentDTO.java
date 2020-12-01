@@ -3,6 +3,7 @@ package com.dili.assets.sdk.dto;
 import com.dili.ss.domain.BaseDomain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import javax.persistence.Column;
 import java.util.Date;
 
 /**
@@ -24,6 +25,13 @@ public class BoothRentDTO extends BaseDomain {
      * 摊位编号
      */
     private Long boothId;
+
+    /** 类型 */
+    private Integer type ;
+    /** 数量 */
+    private Double number ;
+
+    private String userName;
     /**
      * 开始日期
      */
@@ -111,5 +119,29 @@ public class BoothRentDTO extends BaseDomain {
 
     public void setFreeze(Integer freeze) {
         this.freeze = freeze;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public Double getNumber() {
+        return number;
+    }
+
+    public void setNumber(Double number) {
+        this.number = number;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

@@ -17,6 +17,8 @@
     <result column="market_id" jdbcType="BIGINT" property="marketId" />
     <result column="parent_id" jdbcType="BIGINT" property="parentId" />
     <result column="notes" jdbcType="VARCHAR" property="notes" />
+    <result column="user" jdbcType="VARCHAR" property="user" />
+    <result column="floor" jdbcType="VARCHAR" property="floor" />
     <result column="state" jdbcType="INTEGER" property="state" />
     <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
     <result column="split_notes" jdbcType="VARCHAR" property="splitNotes" />
@@ -25,12 +27,13 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
     <result column="business_type" jdbcType="TINYINT" property="businessType" />
+    <result column="kind" jdbcType="TINYINT" property="kind" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, name, number, unit, area, second_area, type, corner, department_id, market_id, parent_id, notes, state,
+    id, name, number, unit, area,floor,user,kind, second_area, type, corner, department_id, market_id, parent_id, notes, state,
     is_delete, split_notes, sort, creator_id, create_time, modify_time, business_type
   </sql>
   <select id="selectBy" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -86,6 +89,15 @@
       </if>
       <if test="isDelete != null">
         is_delete = #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="user != null">
+        user = #{user,jdbcType=VARCHAR},
+      </if>
+      <if test="floor != null">
+        floor = #{floor,jdbcType=VARCHAR},
+      </if>
+      <if test="kind != null">
+        kind = #{kind,jdbcType=TINYINT},
       </if>
       <if test="splitNotes != null">
         split_notes = #{splitNotes,jdbcType=VARCHAR},

@@ -5,6 +5,7 @@ import com.dili.ss.domain.BaseDomain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.Column;
 import java.util.Date;
 
 /**
@@ -65,6 +66,12 @@ public class AssetsDTO extends BaseDomain {
      * 是否删除
      */
     private Integer isDelete;
+
+    private String user ;
+    /** 楼层 */
+    private String floor ;
+    /** 性质 */
+    private Integer kind ;
     /**
      * 拆分备注
      */
@@ -386,6 +393,30 @@ public class AssetsDTO extends BaseDomain {
 
     public void setDeps(String deps) {
         this.deps = deps;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public String getFloor() {
+        return floor;
+    }
+
+    public void setFloor(String floor) {
+        this.floor = floor;
+    }
+
+    public Integer getKind() {
+        return kind;
+    }
+
+    public void setKind(Integer kind) {
+        this.kind = kind;
     }
 
     // ==========================字段转义==================================== //

@@ -79,6 +79,4 @@ public class BoothRentController {
         }
         return BaseOutput.success();
     }
-
-
 }

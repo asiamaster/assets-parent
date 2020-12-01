@@ -1,12 +1,21 @@
 package com.dili.assets.controller;
 
+import cn.hutool.core.bean.BeanUtil;
+import com.alibaba.fastjson.JSON;
 import com.dili.assets.domain.Assets;
+import com.dili.assets.domain.AssetsPOJO;
 import com.dili.assets.domain.query.BoothQuery;
 import com.dili.assets.sdk.dto.AssetsDTO;
 import com.dili.assets.service.AssetsService;
 import com.dili.commons.glossary.YesOrNoEnum;
 import com.dili.ss.domain.BaseOutput;
 import com.dili.ss.exception.BusinessException;
+import org.javers.core.Javers;
+import org.javers.core.diff.Change;
+import org.javers.core.metamodel.object.CdoSnapshot;
+import org.javers.repository.jql.JqlQuery;
+import org.javers.repository.jql.QueryBuilder;
+import org.javers.shadow.Shadow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +34,9 @@ import java.util.List;
 public class BoothController {
     @Autowired
     AssetsService boothService;
+
+    @Autowired
+    private Javers javers;
 
     /**
      * 新增摊位
@@ -73,6 +85,9 @@ public class BoothController {
     @RequestMapping("update")
     public BaseOutput update(@RequestBody Assets booth) {
         boothService.updateSelective(booth);
+        AssetsPOJO pojo = new AssetsPOJO();
+        BeanUtil.copyProperties(booth,pojo);
+        javers.commit("assets",pojo);
         return BaseOutput.success();
     }
 

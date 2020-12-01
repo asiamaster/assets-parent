@@ -41,6 +41,16 @@ public class BoothRent extends BaseDomain {
     @Column(name = "`end`")
     private Date end;
 
+    @Transient
+    private String userName;
+
+    /** 类型 */
+    @Column(name = "`type`")
+    private Integer type ;
+    /** 数量 */
+    @Column(name = "`number`")
+    private Double number ;
+
     /**
      * 冻结状态
      */
@@ -123,5 +133,29 @@ public class BoothRent extends BaseDomain {
 
     public void setFreeze(Integer freeze) {
         this.freeze = freeze;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public Double getNumber() {
+        return number;
+    }
+
+    public void setNumber(Double number) {
+        this.number = number;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

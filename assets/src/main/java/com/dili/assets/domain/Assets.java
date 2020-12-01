@@ -84,6 +84,17 @@ public class Assets extends BaseDomain {
      */
     @Column(name = "`is_delete`")
     private Integer isDelete;
+
+    /** 使用方 */
+    @Column(name = "`user`")
+    private String user ;
+    /** 楼层 */
+    @Column(name = "`floor`")
+    private String floor ;
+    /** 性质 */
+    @Column(name = "`kind`")
+    private Integer kind ;
+
     /**
      * 拆分备注
      */
@@ -369,5 +380,29 @@ public class Assets extends BaseDomain {
     /** 业务类型;1:摊位，2:冷库，3:公寓 */
     public void setBusinessType(Integer businessType){
         this.businessType = businessType;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public String getFloor() {
+        return floor;
+    }
+
+    public void setFloor(String floor) {
+        this.floor = floor;
+    }
+
+    public Integer getKind() {
+        return kind;
+    }
+
+    public void setKind(Integer kind) {
+        this.kind = kind;
     }
 }

@@ -97,6 +97,18 @@
     </build>
 
     <dependencies>
+        <dependency>
+        <groupId>javax.persistence</groupId>
+        <artifactId>javax.persistence-api</artifactId>
+        <version>2.2</version>
+        <scope>provided</scope>
+        <exclusions>
+            <exclusion>
+                <artifactId>xml-apis</artifactId>
+                <groupId>xml-apis</groupId>
+            </exclusion>
+        </exclusions>
+    </dependency>
         <!-- spring boot 基类 -->
         <dependency>
             <groupId>com.dili</groupId>
@@ -106,6 +118,10 @@
                 <exclusion>
                     <groupId>com.sun</groupId>
                     <artifactId>tools</artifactId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>persistence-api</artifactId>
+                    <groupId>javax.persistence</groupId>
                 </exclusion>
             </exclusions>
             <scope>provided</scope>
@@ -167,6 +183,17 @@
                 <exclusion>
                     <groupId>io.seata</groupId>
                     <artifactId>seata-spring-boot-starter</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.javers</groupId>
+            <artifactId>javers-spring-boot-starter-sql</artifactId>
+            <version>5.14.0</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>javax.persistence-api</artifactId>
+                    <groupId>javax.persistence</groupId>
                 </exclusion>
             </exclusions>
         </dependency>

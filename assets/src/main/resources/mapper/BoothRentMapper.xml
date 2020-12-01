@@ -9,6 +9,8 @@
     <result column="order_id" jdbcType="VARCHAR" property="orderId" />
     <result column="booth_id" jdbcType="BIGINT" property="boothId" />
     <result column="freeze" jdbcType="TINYINT" property="freeze" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="number" jdbcType="DECIMAL" property="number" />
     <result column="start" jdbcType="TIMESTAMP" property="start" />
     <result column="end" jdbcType="TIMESTAMP" property="end" />
   </resultMap>

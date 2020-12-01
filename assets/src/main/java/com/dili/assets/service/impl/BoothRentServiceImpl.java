@@ -28,6 +28,8 @@ public class BoothRentServiceImpl extends BaseServiceImpl<BoothRent, Long> imple
         return (BoothRentMapper) getDao();
     }
 
+    private
+
     @Autowired
     RedisDistributedLock redisDistributedLock;
 
@@ -38,41 +40,64 @@ public class BoothRentServiceImpl extends BaseServiceImpl<BoothRent, Long> imple
             try {
                 BoothRent query = new BoothRent();
                 query.setBoothId(input.getBoothId());
+                query.setType(input.getType());
                 List<BoothRent> boothRents = this.listByExample(query);
                 input.setFreeze(RentEnum.freeze.getCode());
                 if (CollUtil.isEmpty(boothRents)) {
                     saveOrUpdate(input);
                 } else {
                     boolean canSave = true;
+                    Double min = 99999D;
                     for (BoothRent boothRent : boothRents) {
                         // 判断开始时间
 
                         if (DateUtil.isIn(boothRent.getStart(), input.getStart(), input.getEnd())) {
                             canSave = false;
+                            if (boothRent.getNumber() != null && boothRent.getNumber() < min) {
+                                min = boothRent.getNumber();
+                            }
                             break;
                         }
                         // 判断结束时间
 
                         if (DateUtil.isIn(boothRent.getStart(), input.getStart(), input.getEnd())) {
                             canSave = false;
+                            if (boothRent.getNumber() != null && boothRent.getNumber() < min) {
+                                min = boothRent.getNumber();
+                            }
                             break;
                         }
 
                         if (DateUtil.isIn(input.getStart(), boothRent.getStart(), boothRent.getEnd())) {
                             canSave = false;
+                            if (boothRent.getNumber() != null && boothRent.getNumber() < min) {
+                                min = boothRent.getNumber();
+                            }
                             break;
                         }
                         // 判断结束时间
 
                         if (DateUtil.isIn(input.getEnd(), boothRent.getStart(), boothRent.getEnd())) {
                             canSave = false;
+                            if (boothRent.getNumber() != null && boothRent.getNumber() < min) {
+                                min = boothRent.getNumber();
+                            }
                             break;
                         }
                     }
+
                     if (canSave) {
                         saveOrUpdate(input);
                     } else {
-                        throw new BusinessException("2500", "此时间段已有租赁");
+                        if (input.getType() == 2) {
+                            if (input.getNumber() > min) {
+                                throw new BusinessException("2500", "此时间段已有租赁");
+                            } else {
+                                saveOrUpdate(input);
+                            }
+                        } else {
+                            throw new BusinessException("2500", "此时间段已有租赁");
+                        }
                     }
                 }
             } finally {

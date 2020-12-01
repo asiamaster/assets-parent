@@ -6,6 +6,7 @@ import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.dili.assets.domain.Assets;
+import com.dili.assets.domain.AssetsPOJO;
 import com.dili.assets.domain.BoothRent;
 import com.dili.assets.domain.District;
 import com.dili.assets.domain.query.BoothQuery;
@@ -28,16 +29,14 @@ import com.dili.uap.sdk.domain.DataDictionaryValue;
 import com.dili.uap.sdk.domain.Department;
 import com.dili.uap.sdk.rpc.DataDictionaryRpc;
 import com.dili.uap.sdk.rpc.DepartmentRpc;
+import org.javers.core.Javers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * 由MyBatis Generator工具自动生成
@@ -52,13 +51,13 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
     DataDictionaryRpc dataDictionaryRpc;
 
     @Autowired
+    private Javers javers;
+
+    @Autowired
     private DepartmentRpc departmentRpc;
 
     @Autowired
     private DistrictService districtService;
-
-    @Autowired
-    private BoothRentServiceImpl boothRentService;
 
     public AssetsMapper getActualDao() {
         return (AssetsMapper) getDao();
@@ -78,8 +77,10 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
 
         booth.setIsDelete(YesOrNoEnum.NO.getCode());
         booth.setCreateTime(new Date());
-        booth.setState(EnabledStateEnum.ENABLED.getCode());
         this.saveOrUpdate(booth);
+        AssetsPOJO pojo = new AssetsPOJO();
+        BeanUtil.copyProperties(booth, pojo);
+        javers.commit("assets", pojo);
     }
 
     @Override
@@ -89,7 +90,7 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
             if (input == null) {
                 input = new BoothQuery();
             }
-            BeanUtil.copyProperties(input,countInput);
+            BeanUtil.copyProperties(input, countInput);
             if (input.getStartTime() != null) {
                 input.setStartTime(DateUtils.formatDate2DateTimeStart(input.getStartTime()));
                 countInput.setStartTime(DateUtils.formatDate2DateTimeStart(input.getStartTime()));
@@ -107,8 +108,14 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
                 input.setMetadata(IDTO.AND_CONDITION_EXPR, "department_id is null");
                 countInput.setMetadata(IDTO.AND_CONDITION_EXPR, "department_id is null");
             }
+            if (input.getArea() != null) {
+                input.setMetadata(IDTO.AND_CONDITION_EXPR, "(area = " + input.getArea() + " or second_area = " + input.getArea() + " )");
+                countInput.setMetadata(IDTO.AND_CONDITION_EXPR, "(area = " + input.getArea() + " or second_area = " + input.getArea() + " )");
+            }
 
             input.setDeps(null);
+            input.setArea(null);
+            countInput.setArea(null);
             countInput.setDeps(null);
             countInput.setParentId(null);
             countInput.setPage(null);
@@ -170,37 +177,18 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
         if (names == null || numbers == null) {
             return;
         }
-        var queryBooth = new Assets();
-        queryBooth.setParentId(parentId);
-        queryBooth.setIsDelete(YesOrNoEnum.NO.getCode());
-        var booths = this.listByExample(queryBooth);
-        if (CollUtil.isNotEmpty(booths)) {
-            for (var booth : booths) {
-                var boothRent = new BoothRent();
-                boothRent.setBoothId(booth.getId());
-                var boothRents = boothRentService.listByExample(boothRent);
-                if (CollUtil.isNotEmpty(boothRents)) {
-                    throw new BusinessException("5000", "摊位已有租赁，不能拆分");
-                }
-            }
-        }
-        var boothRent = new BoothRent();
-        boothRent.setBoothId(parentId);
-        var boothRents = boothRentService.listByExample(boothRent);
-        if (CollUtil.isNotEmpty(boothRents)) {
-            throw new BusinessException("5000", "摊位已有租赁，不能拆分");
-        }
+
         if (names.length == numbers.length) {
             var parent = get(parentId);
-            if (parent.getState().equals(EnabledStateEnum.DISABLED.getCode()) || parent.getIsDelete().equals(YesOrNoEnum.YES.getCode())) {
-                throw new BusinessException("5000", "摊位禁用或删除，不能拆分");
-            }
+            var total = Arrays.stream(numbers).mapToDouble(Double::parseDouble).sum();
             for (int i = 0; i < names.length; i++) {
                 var booth = new Assets();
                 booth.setArea(parent.getArea());
                 booth.setName(names[i]);
                 booth.setNumber(Double.parseDouble(numbers[i]));
                 booth.setParentId(parentId);
+                booth.setFloor(parent.getFloor());
+                booth.setUser(parent.getUser());
                 booth.setSecondArea(parent.getSecondArea());
                 booth.setNotes(notes);
                 booth.setDepartmentId(parent.getDepartmentId());
@@ -214,6 +202,10 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
                 booth.setCorner(parent.getCorner());
                 booth.setBusinessType(parent.getBusinessType());
                 saveBooth(booth);
+            }
+            if (getBoothBalance(parentId) == 0) {
+                parent.setIsDelete(YesOrNoEnum.YES.getCode());
+                this.saveOrUpdate(parent);
             }
         }
     }
