@@ -123,8 +123,6 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
             long count = this.listByExample(countInput).size();
             boolean expand = false;
             if (input.getId() != null) {
-                expand = true;
-                input.setParentId(input.getId());
                 input.setId(null);
             }
             BasePage<Assets> boothBasePage = this.listPageByExample(input);
@@ -132,13 +130,16 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
             if (input.getParentId() == null) {
                 count = boothBasePage.getTotalItem();
             }
+            input.setMetadata(JSON.parseObject("{\"area\":\"{\\\"provider\\\":\\\"districtProvider\\\",\\\"index\\\":20,\\\"field\\\":\\\"area\\\"}\",\"unit\":\"{\\\"provider\\\":\\\"dataDictionaryValueProvider\\\",\\\"index\\\":10,\\\"field\\\":\\\"unit\\\"}\",\"createTime\":\"{\\\"provider\\\":\\\"datetimeProvider\\\",\\\"index\\\":50,\\\"field\\\":\\\"createTime\\\"}\",\"departmentId\":\"{\\\"provider\\\":\\\"departmentProvider\\\",\\\"index\\\":40,\\\"field\\\":\\\"departmentId\\\"}\",\"state\":\"{\\\"provider\\\":\\\"boothStateProvider\\\",\\\"index\\\":60,\\\"field\\\":\\\"state\\\"}\",\"user\":\"{\\\"provider\\\":\\\"dataDictionaryValueProvider\\\",\\\"index\\\":30,\\\"field\\\":\\\"user\\\"}\"}"));
             var results = ValueProviderUtils.buildDataByProvider(input, booths);
+
+
             var result = new ArrayList();
 
             for (var district : results) {
                 var json = JSON.parseObject(JSON.toJSONString(district));
                 json.put("status", json.getString("state"));
-                json.put("state", "closed");
+                json.put("state", "open");
                 result.add(json);
             }
             var resultJsonStr = JSONObject.toJSONString(result);
@@ -278,7 +279,6 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
                 }
                 result.add(dto);
             });
-            System.out.println("aa");
         }
         return result;
     }

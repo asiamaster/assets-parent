@@ -50,6 +50,9 @@ public class BoothRent extends BaseDomain {
     /** 数量 */
     @Column(name = "`number`")
     private Double number ;
+    /** 使用方 */
+    @Column(name = "`user`")
+    private String user ;
 
     /**
      * 冻结状态
@@ -157,5 +160,13 @@ public class BoothRent extends BaseDomain {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
     }
 }

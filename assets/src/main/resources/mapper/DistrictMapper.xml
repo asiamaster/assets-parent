@@ -131,4 +131,11 @@
     </set>
     WHERE parent_id = #{parentId}
   </update>
+
+  <select id="selectByAreaMarket" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    SELECT d.id, d.name, d.parent_id, d.number, a.market as marekt_id
+    from district d
+           LEFT JOIN area_market a ON d.id = a.area
+    WHERE d.market_id = #{id,jdbcType=BIGINT}
+  </select>
 </mapper>

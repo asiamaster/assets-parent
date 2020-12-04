@@ -130,6 +130,12 @@ public interface AssetsRpc {
     BaseOutput<List<DistrictDTO>> searchDistrict(DistrictDTO input);
 
     /**
+     * 获取商户区域
+     */
+    @RequestMapping(value = "/api/district/listAreaMarket", method = RequestMethod.POST)
+    BaseOutput<List<DistrictDTO>> listAreaMarket(Long id);
+
+    /**
      * 获取单个摊位
      */
     @RequestMapping(value = "/api/assets/get", method = RequestMethod.POST)

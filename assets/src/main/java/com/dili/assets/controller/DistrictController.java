@@ -15,10 +15,7 @@ import com.dili.ss.dto.IDTO;
 import com.dili.ss.exception.BusinessException;
 import com.dili.ss.metadata.ValueProviderUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -212,5 +209,14 @@ public class DistrictController {
         } catch (Exception e) {
             return BaseOutput.failure(e.getMessage());
         }
+    }
+
+    /**
+     * 区域商户
+     */
+    @PostMapping("listAreaMarket")
+    public BaseOutput<List<District>> listAreaMarket(@RequestBody Long id) {
+        List<District> byAreaMarket = districtService.selectByAreaMarket(id);
+        return BaseOutput.success().setData(byAreaMarket);
     }
 }

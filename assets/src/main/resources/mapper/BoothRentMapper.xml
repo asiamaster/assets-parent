@@ -11,6 +11,7 @@
     <result column="freeze" jdbcType="TINYINT" property="freeze" />
     <result column="type" jdbcType="TINYINT" property="type" />
     <result column="number" jdbcType="DECIMAL" property="number" />
+    <result column="user" jdbcType="VARCHAR" property="user" />
     <result column="start" jdbcType="TIMESTAMP" property="start" />
     <result column="end" jdbcType="TIMESTAMP" property="end" />
   </resultMap>

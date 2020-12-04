@@ -199,4 +199,9 @@ public class DistrictServiceImpl extends BaseServiceImpl<District, Long> impleme
     public void childrenUpdateByPid(District update) {
         getActualDao().childrenUpdateByPid(update);
     }
+
+    @Override
+    public List<District> selectByAreaMarket(Long id) {
+        return getActualDao().selectByAreaMarket(id);
+    }
 }

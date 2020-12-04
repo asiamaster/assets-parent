@@ -52,6 +52,11 @@ public class DistrictDTO extends BaseDomain {
      * 市场
      */
     private Long marketId;
+
+    /**
+     * 商户
+     */
+    private Long mchId;
     /**
      * 父区域
      */
