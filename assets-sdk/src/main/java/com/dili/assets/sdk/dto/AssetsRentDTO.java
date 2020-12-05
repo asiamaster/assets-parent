@@ -11,7 +11,7 @@ import java.util.Date;
  * 租赁时间表
  * This file was generated on 2020-03-03 14:37:36.
  */
-public class BoothRentDTO extends BaseDomain {
+public class AssetsRentDTO extends BaseDomain {
 
     /**
      * 主键

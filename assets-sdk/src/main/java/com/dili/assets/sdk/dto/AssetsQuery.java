@@ -21,7 +21,7 @@ public class AssetsQuery extends AssetsDTO {
     @Like()
     @Column(name = "`name`")
     private String keyword;
-   @Operator(Operator.GREAT_EQUAL_THAN)
+    @Operator(Operator.GREAT_EQUAL_THAN)
     @Column(name = "`create_time`")
     private Date startTime;
     @Operator(Operator.LITTLE_EQUAL_THAN)
@@ -38,6 +38,18 @@ public class AssetsQuery extends AssetsDTO {
     @Operator(Operator.IN)
     @Column(name = "`id`")
     private List<String> ids;
+    /**
+     * 商户
+     */
+    private Long mchId;
+
+    public Long getMchId() {
+        return mchId;
+    }
+
+    public void setMchId(Long mchId) {
+        this.mchId = mchId;
+    }
 
     public String getKeyword() {
         return keyword;

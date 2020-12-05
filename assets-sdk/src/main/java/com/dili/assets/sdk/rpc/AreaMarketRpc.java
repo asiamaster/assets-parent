@@ -17,6 +17,7 @@ package com.dili.assets.sdk.rpc;
 
 import com.dili.assets.sdk.dto.AreaMarketDto;
 import com.dili.assets.sdk.dto.AreaMarketQuery;
+import com.dili.assets.sdk.dto.DistrictDTO;
 import com.dili.ss.domain.BaseOutput;
 import com.dili.commons.bstable.TableResult;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -49,7 +50,7 @@ public interface AreaMarketRpc {
     * 新增区域商户
     */
     @RequestMapping(value = "/api/areaMarket/add", method = RequestMethod.POST)
-    BaseOutput add(AreaMarketDto dto);
+    BaseOutput add(List<DistrictDTO> dto);
 
     /**
     * 修改区域商户

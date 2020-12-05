@@ -17,9 +17,12 @@ package com.dili.assets.service;
 
 import com.dili.assets.domain.AreaMarket;
 import com.dili.assets.sdk.dto.AreaMarketQuery;
+import com.dili.assets.sdk.dto.DistrictDTO;
 import com.dili.ss.domain.BaseOutput;
 import com.github.pagehelper.PageInfo;
 import com.dili.ss.base.BaseService;
+import org.springframework.web.bind.annotation.RequestBody;
+
 import java.util.List;
 
 /**
@@ -64,10 +67,9 @@ public interface AreaMarketService extends BaseService<AreaMarket, Long> {
 
     /**
     *  新增
-    * @param areaMarket
     * @return
     */
-    BaseOutput saveAreaMarket(AreaMarket areaMarket);
+    BaseOutput saveAreaMarket(@RequestBody List<DistrictDTO> dto);
 
     /**
     *  修改

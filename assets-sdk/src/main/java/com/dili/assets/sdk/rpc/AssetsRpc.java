@@ -139,61 +139,61 @@ public interface AssetsRpc {
      * 获取单个摊位
      */
     @RequestMapping(value = "/api/assets/get", method = RequestMethod.POST)
-    BaseOutput<AssetsDTO> getBoothById(Long id);
+    BaseOutput<AssetsDTO> getAssetsById(Long id);
 
     /**
      * 修改摊位
      */
     @RequestMapping(value = "/api/assets/update", method = RequestMethod.POST)
-    BaseOutput updateBooth(AssetsDTO input);
+    BaseOutput updateAssets(AssetsDTO input);
 
     /**
      * 删除摊位
      */
     @RequestMapping(value = "/api/assets/delete", method = RequestMethod.POST)
-    BaseOutput delBoothById(Long id);
+    BaseOutput delAssetsById(Long id);
 
     /**
      * 删除摊位
      */
     @RequestMapping(value = "/api/assets/getBoothBalance", method = RequestMethod.POST)
-    BaseOutput<Double> getBoothBalance(Long id);
+    BaseOutput<Double> getAssetsBalance(Long id);
 
     /**
      * 拆分摊位
      */
     @RequestMapping(value = "/api/assets/split", method = RequestMethod.POST)
-    BaseOutput boothSplit(@RequestParam("parentId") Long parentId, @RequestParam("names") String[] names, @RequestParam("notes") String notes, @RequestParam("numbers") String[] numbers);
+    BaseOutput assetsSplit(@RequestParam("parentId") Long parentId, @RequestParam("names") String[] names, @RequestParam("notes") String notes, @RequestParam("numbers") String[] numbers);
 
     /**
      * 搜索摊位
      */
     @RequestMapping(value = "/api/assets/search", method = RequestMethod.POST)
-    BaseOutput<List<AssetsDTO>> searchBooth(AssetsQuery query);
+    BaseOutput<List<AssetsDTO>> searchAssets(AssetsQuery query);
 
     /**
      * 新增摊位租赁时间，默认为冻结
      */
     @RequestMapping(value = "/api/boothRent/add", method = RequestMethod.POST)
-    BaseOutput addBoothRent(BoothRentDTO input);
+    BaseOutput addAssetsRent(AssetsRentDTO input);
 
     /**
      * 根据@param{摊位}和@param{单号}修改出粗状态为已出租
      */
     @RequestMapping(value = "/api/boothRent/rent", method = RequestMethod.POST)
-    BaseOutput rentBoothRent(BoothRentDTO input);
+    BaseOutput rentAssetsRent(AssetsRentDTO input);
 
     /**
      * 根据@param{摊位}和@param{单号}删除信息
      */
     @RequestMapping(value = "/api/boothRent/delete", method = RequestMethod.POST)
-    BaseOutput deleteBoothRent(BoothRentDTO input);
+    BaseOutput deleteAssetsRent(AssetsRentDTO input);
 
     /**
      * 根据@param{摊位}和@param{单号}修改@param{结束时间}
      */
     @RequestMapping(value = "/api/boothRent/updateEnd", method = RequestMethod.POST)
-    BaseOutput updateEndBoothRent(BoothRentDTO input);
+    BaseOutput updateEndAssetsRent(AssetsRentDTO input);
 
     /**
      * 获取车型列表
