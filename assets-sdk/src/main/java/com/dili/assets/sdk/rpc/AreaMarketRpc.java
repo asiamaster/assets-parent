@@ -82,4 +82,10 @@ public interface AreaMarketRpc {
     @RequestMapping(value = "/api/areaMarket/get", method = RequestMethod.POST)
     BaseOutput<AreaMarketDto> get(Long id);
 
+    /**
+     * 获取区域商户
+     */
+    @RequestMapping(value = "/api/areaMarket/getMarketByArea", method = RequestMethod.POST)
+    BaseOutput<Long> getMarketByArea(Long id);
+
 }

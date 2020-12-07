@@ -5,14 +5,13 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.dili.assets.domain.Assets;
-import com.dili.assets.domain.AssetsPOJO;
-import com.dili.assets.domain.BoothRent;
-import com.dili.assets.domain.District;
+import com.dili.assets.domain.*;
 import com.dili.assets.domain.query.BoothQuery;
 import com.dili.assets.glossary.StateEnum;
 import com.dili.assets.mapper.AssetsMapper;
+import com.dili.assets.sdk.dto.AreaMarketQuery;
 import com.dili.assets.sdk.dto.AssetsDTO;
+import com.dili.assets.service.AreaMarketService;
 import com.dili.assets.service.AssetsService;
 import com.dili.assets.service.DistrictService;
 import com.dili.commons.glossary.EnabledStateEnum;
@@ -37,6 +36,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 由MyBatis Generator工具自动生成
@@ -58,6 +58,9 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
 
     @Autowired
     private DistrictService districtService;
+
+    @Autowired
+    public AreaMarketService areaMarketService;
 
     public AssetsMapper getActualDao() {
         return (AssetsMapper) getDao();
@@ -216,7 +219,26 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
         var result = new ArrayList<AssetsDTO>();
         query.setPage(1);
         query.setRows(100);
+        if (query.getMarketId() == null) {
+            return new ArrayList<>();
+        }
         var list = listPageByExample(query).getDatas();
+        if (query.getArea() != null && query.getSecondArea() == null) {
+            list = list.stream().filter(it -> it.getSecondArea() == null).collect(Collectors.toList());
+        }
+
+        if (query.getMchId() != null) {
+            AreaMarketQuery areaQuery = new AreaMarketQuery();
+            areaQuery.setMarket(query.getMchId());
+            var areaMarketList = areaMarketService.queryAll(areaQuery).getData();
+            var mchId = areaMarketList.get(0).getArea().intValue();
+            if (CollUtil.isNotEmpty(areaMarketList)) {
+                list = list.stream().filter(it -> it.getArea() == mchId || it.getSecondArea() == mchId).collect(Collectors.toList());
+            } else {
+                return new ArrayList<>();
+            }
+        }
+
         if (CollUtil.isNotEmpty(list)) {
             var unitCache = new HashMap<String, String>();
             var disCache = new HashMap<String, String>();
@@ -276,6 +298,19 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
 
                 if (obj.getCorner() != null) {
                     dto.setCornerName(obj.getCorner() == 1 ? "是" : "否");
+                }
+                if (query.getMchId() != null) {
+                    dto.setMarketId(query.getMchId());
+                } else {
+                    var area = dto.getSecondArea() != null ? dto.getSecondArea() : dto.getArea();
+                    AreaMarketQuery areaQuery = new AreaMarketQuery();
+                    areaQuery.setArea(area.longValue());
+                    var areaMarketList = areaMarketService.queryAll(areaQuery).getData();
+                    if (CollUtil.isNotEmpty(areaMarketList)) {
+                        dto.setMarketId(areaMarketList.get(0).getMarket());
+                    } else {
+                        dto.setMarketId(null);
+                    }
                 }
                 result.add(dto);
             });

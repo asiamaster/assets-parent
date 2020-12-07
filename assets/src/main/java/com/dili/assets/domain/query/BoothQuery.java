@@ -5,6 +5,7 @@ import com.dili.ss.domain.annotation.Like;
 import com.dili.ss.domain.annotation.Operator;
 
 import javax.persistence.Column;
+import javax.persistence.Transient;
 import java.util.Date;
 import java.util.List;
 
@@ -39,6 +40,20 @@ public class BoothQuery extends Assets {
     @Operator(Operator.IN)
     @Column(name = "`id`")
     private List<String> ids;
+
+    /**
+     * 商户
+     */
+    @Transient
+    private Long mchId;
+
+    public Long getMchId() {
+        return mchId;
+    }
+
+    public void setMchId(Long mchId) {
+        this.mchId = mchId;
+    }
 
     public String getKeyword() {
         return keyword;

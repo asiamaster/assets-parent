@@ -15,6 +15,7 @@
  */
 package com.dili.assets.controller;
 
+import cn.hutool.core.collection.CollUtil;
 import com.dili.assets.domain.AreaMarket;
 import com.dili.assets.sdk.dto.DistrictDTO;
 import com.dili.assets.service.AreaMarketService;
@@ -86,6 +87,21 @@ public class AreaMarketController {
     @PostMapping("/get")
     public BaseOutput<AreaMarketDto> get(@RequestBody Long id) {
         return BaseOutput.success().setData(areaMarketService.get(id));
+    }
+
+    /**
+     * 获取
+     */
+    @PostMapping("/getMarketByArea")
+    public BaseOutput<Long> getMarketByArea(@RequestBody Long id) {
+        AreaMarketQuery query = new AreaMarketQuery();
+        query.setArea(id);
+        BaseOutput<List<AreaMarket>> listBaseOutput = areaMarketService.queryAll(query);
+        if (CollUtil.isNotEmpty(listBaseOutput.getData())) {
+            return BaseOutput.success().setData(listBaseOutput.getData().get(0).getMarket());
+        } else {
+            return BaseOutput.success();
+        }
     }
 
     /**

@@ -2,9 +2,11 @@ package com.dili.assets.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateUtil;
+import com.dili.assets.domain.Assets;
 import com.dili.assets.domain.BoothRent;
 import com.dili.assets.glossary.RentEnum;
 import com.dili.assets.mapper.BoothRentMapper;
+import com.dili.assets.service.AssetsService;
 import com.dili.assets.service.BoothRentService;
 import com.dili.ss.base.BaseServiceImpl;
 import com.dili.ss.exception.BusinessException;
@@ -28,6 +30,9 @@ public class BoothRentServiceImpl extends BaseServiceImpl<BoothRent, Long> imple
         return (BoothRentMapper) getDao();
     }
 
+    @Autowired
+    private AssetsService assetsService;
+
     private
 
     @Autowired
@@ -44,7 +49,7 @@ public class BoothRentServiceImpl extends BaseServiceImpl<BoothRent, Long> imple
                 List<BoothRent> boothRents = this.listByExample(query);
                 input.setFreeze(RentEnum.freeze.getCode());
                 if (CollUtil.isEmpty(boothRents)) {
-                    saveOrUpdate(input);
+                    save(input);
                 } else {
                     boolean canSave = true;
                     Double min = 99999D;
@@ -87,13 +92,13 @@ public class BoothRentServiceImpl extends BaseServiceImpl<BoothRent, Long> imple
                     }
 
                     if (canSave) {
-                        saveOrUpdate(input);
+                        save(input);
                     } else {
                         if (input.getType() == 2) {
                             if (input.getNumber() > min) {
                                 throw new BusinessException("2500", "此时间段已有租赁");
                             } else {
-                                saveOrUpdate(input);
+                                save(input);
                             }
                         } else {
                             throw new BusinessException("2500", "此时间段已有租赁");
@@ -110,5 +115,14 @@ public class BoothRentServiceImpl extends BaseServiceImpl<BoothRent, Long> imple
         } else {
             throw new BusinessException("5000", "系统错误");
         }
+    }
+
+    private void save(BoothRent input) {
+        saveOrUpdate(input);
+        Assets assets = assetsService.get(input.getBoothId());
+        assets.setUser(input.getUser());
+        // 使用中
+        assets.setState(2);
+        assetsService.saveOrUpdate(assets);
     }
 }

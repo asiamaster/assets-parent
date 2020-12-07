@@ -41,8 +41,6 @@ public class BoothRent extends BaseDomain {
     @Column(name = "`end`")
     private Date end;
 
-    @Transient
-    private String userName;
 
     /** 类型 */
     @Column(name = "`type`")
@@ -152,14 +150,6 @@ public class BoothRent extends BaseDomain {
 
     public void setNumber(Double number) {
         this.number = number;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
     }
 
     public String getUser() {
