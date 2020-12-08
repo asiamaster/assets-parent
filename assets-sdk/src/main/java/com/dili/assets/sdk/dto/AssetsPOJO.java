@@ -1,4 +1,4 @@
-package com.dili.assets.domain;
+package com.dili.assets.sdk.dto;
 
 import javax.persistence.Column;
 import javax.persistence.Id;

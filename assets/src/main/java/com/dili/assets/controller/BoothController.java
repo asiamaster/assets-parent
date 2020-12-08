@@ -1,21 +1,22 @@
 package com.dili.assets.controller;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.alibaba.fastjson.JSON;
+import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.date.LocalDateTimeUtil;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.dili.assets.domain.Assets;
-import com.dili.assets.domain.AssetsPOJO;
 import com.dili.assets.domain.query.BoothQuery;
 import com.dili.assets.sdk.dto.AssetsDTO;
+import com.dili.assets.sdk.dto.AssetsPOJO;
 import com.dili.assets.service.AssetsService;
 import com.dili.commons.glossary.YesOrNoEnum;
 import com.dili.ss.domain.BaseOutput;
 import com.dili.ss.exception.BusinessException;
 import org.javers.core.Javers;
-import org.javers.core.diff.Change;
 import org.javers.core.metamodel.object.CdoSnapshot;
 import org.javers.repository.jql.JqlQuery;
 import org.javers.repository.jql.QueryBuilder;
-import org.javers.shadow.Shadow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +24,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 由MyBatis Generator工具自动生成
@@ -49,8 +52,12 @@ public class BoothController {
         try {
             booth.setCreateTime(new Date());
             booth.setModifyTime(new Date());
+            booth.setParentId(0L);
             boothService.saveBooth(booth);
-        }catch (BusinessException be){
+            AssetsPOJO pojo = new AssetsPOJO();
+            BeanUtil.copyProperties(booth, pojo);
+            javers.commit("assets", pojo);
+        } catch (BusinessException be) {
             return BaseOutput.failure(be.getMessage());
         }
         return BaseOutput.success();
@@ -86,8 +93,10 @@ public class BoothController {
     public BaseOutput update(@RequestBody Assets booth) {
         boothService.updateSelective(booth);
         AssetsPOJO pojo = new AssetsPOJO();
-        BeanUtil.copyProperties(booth,pojo);
-        javers.commit("assets",pojo);
+        BeanUtil.copyProperties(booth, pojo);
+        Map<String, String> prep = new HashMap<>();
+        prep.put("notes", "由资产： 拆分出来");
+        javers.commit("assets", pojo, prep);
         return BaseOutput.success();
     }
 
@@ -134,5 +143,23 @@ public class BoothController {
             return BaseOutput.failure(be.getMessage());
         }
         return BaseOutput.success();
+    }
+
+    /**
+     * 快照
+     */
+    @RequestMapping(value = "/snapshots", method = RequestMethod.POST)
+    public BaseOutput snapshots(@RequestBody Long id) {
+        JqlQuery query = QueryBuilder.byInstanceId(id, AssetsPOJO.class).build();
+        JSONArray array = new JSONArray();
+        List<CdoSnapshot> snapshots = javers.findSnapshots(query);
+        snapshots.forEach(it -> {
+            JSONObject object = new JSONObject();
+            object.put("version", it.getVersion());
+            object.put("commitDate", LocalDateTimeUtil.format(it.getCommitMetadata().getCommitDate(), DatePattern.NORM_DATETIME_PATTERN));
+            object.put("notes", it.getCommitMetadata().getProperties().get("notes"));
+            array.add(object);
+        });
+        return BaseOutput.success().setData(array);
     }
 }

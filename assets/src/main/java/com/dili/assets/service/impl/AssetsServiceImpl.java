@@ -11,10 +11,10 @@ import com.dili.assets.glossary.StateEnum;
 import com.dili.assets.mapper.AssetsMapper;
 import com.dili.assets.sdk.dto.AreaMarketQuery;
 import com.dili.assets.sdk.dto.AssetsDTO;
+import com.dili.assets.sdk.dto.AssetsPOJO;
 import com.dili.assets.service.AreaMarketService;
 import com.dili.assets.service.AssetsService;
 import com.dili.assets.service.DistrictService;
-import com.dili.commons.glossary.EnabledStateEnum;
 import com.dili.commons.glossary.YesOrNoEnum;
 import com.dili.ss.base.BaseServiceImpl;
 import com.dili.ss.domain.BaseOutput;
@@ -81,9 +81,6 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
         booth.setIsDelete(YesOrNoEnum.NO.getCode());
         booth.setCreateTime(new Date());
         this.saveOrUpdate(booth);
-        AssetsPOJO pojo = new AssetsPOJO();
-        BeanUtil.copyProperties(booth, pojo);
-        javers.commit("assets", pojo);
     }
 
     @Override
@@ -184,7 +181,6 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
 
         if (names.length == numbers.length) {
             var parent = get(parentId);
-            var total = Arrays.stream(numbers).mapToDouble(Double::parseDouble).sum();
             for (int i = 0; i < names.length; i++) {
                 var booth = new Assets();
                 booth.setArea(parent.getArea());
@@ -206,6 +202,11 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
                 booth.setCorner(parent.getCorner());
                 booth.setBusinessType(parent.getBusinessType());
                 saveBooth(booth);
+                AssetsPOJO pojo = new AssetsPOJO();
+                BeanUtil.copyProperties(booth, pojo);
+                Map<String, String> prep = new HashMap<>();
+                prep.put("notes", "由资产：" + parent.getName() + " 拆分出来");
+                javers.commit("assets", pojo, prep);
             }
             if (getBoothBalance(parentId) == 0) {
                 parent.setIsDelete(YesOrNoEnum.YES.getCode());
@@ -321,18 +322,15 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
     @Override
     public Double getBoothBalance(Long id) {
         Assets booth = get(id);
-        if (booth.getParentId() == 0) {
-            Assets input = new Assets();
-            input.setParentId(id);
-            input.setIsDelete(YesOrNoEnum.NO.getCode());
-            List<Assets> booths = this.listByExample(input);
+        Assets input = new Assets();
+        input.setParentId(id);
+        input.setIsDelete(YesOrNoEnum.NO.getCode());
+        List<Assets> booths = this.listByExample(input);
 
-            var ref = new Object() {
-                Double number = 0D;
-            };
-            booths.forEach(obj -> ref.number += obj.getNumber());
-            return booth.getNumber() - ref.number;
-        }
-        return 0.0;
+        var ref = new Object() {
+            Double number = 0D;
+        };
+        booths.forEach(obj -> ref.number += obj.getNumber());
+        return booth.getNumber() - ref.number;
     }
 }

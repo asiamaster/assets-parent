@@ -160,6 +160,12 @@ public interface AssetsRpc {
     BaseOutput<Double> getAssetsBalance(Long id);
 
     /**
+     * 快照
+     */
+    @RequestMapping(value = "/api/assets/snapshots", method = RequestMethod.POST)
+    BaseOutput getAssetsSnapshots(Long id);
+
+    /**
      * 拆分摊位
      */
     @RequestMapping(value = "/api/assets/split", method = RequestMethod.POST)
