@@ -161,4 +161,19 @@ public class BoothRentController {
         }
     }
 
+    /**
+     * 租赁列表
+     */
+    @RequestMapping("list")
+    public BaseOutput list(@RequestBody BoothRent input) {
+        try {
+            return BaseOutput.success().setData(boothRentService.listByExample(input));
+        } catch (BusinessException be) {
+            return BaseOutput.failure(be.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return BaseOutput.failure("系统错误");
+        }
+    }
+
 }

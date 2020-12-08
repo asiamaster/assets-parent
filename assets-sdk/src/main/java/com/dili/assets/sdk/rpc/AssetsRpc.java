@@ -184,6 +184,12 @@ public interface AssetsRpc {
     BaseOutput rentAssetsRent(AssetsRentDTO input);
 
     /**
+     * 根据@param{摊位}和@param{单号}修改出粗状态为已出租
+     */
+    @RequestMapping(value = "/api/boothRent/list", method = RequestMethod.POST)
+    BaseOutput<List<AssetsRentDTO>> rentList(AssetsRentDTO input);
+
+    /**
      * 根据@param{摊位}和@param{单号}删除信息
      */
     @RequestMapping(value = "/api/boothRent/delete", method = RequestMethod.POST)

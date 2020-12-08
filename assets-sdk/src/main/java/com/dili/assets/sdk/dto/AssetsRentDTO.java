@@ -26,12 +26,16 @@ public class AssetsRentDTO extends BaseDomain {
      */
     private Long boothId;
 
-    /** 类型 */
-    private Integer type ;
-    /** 数量 */
-    private Double number ;
+    /**
+     * 类型
+     */
+    private Integer type;
+    /**
+     * 数量
+     */
+    private Double number;
 
-    private String userName;
+    private String user;
     /**
      * 开始日期
      */
@@ -137,11 +141,11 @@ public class AssetsRentDTO extends BaseDomain {
         this.number = number;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUser() {
+        return user;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUser(String user) {
+        this.user = user;
     }
 }
