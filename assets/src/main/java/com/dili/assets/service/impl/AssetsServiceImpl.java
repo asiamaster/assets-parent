@@ -194,6 +194,7 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
                 booth.setDepartmentId(parent.getDepartmentId());
                 booth.setUnit(parent.getUnit());
                 booth.setType(parent.getType());
+                booth.setState(1);
                 booth.setMarketId(parent.getMarketId());
                 booth.setIsDelete(StateEnum.NO.getCode());
                 booth.setCreateTime(new Date());

@@ -24,9 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 由MyBatis Generator工具自动生成
@@ -94,9 +92,7 @@ public class BoothController {
         boothService.updateSelective(booth);
         AssetsPOJO pojo = new AssetsPOJO();
         BeanUtil.copyProperties(booth, pojo);
-        Map<String, String> prep = new HashMap<>();
-        prep.put("notes", "由资产： 拆分出来");
-        javers.commit("assets", pojo, prep);
+        javers.commit("assets", pojo);
         return BaseOutput.success();
     }
 
@@ -158,6 +154,9 @@ public class BoothController {
             object.put("version", it.getVersion());
             object.put("commitDate", LocalDateTimeUtil.format(it.getCommitMetadata().getCommitDate(), DatePattern.NORM_DATETIME_PATTERN));
             object.put("notes", it.getCommitMetadata().getProperties().get("notes"));
+            JSONObject jsonObject = new JSONObject();
+            it.getState().forEachProperty((pName, pValue) -> jsonObject.put(pName, pValue));
+            object.put("state", jsonObject);
             array.add(object);
         });
         return BaseOutput.success().setData(array);
