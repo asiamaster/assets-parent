@@ -1,16 +1,23 @@
 package com.dili.assets.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
+import com.dili.assets.domain.AreaMarket;
 import com.dili.assets.domain.District;
 import com.dili.assets.domain.query.BoothQuery;
 import com.dili.assets.glossary.StateEnum;
 import com.dili.assets.mapper.DistrictMapper;
+import com.dili.assets.service.AreaMarketService;
 import com.dili.assets.service.AssetsService;
 import com.dili.assets.service.DistrictService;
 import com.dili.commons.glossary.YesOrNoEnum;
 import com.dili.ss.base.BaseServiceImpl;
 import com.dili.ss.exception.BusinessException;
+import com.dili.uap.sdk.domain.Firm;
+import com.dili.uap.sdk.rpc.FirmRpc;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,14 +29,22 @@ import java.util.List;
  * This file was generated on 2020-02-17 11:17:18.
  */
 @Service
+@Slf4j
 public class DistrictServiceImpl extends BaseServiceImpl<District, Long> implements DistrictService {
 
     public DistrictMapper getActualDao() {
         return (DistrictMapper) getDao();
     }
 
+
     @Autowired
     private AssetsService boothService;
+
+    @Autowired
+    private FirmRpc firmRpc;
+
+    @Autowired
+    private AreaMarketService areaMarketService;
 
     @Override
     public void saveDistrict(District input) {
@@ -55,6 +70,19 @@ public class DistrictServiceImpl extends BaseServiceImpl<District, Long> impleme
         }
         input.setIsDelete(StateEnum.NO.getCode());
         this.insert(input);
+        try {
+            Firm data = firmRpc.getById(input.getMarketId()).getData();
+            if (data != null) {
+                if (!data.getCode().equals("sy")) {
+                    AreaMarket areaMarket = new AreaMarket();
+                    areaMarket.setMarket(input.getMarketId());
+                    areaMarket.setArea(input.getId());
+                    areaMarketService.insert(areaMarket);
+                }
+            }
+        } catch (Exception e) {
+            log.error("保存商户区域报错", e);
+        }
     }
 
     @Override
