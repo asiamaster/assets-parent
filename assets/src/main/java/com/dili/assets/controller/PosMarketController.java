@@ -55,8 +55,7 @@ public class PosMarketController {
     */
     @PostMapping("/add")
     public Object add(@RequestBody PosMarket posMarket){
-        posMarketService.savePosMarket(posMarket);
-        return BaseOutput.success();
+        return posMarketService.savePosMarket(posMarket);
     }
 
     /**
@@ -64,8 +63,7 @@ public class PosMarketController {
     */
     @PostMapping("/update")
     public Object update(@RequestBody PosMarket posMarket){
-        posMarketService.updatePosMarket(posMarket);
-        return BaseOutput.success();
+       return posMarketService.updatePosMarket(posMarket);
     }
 
     /**

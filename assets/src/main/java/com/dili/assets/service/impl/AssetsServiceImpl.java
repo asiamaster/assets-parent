@@ -89,10 +89,7 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
             if (input == null) {
                 input = new BoothQuery();
             }
-            countInput.setMarketId(input.getMarketId());
-            input.setIsDelete(StateEnum.NO.getCode());
-            countInput.setIsDelete(StateEnum.NO.getCode());
-            countInput.setBusinessType(input.getBusinessType());
+            BeanUtil.copyProperties(input,countInput);
             if (input.getStartTime() != null) {
                 input.setStartTime(DateUtils.formatDate2DateTimeStart(input.getStartTime()));
                 countInput.setStartTime(DateUtils.formatDate2DateTimeStart(input.getStartTime()));
@@ -110,7 +107,12 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
                 input.setMetadata(IDTO.AND_CONDITION_EXPR, "department_id is null");
                 countInput.setMetadata(IDTO.AND_CONDITION_EXPR, "department_id is null");
             }
+
             input.setDeps(null);
+            countInput.setDeps(null);
+            countInput.setParentId(null);
+            countInput.setPage(null);
+            countInput.setRows(null);
             int count = this.listByExample(countInput).size();
             boolean expand = false;
             if (input.getId() != null) {
