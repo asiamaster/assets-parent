@@ -43,6 +43,7 @@ public class BoothRentServiceImpl extends BaseServiceImpl<BoothRent, Long> imple
     public void add(BoothRent input) {
         if (redisDistributedLock.tryGetLock(key, key, 180L)) {
             try {
+                Assets assets = assetsService.get(input.getAssetsId());
                 BoothRent query = new BoothRent();
                 query.setAssetsId(input.getAssetsId());
                 query.setType(input.getType());
@@ -95,7 +96,7 @@ public class BoothRentServiceImpl extends BaseServiceImpl<BoothRent, Long> imple
                         save(input);
                     } else {
                         if (input.getType() == 2) {
-                            if (input.getNumber() > min) {
+                            if (input.getNumber() > (assets.getNumber() - min)) {
                                 throw new BusinessException("2500", "此时间段已有租赁");
                             } else {
                                 save(input);
