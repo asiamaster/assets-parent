@@ -221,9 +221,7 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
         var result = new ArrayList<AssetsDTO>();
         query.setPage(1);
         query.setRows(100);
-        if (query.getMarketId() == null) {
-            return new ArrayList<>();
-        }
+
         var list = listPageByExample(query).getDatas();
         if (query.getArea() != null && query.getSecondArea() == null) {
             list = list.stream().filter(it -> it.getSecondArea() == null).collect(Collectors.toList());

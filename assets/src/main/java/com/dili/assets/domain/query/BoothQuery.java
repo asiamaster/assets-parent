@@ -23,7 +23,7 @@ public class BoothQuery extends Assets {
     @Like()
     @Column(name = "`name`")
     private String keyword;
-   @Operator(Operator.GREAT_EQUAL_THAN)
+    @Operator(Operator.GREAT_EQUAL_THAN)
     @Column(name = "`create_time`")
     private Date startTime;
     @Operator(Operator.LITTLE_EQUAL_THAN)
@@ -40,6 +40,10 @@ public class BoothQuery extends Assets {
     @Operator(Operator.IN)
     @Column(name = "`id`")
     private List<String> ids;
+
+    @Operator(Operator.IN)
+    @Column(name = "`market_id`")
+    private List<String> marketIds;
 
     /**
      * 商户
@@ -110,5 +114,14 @@ public class BoothQuery extends Assets {
     public void setIds(List<String> ids) {
         this.ids = ids;
     }
+
+    public List<String> getMarketIds() {
+        return marketIds;
+    }
+
+    public void setMarketIds(List<String> marketIds) {
+        this.marketIds = marketIds;
+    }
+
     // ==========================动态SQL过滤字段==================================== //
 }
