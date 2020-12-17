@@ -211,7 +211,7 @@ public interface AssetsRpc {
      * 查询可租数量
      */
     @RequestMapping(value = "/api/boothRent/getBalance", method = RequestMethod.POST)
-    BaseOutput<Long> getRentBalance(AssetsRentDTO input);
+    BaseOutput<Double> getRentBalance(AssetsRentDTO input);
 
     /**
      * 获取车型列表

@@ -93,7 +93,7 @@ public class BoothRentController {
      * 删除租赁
      */
     @RequestMapping("getBalance")
-    public BaseOutput<Long> getBalance(@RequestBody BoothRent input) {
+    public BaseOutput<Double> getBalance(@RequestBody BoothRent input) {
         try {
             BoothRent query = new BoothRent();
             query.setBoothId(input.getBoothId());
