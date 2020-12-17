@@ -15,6 +15,7 @@
 */
 package com.dili.assets.sdk.dto;
 
+import com.dili.commons.bstable.Tablepar;
 import lombok.Data;
 
 import java.util.Map;
@@ -25,22 +26,14 @@ import java.util.Map;
 * @date 2020-08-13
 **/
 @Data
-public class ConfigQuery{
-
-    /**
-    * boostrap table post 参数
-    * @author shaofan
-    *
-    */
-    private int pageNum;//页码
-    private int pageSize;//数量
-    private String orderByColumn;//排序字段
-    private String isAsc;//排序字符 asc desc
-
-    /** provider */
-    private Map metadata;
+public class ConfigQuery extends Tablepar {
 
     /** shichangid */
     private Long marketId;
+
+    /**
+     * name
+     */
+    private String name;
 
 }

@@ -1,11 +1,15 @@
 package com.dili.assets.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
+import com.alibaba.nacos.api.config.ConfigService;
 import com.dili.assets.domain.AreaMarket;
+import com.dili.assets.domain.Config;
 import com.dili.assets.domain.District;
 import com.dili.assets.domain.query.BoothQuery;
 import com.dili.assets.glossary.StateEnum;
+import com.dili.assets.mapper.ConfigMapper;
 import com.dili.assets.mapper.DistrictMapper;
+import com.dili.assets.sdk.dto.ConfigQuery;
 import com.dili.assets.service.AreaMarketService;
 import com.dili.assets.service.AssetsService;
 import com.dili.assets.service.DistrictService;
@@ -13,6 +17,7 @@ import com.dili.commons.glossary.YesOrNoEnum;
 import com.dili.ss.base.BaseServiceImpl;
 import com.dili.ss.exception.BusinessException;
 import com.dili.uap.sdk.domain.Firm;
+import com.dili.uap.sdk.rpc.DataDictionaryRpc;
 import com.dili.uap.sdk.rpc.FirmRpc;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -36,12 +41,14 @@ public class DistrictServiceImpl extends BaseServiceImpl<District, Long> impleme
         return (DistrictMapper) getDao();
     }
 
+    private final String AREA_DEFAULT_MCH = "areaIsDefaultMch";
+
 
     @Autowired
     private AssetsService boothService;
 
     @Autowired
-    private FirmRpc firmRpc;
+    private ConfigMapper configMapper;
 
     @Autowired
     private AreaMarketService areaMarketService;
@@ -71,14 +78,15 @@ public class DistrictServiceImpl extends BaseServiceImpl<District, Long> impleme
         input.setIsDelete(StateEnum.NO.getCode());
         this.insert(input);
         try {
-            Firm data = firmRpc.getById(input.getMarketId()).getData();
-            if (data != null) {
-                if (!data.getCode().equals("sy")) {
-                    AreaMarket areaMarket = new AreaMarket();
-                    areaMarket.setMarket(input.getMarketId());
-                    areaMarket.setArea(input.getId());
-                    areaMarketService.insert(areaMarket);
-                }
+            ConfigQuery query = new ConfigQuery();
+            query.setMarketId(input.getMarketId());
+            query.setName(AREA_DEFAULT_MCH);
+            List<Config> configs = configMapper.selectByQuery(query);
+            if (CollUtil.isEmpty(configs)) {
+                AreaMarket areaMarket = new AreaMarket();
+                areaMarket.setMarket(input.getMarketId());
+                areaMarket.setArea(input.getId());
+                areaMarketService.insert(areaMarket);
             }
         } catch (Exception e) {
             log.error("保存商户区域报错", e);

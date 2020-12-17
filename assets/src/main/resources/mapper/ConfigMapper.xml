@@ -22,6 +22,9 @@
             <if test="marketId != null">
                 and market_id = #{marketId}
             </if>
+            <if test="name != null">
+                and name = #{name}
+            </if>
         </where>
     </sql>
     <sql id="Base_Column_List">
