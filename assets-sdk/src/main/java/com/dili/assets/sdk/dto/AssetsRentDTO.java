@@ -26,7 +26,7 @@ public class AssetsRentDTO extends BaseDomain {
     /**
      * 摊位编号
      */
-    private Long boothId;
+    private Long assetsId;
 
     /**
      * 类型
@@ -83,18 +83,12 @@ public class AssetsRentDTO extends BaseDomain {
         this.orderId = orderId;
     }
 
-    /**
-     * 摊位编号
-     */
-    public Long getBoothId() {
-        return this.boothId;
+    public Long getAssetsId() {
+        return assetsId;
     }
 
-    /**
-     * 摊位编号
-     */
-    public void setBoothId(Long boothId) {
-        this.boothId = boothId;
+    public void setAssetsId(Long assetsId) {
+        this.assetsId = assetsId;
     }
 
     /**

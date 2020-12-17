@@ -96,19 +96,19 @@ public class BoothRentController {
     public BaseOutput<Double> getBalance(@RequestBody BoothRent input) {
         try {
             BoothRent query = new BoothRent();
-            query.setBoothId(input.getBoothId());
-            query.setType(input.getType());
+            query.setAssetsId(input.getAssetsId());
 
-            Assets assets = assetsService.get(input.getBoothId());
+            Assets assets = assetsService.get(input.getAssetsId());
             if (assets == null) {
                 return BaseOutput.failure("资产不存在");
             }
             List<BoothRent> boothRents = boothRentService.listByExample(query);
-            if (CollUtil.isEmpty(boothRents)) {
+            if (CollUtil.isEmpty(boothRents) || (input.getStart() == null || input.getEnd() == null)) {
                 return BaseOutput.success().setData(assets.getNumber());
             } else {
                 boolean canSave = true;
                 Double min = 99999D;
+
                 for (BoothRent boothRent : boothRents) {
                     // 判断开始时间
 
@@ -150,7 +150,7 @@ public class BoothRentController {
                 if (canSave) {
                     return BaseOutput.success().setData(assets.getNumber());
                 } else {
-                    return BaseOutput.success().setData(min);
+                    return BaseOutput.success().setData(assets.getNumber() - min);
                 }
 
             }

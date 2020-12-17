@@ -44,7 +44,7 @@ public class BoothRentServiceImpl extends BaseServiceImpl<BoothRent, Long> imple
         if (redisDistributedLock.tryGetLock(key, key, 180L)) {
             try {
                 BoothRent query = new BoothRent();
-                query.setBoothId(input.getBoothId());
+                query.setAssetsId(input.getAssetsId());
                 query.setType(input.getType());
                 List<BoothRent> boothRents = this.listByExample(query);
                 input.setFreeze(RentEnum.freeze.getCode());
@@ -119,7 +119,7 @@ public class BoothRentServiceImpl extends BaseServiceImpl<BoothRent, Long> imple
 
     private void save(BoothRent input) {
         saveOrUpdate(input);
-        Assets assets = assetsService.get(input.getBoothId());
+        Assets assets = assetsService.get(input.getAssetsId());
         assets.setUser(input.getUser());
         // 使用中
         assets.setState(2);

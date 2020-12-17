@@ -29,7 +29,7 @@ public class BoothRent extends BaseDomain {
      * 摊位编号
      */
     @Column(name = "`booth_id`")
-    private Long boothId;
+    private Long assetsId;
     /**
      * 开始日期
      */
@@ -86,18 +86,12 @@ public class BoothRent extends BaseDomain {
         this.orderId = orderId;
     }
 
-    /**
-     * 摊位编号
-     */
-    public Long getBoothId() {
-        return this.boothId;
+    public Long getAssetsId() {
+        return assetsId;
     }
 
-    /**
-     * 摊位编号
-     */
-    public void setBoothId(Long boothId) {
-        this.boothId = boothId;
+    public void setAssetsId(Long assetsId) {
+        this.assetsId = assetsId;
     }
 
     /**
