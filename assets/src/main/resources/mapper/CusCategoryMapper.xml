@@ -82,6 +82,12 @@
                      #{item, jdbcType=BIGINT}
                  </foreach>
             </if>
+            <if test="marketIds !=null">
+                and market_id in
+                <foreach item="item" collection="marketIds" separator="," open="(" close=")" index="">
+                    #{item, jdbcType=BIGINT}
+                </foreach>
+            </if>
         </where>
     </select>
 </mapper>

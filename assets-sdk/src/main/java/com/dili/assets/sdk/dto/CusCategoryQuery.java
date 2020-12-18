@@ -40,6 +40,8 @@ public class CusCategoryQuery {
 
     private List<String> ids;
 
+    private List<String> marketIds;
+
     private Long marketId;
 
     private Long parent;

@@ -47,9 +47,6 @@ public class CusCategoryController {
      */
     @RequestMapping(value = "/getTree")
     public BaseOutput<List<CusCategory>> getTree(@RequestBody(required = false) CusCategoryQuery input) {
-        if (input == null || input.getMarketId() == null) {
-            return BaseOutput.failure("市场ID不能为空");
-        }
         List<CusCategory> list = cusCategoryMapper.listCategory(input);
         return BaseOutput.success().setData(list);
     }
