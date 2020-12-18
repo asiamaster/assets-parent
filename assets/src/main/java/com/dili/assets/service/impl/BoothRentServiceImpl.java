@@ -43,63 +43,79 @@ public class BoothRentServiceImpl extends BaseServiceImpl<BoothRent, Long> imple
     public void add(BoothRent input) {
         if (redisDistributedLock.tryGetLock(key, key, 180L)) {
             try {
+                // 查询摊位信息
                 Assets assets = assetsService.get(input.getAssetsId());
+                if (input.getType() == 2) {
+                    if (input.getNumber() > assets.getNumber()) {
+                        throw new BusinessException("2501", "数量不足");
+                    }
+                }
+                // 查询租赁时间段信息
                 BoothRent query = new BoothRent();
                 query.setAssetsId(input.getAssetsId());
-                query.setType(input.getType());
                 List<BoothRent> boothRents = this.listByExample(query);
-                input.setFreeze(RentEnum.freeze.getCode());
+                // 如果没有租赁信息则直接保存
                 if (CollUtil.isEmpty(boothRents)) {
-                    save(input);
+                    save(input, assets);
                 } else {
+                    // 是否能保存
                     boolean canSave = true;
-                    Double min = 99999D;
+                    // 取交叉时间段最大值
+                    Double max = 0D;
                     for (BoothRent boothRent : boothRents) {
                         // 判断开始时间
 
                         if (DateUtil.isIn(boothRent.getStart(), input.getStart(), input.getEnd())) {
                             canSave = false;
-                            if (boothRent.getNumber() != null && boothRent.getNumber() < min) {
-                                min = boothRent.getNumber();
+                            if (boothRent.getNumber() != null) {
+                                max += boothRent.getNumber();
                             }
-                            break;
+                            continue;
                         }
                         // 判断结束时间
 
-                        if (DateUtil.isIn(boothRent.getStart(), input.getStart(), input.getEnd())) {
+                        if (DateUtil.isIn(boothRent.getEnd(), input.getStart(), input.getEnd())) {
                             canSave = false;
-                            if (boothRent.getNumber() != null && boothRent.getNumber() < min) {
-                                min = boothRent.getNumber();
+                            if (boothRent.getNumber() != null) {
+                                max += boothRent.getNumber();
                             }
-                            break;
+                            continue;
                         }
 
                         if (DateUtil.isIn(input.getStart(), boothRent.getStart(), boothRent.getEnd())) {
                             canSave = false;
-                            if (boothRent.getNumber() != null && boothRent.getNumber() < min) {
-                                min = boothRent.getNumber();
+                            if (boothRent.getNumber() != null) {
+                                max += boothRent.getNumber();
                             }
-                            break;
+                            continue;
                         }
                         // 判断结束时间
 
                         if (DateUtil.isIn(input.getEnd(), boothRent.getStart(), boothRent.getEnd())) {
                             canSave = false;
-                            if (boothRent.getNumber() != null && boothRent.getNumber() < min) {
-                                min = boothRent.getNumber();
+                            if (boothRent.getNumber() != null) {
+                                max += boothRent.getNumber();
                             }
-                            break;
+                        }
+                    }
+
+                    // 如果是冷库则求租赁最大值
+                    if (input.getType() == 2) {
+                        for (BoothRent boothRent : boothRents) {
+                            if (boothRent.getNumber() != null && boothRent.getNumber() > max) {
+                                max = boothRent.getNumber();
+                            }
                         }
                     }
 
                     if (canSave) {
-                        save(input);
+                        save(input, assets);
                     } else {
                         if (input.getType() == 2) {
-                            if (input.getNumber() > (assets.getNumber() - min)) {
-                                throw new BusinessException("2500", "此时间段已有租赁");
+                            if (input.getNumber() > (assets.getNumber() - max)) {
+                                throw new BusinessException("2501", "数量不足");
                             } else {
-                                save(input);
+                                save(input, assets);
                             }
                         } else {
                             throw new BusinessException("2500", "此时间段已有租赁");
@@ -118,9 +134,10 @@ public class BoothRentServiceImpl extends BaseServiceImpl<BoothRent, Long> imple
         }
     }
 
-    private void save(BoothRent input) {
+    private void save(BoothRent input, Assets assets) {
+        // 初始化为冻结状态
+        input.setFreeze(RentEnum.freeze.getCode());
         saveOrUpdate(input);
-        Assets assets = assetsService.get(input.getAssetsId());
         assets.setUser(input.getUser());
         // 使用中
         assets.setState(2);

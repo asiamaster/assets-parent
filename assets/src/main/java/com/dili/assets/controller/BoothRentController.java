@@ -102,55 +102,64 @@ public class BoothRentController {
             if (assets == null) {
                 return BaseOutput.failure("资产不存在");
             }
+            if (input.getNumber() > assets.getNumber()) {
+                return BaseOutput.success().setData(0);
+            }
             List<BoothRent> boothRents = boothRentService.listByExample(query);
             if (CollUtil.isEmpty(boothRents) || (input.getStart() == null || input.getEnd() == null)) {
                 return BaseOutput.success().setData(assets.getNumber());
             } else {
+                // 是否能保存
                 boolean canSave = true;
-                Double min = 99999D;
-
+                // 取交叉时间段最大值
+                Double max = 0D;
                 for (BoothRent boothRent : boothRents) {
                     // 判断开始时间
 
                     if (DateUtil.isIn(boothRent.getStart(), input.getStart(), input.getEnd())) {
                         canSave = false;
-                        if (boothRent.getNumber() != null && boothRent.getNumber() < min) {
-                            min = boothRent.getNumber();
+                        if (boothRent.getNumber() != null) {
+                            max += boothRent.getNumber();
                         }
-                        break;
+                        continue;
                     }
                     // 判断结束时间
 
-                    if (DateUtil.isIn(boothRent.getStart(), input.getStart(), input.getEnd())) {
+                    if (DateUtil.isIn(boothRent.getEnd(), input.getStart(), input.getEnd())) {
                         canSave = false;
-                        if (boothRent.getNumber() != null && boothRent.getNumber() < min) {
-                            min = boothRent.getNumber();
+                        if (boothRent.getNumber() != null) {
+                            max += boothRent.getNumber();
                         }
-                        break;
+                        continue;
                     }
 
                     if (DateUtil.isIn(input.getStart(), boothRent.getStart(), boothRent.getEnd())) {
                         canSave = false;
-                        if (boothRent.getNumber() != null && boothRent.getNumber() < min) {
-                            min = boothRent.getNumber();
+                        if (boothRent.getNumber() != null) {
+                            max += boothRent.getNumber();
                         }
-                        break;
+                        continue;
                     }
                     // 判断结束时间
 
                     if (DateUtil.isIn(input.getEnd(), boothRent.getStart(), boothRent.getEnd())) {
                         canSave = false;
-                        if (boothRent.getNumber() != null && boothRent.getNumber() < min) {
-                            min = boothRent.getNumber();
+                        if (boothRent.getNumber() != null) {
+                            max += boothRent.getNumber();
                         }
-                        break;
+                    }
+                }
+
+                for (BoothRent boothRent : boothRents) {
+                    if (boothRent.getNumber() != null && boothRent.getNumber() > max) {
+                        max = boothRent.getNumber();
                     }
                 }
 
                 if (canSave) {
                     return BaseOutput.success().setData(assets.getNumber());
                 } else {
-                    return BaseOutput.success().setData(assets.getNumber() - min);
+                    return BaseOutput.success().setData(assets.getNumber() - max);
                 }
 
             }
