@@ -2,6 +2,7 @@ package com.dili.assets.sdk.rpc;
 
 import java.util.List;
 
+import com.dili.assets.sdk.dto.CarTypeDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,4 +32,10 @@ public interface CarTypeRpc {
      */
     @RequestMapping(value = "/api/carTypePublic/queryCarType", method = RequestMethod.POST)
     BaseOutput<List<CarTypeForBusinessDTO>> queryCarType(CarTypeForBusinessDTO carTypePublicDTO);
+
+    /**
+     * 获取车型
+     */
+    @RequestMapping(value = "/api/carType/list", method = RequestMethod.POST)
+    BaseOutput<List<CarTypeDTO>> listCarType();
 }

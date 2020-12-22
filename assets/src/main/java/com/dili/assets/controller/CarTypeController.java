@@ -58,7 +58,7 @@ public class CarTypeController {
      */
     @RequestMapping(value="/list", method = {RequestMethod.GET, RequestMethod.POST})
     public @ResponseBody Object list() throws Exception {
-        return carTypeService.listByExample(null);
+        return BaseOutput.success().setData(carTypeService.listByExample(null));
     }
 
     /**
