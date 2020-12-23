@@ -50,7 +50,17 @@ public class CarTypeController {
     	}
     	return carTypeService.listEasyuiPageByExample(carType, true).toString();
     }
-    
+
+    /**
+     * 分页查询CarType，返回easyui分页信息
+     * @return String
+     * @throws Exception
+     */
+    @RequestMapping(value="/list", method = {RequestMethod.GET, RequestMethod.POST})
+    public @ResponseBody Object list() throws Exception {
+        return BaseOutput.success().setData(carTypeService.listByExample(null));
+    }
+
     /**
      * 分页查询CarType，返回easyui分页信息
      * @param carType
@@ -61,7 +71,7 @@ public class CarTypeController {
     public @ResponseBody BaseOutput<List<CarType>> listCarType(@RequestBody CarTypePublic carType) throws Exception {
     	return BaseOutput.success().setData(carTypeService.listCarType(carType));
     }
-    
+
     /**
      * 新增CarType
      * @param carType
@@ -94,7 +104,7 @@ public class CarTypeController {
         carTypeService.delete(id);
         return BaseOutput.success("删除成功");
     }
-    
+
     /**
      * 获取
      *
@@ -105,7 +115,7 @@ public class CarTypeController {
     public @ResponseBody BaseOutput<Assets> get(@RequestBody Long id) {
         return BaseOutput.success().setData(carTypeService.get(id));
     }
-    
+
     /**
      * 删除carTypePublic
      * @param id
