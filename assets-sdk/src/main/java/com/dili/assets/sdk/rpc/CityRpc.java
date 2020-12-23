@@ -1,13 +1,14 @@
 package com.dili.assets.sdk.rpc;
 
-import com.dili.assets.sdk.dto.BusinessChargeItemDto;
-import com.dili.assets.sdk.dto.CityDto;
-import com.dili.ss.domain.BaseOutput;
+import java.util.List;
+
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.util.List;
+import com.dili.assets.sdk.dto.CityDto;
+import com.dili.assets.sdk.dto.CityQueryDto;
+import com.dili.ss.domain.BaseOutput;
 
 /**
  * 城市信息接口
@@ -23,7 +24,7 @@ public interface CityRpc {
      * @param cityDto
      */
     @RequestMapping(value = "/api/city/listByExample", method = RequestMethod.POST)
-    BaseOutput<List<CityDto>> listByExample(CityDto cityDto);
+    BaseOutput<List<CityDto>> listByExample(CityQueryDto cityDto);
 
     /**
      * 获取城市信息列表
