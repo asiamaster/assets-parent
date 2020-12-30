@@ -233,7 +233,9 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
             var areaMarketList = areaMarketService.queryAll(areaQuery).getData();
             List<Integer> areas = areaMarketList.stream().map(o -> o.getArea().intValue()).collect(Collectors.toList());
             if (CollUtil.isNotEmpty(areaMarketList)) {
-                list = list.stream().filter(it ->  areas.contains(it.getSecondArea()) || areas.contains(it.getArea())).collect(Collectors.toList());
+                list = list.stream().filter(it ->
+                        areas.contains(it.getSecondArea()) || (it.getSecondArea() == null && areas.contains(it.getArea())))
+                        .collect(Collectors.toList());
             } else {
                 return new ArrayList<>();
             }
