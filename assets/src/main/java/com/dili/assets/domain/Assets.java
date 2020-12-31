@@ -1,6 +1,7 @@
 package com.dili.assets.domain;
 
 import com.dili.ss.domain.BaseDomain;
+import com.dili.ss.domain.annotation.Like;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -22,6 +23,7 @@ public class Assets extends BaseDomain {
     /**
      * 摊位名称
      */
+    @Like()
     @Column(name = "`name`")
     private String name;
     /**
@@ -89,6 +91,7 @@ public class Assets extends BaseDomain {
     @Column(name = "`user`")
     private String user ;
     /** 楼层 */
+    @Like()
     @Column(name = "`floor`")
     private String floor ;
     /** 性质 */
