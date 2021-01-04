@@ -9,6 +9,7 @@ import com.dili.assets.service.AssetsService;
 import com.dili.assets.service.BoothRentService;
 import com.dili.ss.domain.BaseOutput;
 import com.dili.ss.exception.BusinessException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("/api/boothRent")
+@Slf4j
 public class BoothRentController {
     @Autowired
     BoothRentService boothRentService;
@@ -40,7 +42,7 @@ public class BoothRentController {
         } catch (BusinessException be) {
             return BaseOutput.failure(be.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("系统错误", e);
             return BaseOutput.failure("系统错误");
         }
         return BaseOutput.success();
@@ -58,6 +60,7 @@ public class BoothRentController {
         } catch (BusinessException be) {
             return BaseOutput.failure(be.getMessage());
         } catch (Exception e) {
+            log.error("系统错误", e);
             return BaseOutput.failure("系统错误");
         }
         return BaseOutput.success();
@@ -85,6 +88,7 @@ public class BoothRentController {
         } catch (BusinessException be) {
             return BaseOutput.failure(be.getMessage());
         } catch (Exception e) {
+            log.error("系统错误", e);
             return BaseOutput.failure("系统错误");
         }
         return BaseOutput.success();
@@ -100,12 +104,11 @@ public class BoothRentController {
             query.setAssetsId(input.getAssetsId());
 
             Assets assets = assetsService.get(input.getAssetsId());
+
             if (assets == null) {
                 return BaseOutput.failure("资产不存在");
             }
-            if (input.getNumber() > assets.getNumber()) {
-                return BaseOutput.success().setData(0);
-            }
+
             List<BoothRent> boothRents = boothRentService.listByExample(query);
             if (CollUtil.isEmpty(boothRents) || (input.getStart() == null || input.getEnd() == null)) {
                 return BaseOutput.success().setData(assets.getNumber());
@@ -167,6 +170,7 @@ public class BoothRentController {
         } catch (BusinessException be) {
             return BaseOutput.failure(be.getMessage());
         } catch (Exception e) {
+            log.error("系统错误", e);
             return BaseOutput.failure("系统错误");
         }
     }
@@ -181,7 +185,7 @@ public class BoothRentController {
         } catch (BusinessException be) {
             return BaseOutput.failure(be.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("系统错误", e);
             return BaseOutput.failure("系统错误");
         }
     }

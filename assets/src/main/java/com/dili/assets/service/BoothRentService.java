@@ -16,7 +16,13 @@ public interface BoothRentService extends BaseService<BoothRent, Long> {
      */
     void add(BoothRent input);
 
+    /**
+     * selectUsed
+     */
     List<BoothRent> selectUsed();
 
+    /**
+     * selectUnUsed
+     */
     List<BoothRent> selectUnUsed();
 }
