@@ -7,7 +7,7 @@
     -->
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="order_id" jdbcType="VARCHAR" property="orderId" />
-    <result column="booth_id" jdbcType="BIGINT" property="boothId" />
+    <result column="booth_id" jdbcType="BIGINT" property="assetsId" />
     <result column="freeze" jdbcType="TINYINT" property="freeze" />
     <result column="type" jdbcType="TINYINT" property="type" />
     <result column="number" jdbcType="DECIMAL" property="number" />
@@ -54,4 +54,17 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
+  <select id="selectUsed" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from `booth_rent`
+    WHERE freeze = 0 and NOW() BETWEEN `start` AND `end` GROUP BY booth_id
+  </select>
+
+  <select id="selectUnUsed" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from `booth_rent`
+    WHERE freeze = 0 and NOW() BETWEEN `start` AND `end` GROUP BY booth_id
+  </select>
 </mapper>

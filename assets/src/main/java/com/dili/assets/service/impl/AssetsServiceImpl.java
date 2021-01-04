@@ -3,6 +3,7 @@ package com.dili.assets.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.dili.assets.domain.*;
@@ -31,6 +32,7 @@ import com.dili.uap.sdk.rpc.DepartmentRpc;
 import org.javers.core.Javers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,6 +48,9 @@ import java.util.stream.Collectors;
 public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements AssetsService {
 
     private final static Logger LOG = LoggerFactory.getLogger(AssetsServiceImpl.class);
+
+    @Autowired
+    private AmqpTemplate template;
 
     @Autowired
     DataDictionaryRpc dataDictionaryRpc;
@@ -211,6 +216,10 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
             if (getBoothBalance(parentId) == 0) {
                 parent.setIsDelete(YesOrNoEnum.YES.getCode());
                 this.saveOrUpdate(parent);
+                try {
+                    template.convertAndSend("exchange", "assets.delete", parent.getId());
+                } catch (Exception ignored) {
+                }
             }
         }
     }
@@ -332,5 +341,10 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
         };
         booths.forEach(obj -> ref.number += obj.getNumber());
         return booth.getNumber() - ref.number;
+    }
+
+    @Override
+    public int updateStateByIdIn(Collection<Long> idList) {
+        return getActualDao().updateStateByIdIn(idList);
     }
 }

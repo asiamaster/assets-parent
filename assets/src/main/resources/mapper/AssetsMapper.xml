@@ -117,4 +117,13 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
+  <update id="updateStateByIdIn">
+    update `assets`
+    set user = null,state = 1
+    where
+    id in
+    <foreach collection="idList" item="item" open="(" close=")" separator=",">
+      #{item,jdbcType=NUMERIC}
+    </foreach>
+  </update>
 </mapper>

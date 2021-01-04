@@ -56,7 +56,7 @@ public class BoothRentServiceImpl extends BaseServiceImpl<BoothRent, Long> imple
                 List<BoothRent> boothRents = this.listByExample(query);
                 // 如果没有租赁信息则直接保存
                 if (CollUtil.isEmpty(boothRents)) {
-                    save(input, assets);
+                    save(input);
                 } else {
                     // 是否能保存
                     boolean canSave = true;
@@ -109,13 +109,13 @@ public class BoothRentServiceImpl extends BaseServiceImpl<BoothRent, Long> imple
                     }
 
                     if (canSave) {
-                        save(input, assets);
+                        save(input);
                     } else {
                         if (input.getType() == 2) {
                             if (input.getNumber() > (assets.getNumber() - max)) {
                                 throw new BusinessException("2501", "数量不足");
                             } else {
-                                save(input, assets);
+                                save(input);
                             }
                         } else {
                             throw new BusinessException("2500", "此时间段已有租赁");
@@ -134,13 +134,19 @@ public class BoothRentServiceImpl extends BaseServiceImpl<BoothRent, Long> imple
         }
     }
 
-    private void save(BoothRent input, Assets assets) {
+    @Override
+    public List<BoothRent> selectUsed() {
+        return getActualDao().selectUsed();
+    }
+
+    @Override
+    public List<BoothRent> selectUnUsed() {
+        return getActualDao().selectUnUsed();
+    }
+
+    private void save(BoothRent input) {
         // 初始化为冻结状态
         input.setFreeze(RentEnum.freeze.getCode());
         saveOrUpdate(input);
-        assets.setUser(input.getUser());
-        // 使用中
-        assets.setState(2);
-        assetsService.saveOrUpdate(assets);
     }
 }

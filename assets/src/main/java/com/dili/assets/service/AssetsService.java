@@ -4,7 +4,9 @@ import com.dili.assets.domain.Assets;
 import com.dili.assets.domain.query.BoothQuery;
 import com.dili.assets.sdk.dto.AssetsDTO;
 import com.dili.ss.base.BaseService;
+import org.apache.ibatis.annotations.Param;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -41,4 +43,9 @@ public interface AssetsService extends BaseService<Assets, Long> {
      * 获取摊位剩余面积
      */
     Double getBoothBalance(Long id);
+
+    /**
+     * 释放租赁状态
+     */
+    int updateStateByIdIn(@Param("idList") Collection<Long> idList);
 }

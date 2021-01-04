@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 由MyBatis Generator工具自动生成
@@ -183,6 +184,30 @@ public class BoothRentController {
             e.printStackTrace();
             return BaseOutput.failure("系统错误");
         }
+    }
+
+    /**
+     * 定时任务
+     */
+    @RequestMapping(value = "/assetsStatusTask")
+    public void assetsStatusTask() {
+        // used
+        List<BoothRent> rentsUsed = this.boothRentService.selectUsed();
+        if (CollUtil.isNotEmpty(rentsUsed)) {
+            rentsUsed.forEach(it -> {
+                Assets assets = assetsService.get(it.getAssetsId());
+                if (assets != null) {
+                    assets.setUser(it.getUser());
+                    assets.setState(2);
+                    assetsService.saveOrUpdate(assets);
+                }
+            });
+        }
+
+        // unUsed
+        List<BoothRent> unUsed = this.boothRentService.selectUnUsed();
+        List<Long> ids = unUsed.stream().map(BoothRent::getId).collect(Collectors.toList());
+        assetsService.updateStateByIdIn(ids);
     }
 
 }

@@ -3,6 +3,7 @@ package com.dili.assets.controller;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.LocalDateTimeUtil;
+import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.dili.assets.domain.Assets;
@@ -17,6 +18,7 @@ import org.javers.core.Javers;
 import org.javers.core.metamodel.object.CdoSnapshot;
 import org.javers.repository.jql.JqlQuery;
 import org.javers.repository.jql.QueryBuilder;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,6 +40,9 @@ public class BoothController {
 
     @Autowired
     private Javers javers;
+
+    @Autowired
+    private AmqpTemplate template;
 
     /**
      * 新增摊位
@@ -93,6 +98,10 @@ public class BoothController {
         AssetsPOJO pojo = new AssetsPOJO();
         BeanUtil.copyProperties(booth, pojo);
         javers.commit("assets", pojo);
+        try {
+            template.convertAndSend("exchange", "assets.update", JSONUtil.toJsonStr(pojo));
+        } catch (Exception ignored) {
+        }
         return BaseOutput.success();
     }
 
@@ -122,6 +131,10 @@ public class BoothController {
     public BaseOutput delete(@RequestBody Long id) {
         try {
             boothService.deleteBooth(id);
+            try {
+                template.convertAndSend("exchange", "assets.delete", id);
+            } catch (Exception ignored) {
+            }
         } catch (BusinessException be) {
             return BaseOutput.failure(be.getMessage());
         }
@@ -161,4 +174,5 @@ public class BoothController {
         });
         return BaseOutput.success().setData(array);
     }
+
 }

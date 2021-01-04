@@ -15,6 +15,7 @@
  */
 package com.dili.assets.service.impl;
 
+import cn.hutool.json.JSONUtil;
 import com.dili.assets.domain.AreaMarket;
 import com.dili.assets.sdk.dto.DistrictDTO;
 import com.dili.ss.domain.BaseOutput;
@@ -24,6 +25,7 @@ import com.github.pagehelper.PageInfo;
 import com.dili.assets.service.AreaMarketService;
 import com.dili.assets.sdk.dto.AreaMarketQuery;
 import com.dili.assets.mapper.AreaMarketMapper;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.stereotype.Service;
 import com.dili.ss.base.BaseServiceImpl;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,6 +45,8 @@ import java.util.stream.Collectors;
 public class AreaMarketServiceImpl extends BaseServiceImpl<AreaMarket, Long> implements AreaMarketService {
 
     private final AreaMarketMapper areaMarketMapper;
+
+    private final AmqpTemplate template;
 
     @Override
     public PageInfo<AreaMarket> query(AreaMarketQuery query) {
@@ -94,6 +98,10 @@ public class AreaMarketServiceImpl extends BaseServiceImpl<AreaMarket, Long> imp
             }
         });
         this.batchInsert(batchIns);
+        try {
+            template.convertAndSend("exchange", "area.update", JSONUtil.toJsonStr(batchIns));
+        } catch (Exception ignored) {
+        }
         return BaseOutput.success();
     }
 
