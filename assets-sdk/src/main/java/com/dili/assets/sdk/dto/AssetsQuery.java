@@ -38,6 +38,9 @@ public class AssetsQuery extends AssetsDTO {
     @Operator(Operator.IN)
     @Column(name = "`id`")
     private List<String> ids;
+
+    private boolean onlyFirstArea = false;
+
     /**
      * 商户
      */
@@ -106,5 +109,14 @@ public class AssetsQuery extends AssetsDTO {
     public void setIds(List<String> ids) {
         this.ids = ids;
     }
+
+    public boolean isOnlyFirstArea() {
+        return onlyFirstArea;
+    }
+
+    public void setOnlyFirstArea(boolean onlyFirstArea) {
+        this.onlyFirstArea = onlyFirstArea;
+    }
+
     // ==========================动态SQL过滤字段==================================== //
 }

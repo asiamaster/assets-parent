@@ -231,7 +231,7 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
         query.setRows(100);
 
         var list = listPageByExample(query).getDatas();
-        if(query.isOnlyFirstArea()){
+        if (query.isOnlyFirstArea() && query.getSecondArea() == null) {
             list = list.stream().filter(it -> it.getSecondArea() == null).collect(Collectors.toList());
         }
 
