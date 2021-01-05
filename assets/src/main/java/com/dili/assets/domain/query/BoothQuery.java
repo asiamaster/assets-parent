@@ -45,6 +45,9 @@ public class BoothQuery extends Assets {
     @Column(name = "`market_id`")
     private List<String> marketIds;
 
+    @Transient
+    private boolean onlyFirstArea = false;
+
     /**
      * 商户
      */
@@ -121,6 +124,14 @@ public class BoothQuery extends Assets {
 
     public void setMarketIds(List<String> marketIds) {
         this.marketIds = marketIds;
+    }
+
+    public boolean isOnlyFirstArea() {
+        return onlyFirstArea;
+    }
+
+    public void setOnlyFirstArea(boolean onlyFirstArea) {
+        this.onlyFirstArea = onlyFirstArea;
     }
 
     // ==========================动态SQL过滤字段==================================== //
