@@ -310,16 +310,16 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
                     dto.setCornerName(obj.getCorner() == 1 ? "是" : "否");
                 }
                 if (query.getMchId() != null) {
-                    dto.setMarketId(query.getMchId());
+                    dto.setMchId(query.getMchId());
                 } else {
                     var area = dto.getSecondArea() != null ? dto.getSecondArea() : dto.getArea();
                     AreaMarketQuery areaQuery = new AreaMarketQuery();
                     areaQuery.setArea(area.longValue());
                     var areaMarketList = areaMarketService.queryAll(areaQuery).getData();
                     if (CollUtil.isNotEmpty(areaMarketList)) {
-                        dto.setMarketId(areaMarketList.get(0).getMarket());
+                        dto.setMchId(areaMarketList.get(0).getMarket());
                     } else {
-                        dto.setMarketId(null);
+                        dto.setMchId(null);
                     }
                 }
                 result.add(dto);

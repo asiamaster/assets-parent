@@ -105,6 +105,15 @@ public class AssetsDTO extends BaseDomain {
     private Double startNumber;
     private Double endNumber;
     private String deps;
+    private Long mchId;
+
+    public Long getMchId() {
+        return mchId;
+    }
+
+    public void setMchId(Long mchId) {
+        this.mchId = mchId;
+    }
 
     /**
      * id

@@ -46,7 +46,7 @@ public class BoothQuery extends Assets {
     private List<String> marketIds;
 
     @Transient
-    private boolean onlyFirstArea = false;
+    private boolean onlyFirstArea = true;
 
     /**
      * 商户
