@@ -8,14 +8,19 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SenderConf {
 
-    @Bean(name="message")
+    @Bean(name = "message")
     public Queue queueMessage() {
         return new Queue("assets.update");
     }
 
-    @Bean(name="messages")
+    @Bean(name = "messages")
     public Queue queueMessages() {
         return new Queue("area.update");
+    }
+
+    @Bean(name = "messagesDelete")
+    public Queue queueMessagesDelete() {
+        return new Queue("assets.delete");
     }
 
     @Bean

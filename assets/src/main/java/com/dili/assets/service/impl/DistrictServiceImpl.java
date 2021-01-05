@@ -26,8 +26,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 由MyBatis Generator工具自动生成
@@ -119,6 +122,14 @@ public class DistrictServiceImpl extends BaseServiceImpl<District, Long> impleme
 
     @Override
     public void division(Long parentId, String[] names, String[] notes, String[] numbers) {
+        List<Integer> duplicate = Arrays.stream(names).collect(Collectors.toMap(e -> e, e -> 1, Integer::sum)).values().stream().filter(e -> e > 1).collect(Collectors.toList());
+        if (CollUtil.isNotEmpty(duplicate)) {
+            throw new BusinessException("1", "区域已存在");
+        }
+        List<Integer> duplicateNumber = Arrays.stream(numbers).collect(Collectors.toMap(e -> e, e -> 1, Integer::sum)).values().stream().filter(e -> e > 1).collect(Collectors.toList());
+        if (CollUtil.isNotEmpty(duplicateNumber)) {
+            throw new BusinessException("1", "编号已存在");
+        }
         District parent = this.get(parentId);
         for (String name : names) {
             District cond = new District();
@@ -129,7 +140,6 @@ public class DistrictServiceImpl extends BaseServiceImpl<District, Long> impleme
             if (CollUtil.isNotEmpty(districts)) {
                 throw new BusinessException("1", "区域已存在");
             }
-
             cond = new District();
             cond.setDepartmentId(parent.getDepartmentId());
             cond.setName(name);
