@@ -35,6 +35,9 @@ public class TypeMarketDto extends BaseDomain implements Serializable {
     /** 业务类型 */
     private String type;
 
+    /** 业务名称 */
+    private String name;
+
     /** 所属区域 */
     private Long marketId;
 }

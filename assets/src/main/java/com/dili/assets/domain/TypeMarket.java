@@ -46,6 +46,9 @@ public class TypeMarket extends BaseDomain implements Serializable {
     @Column(name = "market_id")
     private Long marketId;
 
+    @Column(name = "name")
+    private String name;
+
     public void copy(TypeMarket source){
         BeanUtil.copyProperties(source,this, CopyOptions.create().setIgnoreNullValue(true));
     }
