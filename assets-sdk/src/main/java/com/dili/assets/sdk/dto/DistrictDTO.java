@@ -4,6 +4,7 @@ import com.dili.ss.domain.BaseDomain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
+import javax.persistence.Transient;
 import java.util.Date;
 import java.util.List;
 
@@ -79,4 +80,9 @@ public class DistrictDTO extends BaseDomain {
     private String parentName;
 
     private Integer kind;
+
+    /**
+     * 商户
+     */
+    private Long mchId;
 }

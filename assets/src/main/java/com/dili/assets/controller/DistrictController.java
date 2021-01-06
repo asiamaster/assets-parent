@@ -8,7 +8,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.dili.assets.domain.District;
 import com.dili.assets.domain.query.DistrictQuery;
 import com.dili.assets.glossary.StateEnum;
+import com.dili.assets.sdk.dto.AreaMarketQuery;
 import com.dili.assets.sdk.dto.DistrictDTO;
+import com.dili.assets.service.AreaMarketService;
 import com.dili.assets.service.DistrictService;
 import com.dili.ss.domain.BaseOutput;
 import com.dili.ss.dto.IDTO;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 由MyBatis Generator工具自动生成
@@ -29,6 +32,9 @@ import java.util.List;
 public class DistrictController {
     @Autowired
     DistrictService districtService;
+
+    @Autowired
+    public AreaMarketService areaMarketService;
 
     /**
      * 新增区域
@@ -181,6 +187,19 @@ public class DistrictController {
                         }
                     }
                     result.add(dto);
+                }
+            }
+            if (input.getMchId() != null) {
+                AreaMarketQuery areaQuery = new AreaMarketQuery();
+                areaQuery.setMarket(input.getMchId());
+                var areaMarketList = areaMarketService.queryAll(areaQuery).getData();
+                List<Integer> areas = areaMarketList.stream().map(o -> o.getArea().intValue()).collect(Collectors.toList());
+                if (CollUtil.isNotEmpty(areaMarketList)) {
+                    result = result.stream().filter(it ->
+                            areas.contains(it.getId().intValue()))
+                            .collect(Collectors.toList());
+                } else {
+                    return BaseOutput.success();
                 }
             }
             return BaseOutput.success().setData(result);

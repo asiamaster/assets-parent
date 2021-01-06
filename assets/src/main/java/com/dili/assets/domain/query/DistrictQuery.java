@@ -5,6 +5,7 @@ import com.dili.ss.domain.annotation.Like;
 import com.dili.ss.domain.annotation.Operator;
 
 import javax.persistence.Column;
+import javax.persistence.Transient;
 import java.util.List;
 
 public class DistrictQuery extends District {
@@ -34,6 +35,20 @@ public class DistrictQuery extends District {
     @Like
     @Column(name = "`name`")
     private String nameLike;
+
+    /**
+     * 商户
+     */
+    @Transient
+    private Long mchId;
+
+    public Long getMchId() {
+        return mchId;
+    }
+
+    public void setMchId(Long mchId) {
+        this.mchId = mchId;
+    }
 
     public String getNameLike() {
         return nameLike;
