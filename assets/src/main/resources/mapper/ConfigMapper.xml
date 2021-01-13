@@ -25,6 +25,12 @@
             <if test="name != null">
                 and name = #{name}
             </if>
+            <if test="type != null and type != ''">
+                and type = #{type}
+            </if>
+            <if test="state != null">
+                and state = #{state}
+            </if>
         </where>
     </sql>
     <sql id="Base_Column_List">

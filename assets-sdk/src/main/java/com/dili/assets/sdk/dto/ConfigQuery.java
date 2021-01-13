@@ -36,4 +36,14 @@ public class ConfigQuery extends Tablepar {
      */
     private String name;
 
+    /**
+     * 分组
+     */
+    private String type;
+
+    /**
+     * 状态
+     */
+    private Integer state;
+
 }
