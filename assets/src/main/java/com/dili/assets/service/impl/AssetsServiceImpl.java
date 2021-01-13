@@ -3,8 +3,10 @@ package com.dili.assets.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.db.Session;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.dili.assets.domain.AreaMarket;
 import com.dili.assets.domain.Assets;
 import com.dili.assets.domain.District;
 import com.dili.assets.domain.query.BoothQuery;
@@ -29,6 +31,7 @@ import com.dili.uap.sdk.domain.DataDictionaryValue;
 import com.dili.uap.sdk.domain.Department;
 import com.dili.uap.sdk.rpc.DataDictionaryRpc;
 import com.dili.uap.sdk.rpc.DepartmentRpc;
+import com.dili.uap.sdk.session.SessionContext;
 import org.javers.core.Javers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -250,53 +253,36 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
         }
 
         if (CollUtil.isNotEmpty(list)) {
-            var unitCache = new HashMap<String, String>();
-            var disCache = new HashMap<String, String>();
-            var depCache = new HashMap<String, String>();
             List<Department> departmentList = departmentRpc.listByExample(null).getData();
+            DataDictionaryValue dataDictionaryValue = DTOUtils.newDTO(DataDictionaryValue.class);
+            dataDictionaryValue.setDdCode("unit");
+            dataDictionaryValue.setFirmId(query.getMarketId());
+            List<DataDictionaryValue> dataDictionaryValues = dataDictionaryRpc.listDataDictionaryValue(dataDictionaryValue).getData();
+            District district = new District();
+            district.setMarketId(query.getMarketId());
+            List<District> districts = districtService.listByExample(district);
+            List<AreaMarket> areaMarkets = areaMarketService.queryAll(null).getData();
             list.forEach(obj -> {
                 AssetsDTO dto = new AssetsDTO();
                 BeanUtil.copyProperties(obj, dto);
 
                 // 转换部门
                 if (dto.getDepartmentId() != null) {
-                    departmentList.stream().filter(it -> it.getId().equals(dto.getDepartmentId()))
+                    departmentList.stream().filter(it -> it.getId().intValue() == dto.getDepartmentId())
                             .findFirst().ifPresent(it -> dto.setDepartmentName(it.getName()));
                 }
                 // 转换单位
-                if (unitCache.containsKey(obj.getUnit())) {
-                    dto.setUnitName(unitCache.get(obj.getUnit()));
-                } else {
-                    DataDictionaryValue dataDictionaryValue = DTOUtils.newDTO(DataDictionaryValue.class);
-                    dataDictionaryValue.setCode(obj.getUnit());
+                dataDictionaryValues.stream().filter(it -> it.getCode().equals(dto.getUnit()))
+                        .findFirst().ifPresent(it -> dto.setUnitName(it.getName()));
 
-                    var listBaseOutput = dataDictionaryRpc.listDataDictionaryValue(dataDictionaryValue);
-                    List<DataDictionaryValue> data = listBaseOutput.getData();
-                    for (DataDictionaryValue datum : data) {
-                        if (datum.getCode().equals(obj.getUnit())) {
-                            dto.setUnitName(datum.getName());
-                            unitCache.put(obj.getUnit(), datum.getName());
-                        }
-                    }
-                }
                 // 转换一级区域
-                if (disCache.containsKey(obj.getArea().toString())) {
-                    dto.setAreaName(disCache.get(obj.getArea().toString()));
-                } else {
-                    District district = districtService.get(obj.getArea().longValue());
-                    dto.setAreaName(district.getName());
-                    disCache.put(obj.getArea().toString(), district.getName());
-                }
+                districts.stream().filter(it -> it.getId().intValue() == dto.getArea())
+                        .findFirst().ifPresent(it -> dto.setAreaName(it.getName()));
 
                 // 转换二级区域
                 if (obj.getSecondArea() != null) {
-                    if (disCache.containsKey(obj.getSecondArea().toString())) {
-                        dto.setSecondAreaName(disCache.get(obj.getSecondArea().toString()));
-                    } else {
-                        District districtSecond = districtService.get(obj.getSecondArea().longValue());
-                        dto.setSecondAreaName(districtSecond.getName());
-                        disCache.put(obj.getSecondArea().toString(), districtSecond.getName());
-                    }
+                    districts.stream().filter(it -> it.getId().intValue() == dto.getSecondArea())
+                            .findFirst().ifPresent(it -> dto.setSecondAreaName(it.getName()));
                 }
 
                 if (obj.getCorner() != null) {
@@ -306,14 +292,8 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
                     dto.setMchId(query.getMchId());
                 } else {
                     var area = dto.getSecondArea() != null ? dto.getSecondArea() : dto.getArea();
-                    AreaMarketQuery areaQuery = new AreaMarketQuery();
-                    areaQuery.setArea(area.longValue());
-                    var areaMarketList = areaMarketService.queryAll(areaQuery).getData();
-                    if (CollUtil.isNotEmpty(areaMarketList)) {
-                        dto.setMchId(areaMarketList.get(0).getMarket());
-                    } else {
-                        dto.setMchId(null);
-                    }
+                    areaMarkets.stream().filter(it -> it.getArea().intValue() == area)
+                            .findFirst().ifPresent(it -> dto.setMchId(it.getMarket()));
                 }
                 result.add(dto);
             });
