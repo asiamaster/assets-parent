@@ -66,6 +66,35 @@ public class BusinessChargeItem extends BaseDomain {
     private Integer chargeType;
 
     /**
+     * 资金项目
+     */
+    @Column(name = "`fund_item`")
+    @NotBlank(message = "资金项目不能为空")
+    private Long fundItem;
+
+    /**
+     * 资金项目
+     */
+    @Column(name = "`fund_item_value`")
+    @NotBlank(message = "关联资金项目值不能为空")
+    private String fundItemValue;
+
+    /**
+     * 费用项编码
+     */
+    @Column(name = "`code`")
+    @Size(max = 20,message = "费用项编码请保持在20个字符以内")
+    private String code;
+
+    /**
+     * 是否为固定项
+     * {@link com.dili.commons.glossary.YesOrNoEnum}
+     */
+    @Column(name = "`fixed`")
+    @NotNull(message = "是否固定项不能为空")
+    private Integer fixed;
+
+    /**
      * 是否为必填项
      */
     @Column(name = "`is_required`")

@@ -52,6 +52,27 @@ public class BusinessChargeItemDto extends BaseDomain {
     private Integer chargeType;
 
     /**
+     * 资金项目
+     */
+    private Long fundItem;
+
+    /**
+     * 资金项目
+     */
+    private String fundItemValue;
+
+    /**
+     * 费用项编码
+     */
+    private String code;
+
+    /**
+     * 是否为固定项
+     * {@link com.dili.commons.glossary.YesOrNoEnum}
+     */
+    private Integer fixed;
+
+    /**
      * 是否为必填项
      * {@link com.dili.commons.glossary.YesOrNoEnum}
      */
