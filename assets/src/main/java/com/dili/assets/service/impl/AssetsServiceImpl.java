@@ -253,22 +253,15 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
             var unitCache = new HashMap<String, String>();
             var disCache = new HashMap<String, String>();
             var depCache = new HashMap<String, String>();
+            List<Department> departmentList = departmentRpc.listByExample(null).getData();
             list.forEach(obj -> {
                 AssetsDTO dto = new AssetsDTO();
                 BeanUtil.copyProperties(obj, dto);
 
                 // 转换部门
                 if (dto.getDepartmentId() != null) {
-                    if (depCache.containsKey(dto.getDepartmentId().toString())) {
-                        dto.setDepartmentName(depCache.get(dto.getDepartmentId().toString()));
-                    } else {
-                        BaseOutput<Department> departmentBaseOutput = departmentRpc.get(dto.getDepartmentId().longValue());
-                        Department dep = departmentBaseOutput.getData();
-                        if (dep != null) {
-                            dto.setDepartmentName(dep.getName());
-                            depCache.put(dto.getDepartmentId().toString(), dep.getName());
-                        }
-                    }
+                    departmentList.stream().filter(it -> it.getId().equals(dto.getDepartmentId()))
+                            .findFirst().ifPresent(it -> dto.setDepartmentName(it.getName()));
                 }
                 // 转换单位
                 if (unitCache.containsKey(obj.getUnit())) {
