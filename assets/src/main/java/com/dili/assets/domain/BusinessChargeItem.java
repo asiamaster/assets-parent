@@ -69,7 +69,7 @@ public class BusinessChargeItem extends BaseDomain {
      * 资金项目
      */
     @Column(name = "`fund_item`")
-    @NotBlank(message = "资金项目不能为空")
+    @NotNull(message = "资金项目不能为空")
     private Long fundItem;
 
     /**
