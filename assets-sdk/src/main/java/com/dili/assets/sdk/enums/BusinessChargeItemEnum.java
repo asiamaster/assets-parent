@@ -1,5 +1,7 @@
 package com.dili.assets.sdk.enums;
 
+import lombok.Getter;
+
 import java.util.Optional;
 
 /**
@@ -30,27 +32,18 @@ public class BusinessChargeItemEnum {
         /**
          * 类型编码
          */
+        @Getter
         private Integer code;
         /**
          * 类型值
          */
+        @Getter
         private String value;
         /**
          * 是否需要重新改类型的数据并填充到相应控件
          */
+        @Getter
         private Boolean query;
-
-        public Integer getCode() {
-            return code;
-        }
-
-        public String getValue() {
-            return value;
-        }
-
-        public Boolean getQuery() {
-            return query;
-        }
 
         /**
          * 获取某个枚举值实例信息
@@ -66,5 +59,61 @@ public class BusinessChargeItemEnum {
             }
             return Optional.empty();
         }
+
+        /**
+         * 对比枚举值是否相等
+         * @param code
+         * @return
+         */
+        public Boolean equalsToCode(Integer code) {
+            return this.getCode().equals(code);
+        }
+    }
+
+    /**
+     * 费用系统科目
+     */
+    public enum SystemSubjectType {
+        默认(1, "其它"),
+        开卡工本费(101, "开卡工本费"),
+        换卡工本费(102, "换卡工本费"),
+        POS充值手续费(103, "POS充值手续费"),
+        提现网银手续费(104, "提现网银手续费"),
+        ;
+
+        @Getter
+        private Integer code;
+        @Getter
+        private String name;
+
+        SystemSubjectType(int code, String name) {
+            this.code = code;
+            this.name = name;
+        }
+
+        /**
+         * 获取某个枚举值实例信息
+         *
+         * @param code
+         * @return
+         */
+        public static Optional<SystemSubjectType> getInstance(Integer code) {
+            for (SystemSubjectType sst : SystemSubjectType.values()) {
+                if (sst.getCode().equals(code)) {
+                    return Optional.of(sst);
+                }
+            }
+            return Optional.empty();
+        }
+
+        /**
+         * 对比枚举值是否相等
+         * @param code
+         * @return
+         */
+        public Boolean equalsToCode(Integer code) {
+            return this.getCode().equals(code);
+        }
+
     }
 }
