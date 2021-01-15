@@ -253,7 +253,7 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
         }
 
         if (CollUtil.isNotEmpty(list)) {
-            List<Department> departmentList = departmentRpc.listByExample(null).getData();
+            List<Department> departmentList = departmentRpc.listByExample(DTOUtils.newDTO(Department.class)).getData();
             DataDictionaryValue dataDictionaryValue = DTOUtils.newDTO(DataDictionaryValue.class);
             dataDictionaryValue.setDdCode("unit");
             dataDictionaryValue.setFirmId(query.getMarketId());
@@ -268,12 +268,16 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
 
                 // 转换部门
                 if (dto.getDepartmentId() != null) {
-                    departmentList.stream().filter(it -> it.getId().intValue() == dto.getDepartmentId())
-                            .findFirst().ifPresent(it -> dto.setDepartmentName(it.getName()));
+                    if (CollUtil.isNotEmpty(departmentList)) {
+                        departmentList.stream().filter(it -> it.getId().intValue() == dto.getDepartmentId())
+                                .findFirst().ifPresent(it -> dto.setDepartmentName(it.getName()));
+                    }
                 }
                 // 转换单位
-                dataDictionaryValues.stream().filter(it -> it.getCode().equals(dto.getUnit()))
-                        .findFirst().ifPresent(it -> dto.setUnitName(it.getName()));
+                if (CollUtil.isNotEmpty(dataDictionaryValues)) {
+                    dataDictionaryValues.stream().filter(it -> it.getCode().equals(dto.getUnit()))
+                            .findFirst().ifPresent(it -> dto.setUnitName(it.getName()));
+                }
 
                 // 转换一级区域
                 districts.stream().filter(it -> it.getId().intValue() == dto.getArea())
@@ -291,9 +295,11 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
                 if (query.getMchId() != null) {
                     dto.setMchId(query.getMchId());
                 } else {
-                    var area = dto.getSecondArea() != null ? dto.getSecondArea() : dto.getArea();
-                    areaMarkets.stream().filter(it -> it.getArea().intValue() == area)
-                            .findFirst().ifPresent(it -> dto.setMchId(it.getMarket()));
+                    if (CollUtil.isNotEmpty(areaMarkets)) {
+                        var area = dto.getSecondArea() != null ? dto.getSecondArea() : dto.getArea();
+                        areaMarkets.stream().filter(it -> it.getArea().intValue() == area)
+                                .findFirst().ifPresent(it -> dto.setMchId(it.getMarket()));
+                    }
                 }
                 result.add(dto);
             });
