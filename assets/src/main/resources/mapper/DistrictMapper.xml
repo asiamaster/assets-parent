@@ -136,6 +136,6 @@
     SELECT d.id, d.name, d.parent_id, d.number, a.market as market_id
     from district d
            LEFT JOIN area_market a ON d.id = a.area
-    WHERE d.market_id = #{id,jdbcType=BIGINT}
+    WHERE d.market_id = #{id,jdbcType=BIGINT} and d.is_delete = 0
   </select>
 </mapper>
