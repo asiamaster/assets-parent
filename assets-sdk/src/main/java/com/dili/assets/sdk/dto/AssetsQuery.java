@@ -39,7 +39,7 @@ public class AssetsQuery extends AssetsDTO {
     @Column(name = "`id`")
     private List<String> ids;
 
-    private boolean onlyFirstArea = false;
+    private boolean onlyFirstArea = true;
 
     /**
      * 商户
