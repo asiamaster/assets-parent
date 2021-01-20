@@ -20,6 +20,8 @@ import com.dili.assets.sdk.dto.ConfigQuery;
 import com.dili.ss.base.BaseService;
 import com.github.pagehelper.PageInfo;
 
+import java.util.List;
+
 /**
 * @website http://shaofan.org
 * @description 服务接口
@@ -53,5 +55,10 @@ public interface ConfigService extends BaseService<Config, Long> {
      * @param ids /
      */
     void disableAll(Long[] ids);
+
+    /**
+     * 查询分组
+     */
+    List<Config> selectAllByType(String type);
 
 }

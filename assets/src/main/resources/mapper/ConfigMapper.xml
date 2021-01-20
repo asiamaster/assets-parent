@@ -51,4 +51,11 @@
         </if>
         order by id desc
     </select>
+    <select id="selectAllByType" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from config
+        where type like concat('%', #{type}, '%')
+        group by type
+    </select>
 </mapper>

@@ -74,4 +74,9 @@ public class ConfigServiceImpl extends BaseServiceImpl<Config, Long> implements 
             this.saveOrUpdateSelective(config);
         }
     }
+
+    @Override
+    public List<Config> selectAllByType(String type) {
+        return configMapper.selectAllByType(type);
+    }
 }
