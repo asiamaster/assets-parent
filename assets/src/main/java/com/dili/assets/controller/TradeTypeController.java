@@ -71,7 +71,7 @@ public class TradeTypeController {
      * 根据编码查询交易类型
      */
     @PostMapping("/getByCode")
-    public BaseOutput<TradeTypeDto> getByCode(@RequestBody String code) {
+    public BaseOutput<TradeTypeDto> getByCode(String code) {
         TradeType query = new TradeType();
         query.setCode(code);
         List<TradeType> tradeTypes = tradeTypeService.listByExample(query);

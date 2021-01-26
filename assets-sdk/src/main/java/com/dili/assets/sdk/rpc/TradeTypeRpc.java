@@ -22,6 +22,7 @@ import com.dili.ss.domain.BaseOutput;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @author shaofan
@@ -65,6 +66,6 @@ public interface TradeTypeRpc {
      * 通过编码唯一获取交易类型
      */
     @RequestMapping(value = "/api/tradeType/getByCode", method = RequestMethod.POST)
-    BaseOutput<TradeTypeDto> getByCode(String code);
+    BaseOutput<TradeTypeDto> getByCode(@RequestParam("code") String code);
 
 }
