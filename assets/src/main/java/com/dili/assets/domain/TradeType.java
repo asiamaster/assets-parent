@@ -15,6 +15,8 @@
  */
 package com.dili.assets.domain;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
@@ -25,6 +27,7 @@ import com.dili.ss.domain.BaseDomain;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author shaofan
@@ -32,7 +35,6 @@ import java.io.Serializable;
  * @description
  * @date 2020-07-30
  **/
-@Entity
 @Data
 @Table(name = "trade_type")
 public class TradeType extends BaseDomain implements Serializable {
@@ -52,7 +54,7 @@ public class TradeType extends BaseDomain implements Serializable {
     private Integer push;
 
     @Column(name = "scene", nullable = false)
-    private Integer scene;
+    private String scene;
 
     @Column(name = "creator_id")
     private Long creatorId;

@@ -10,7 +10,8 @@
                         property="code"/>
                 <result column="push" jdbcType="TINYINT"
                         property="push"/>
-                <result column="scene" jdbcType="VARCHAR"
+                <result column="scene"
+                        jdbcType="VARCHAR"
                         property="scene"/>
                 <result column="creator_id" jdbcType="BIGINT"
                         property="creatorId"/>
