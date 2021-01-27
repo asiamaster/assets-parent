@@ -49,6 +49,9 @@ public class TradeTypeDto extends BaseDomain implements Serializable {
     /** 创建人 */
     private String creatorUser;
 
+    /** 过磅场景 */
+    private String scene;
+
     /** 创建时间 */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -104,6 +105,7 @@ public class BoothRentController {
             query.setAssetsId(input.getAssetsId());
 
             Assets assets = assetsService.get(input.getAssetsId());
+            List<BoothRent> temp = new ArrayList<>();
 
             if (assets == null) {
                 return BaseOutput.failure("资产不存在");
@@ -123,6 +125,7 @@ public class BoothRentController {
                     if (DateUtil.isIn(boothRent.getStart(), input.getStart(), input.getEnd())) {
                         canSave = false;
                         if (boothRent.getNumber() != null) {
+                            temp.add(boothRent);
                             max += boothRent.getNumber();
                         }
                         continue;
@@ -132,6 +135,7 @@ public class BoothRentController {
                     if (DateUtil.isIn(boothRent.getEnd(), input.getStart(), input.getEnd())) {
                         canSave = false;
                         if (boothRent.getNumber() != null) {
+                            temp.add(boothRent);
                             max += boothRent.getNumber();
                         }
                         continue;
@@ -140,6 +144,7 @@ public class BoothRentController {
                     if (DateUtil.isIn(input.getStart(), boothRent.getStart(), boothRent.getEnd())) {
                         canSave = false;
                         if (boothRent.getNumber() != null) {
+                            temp.add(boothRent);
                             max += boothRent.getNumber();
                         }
                         continue;
@@ -149,12 +154,13 @@ public class BoothRentController {
                     if (DateUtil.isIn(input.getEnd(), boothRent.getStart(), boothRent.getEnd())) {
                         canSave = false;
                         if (boothRent.getNumber() != null) {
+                            temp.add(boothRent);
                             max += boothRent.getNumber();
                         }
                     }
                 }
 
-                for (BoothRent boothRent : boothRents) {
+                for (BoothRent boothRent : temp) {
                     if (boothRent.getNumber() != null && boothRent.getNumber() > max) {
                         max = boothRent.getNumber();
                     }

@@ -18,6 +18,7 @@ package com.dili.assets.controller;
 import cn.hutool.core.collection.CollUtil;
 import com.dili.assets.common.TableResult;
 import com.dili.assets.domain.TradeType;
+import com.dili.assets.mapper.TradeTypeMapper;
 import com.dili.assets.sdk.dto.TradeTypeDto;
 import com.dili.assets.sdk.dto.TradeTypeQuery;
 import com.dili.assets.service.TradeTypeService;
@@ -43,11 +44,12 @@ public class TradeTypeController {
 
     private final TradeTypeService tradeTypeService;
 
+    private final TradeTypeMapper tradeTypeMapper;
+
     /**
      * 查询数据分页
      *
-     * @param query    条件
-     * @param pageable 分页参数
+     * @param query 条件
      * @return PageInfo<TradeType>
      */
     @PostMapping("/query")
@@ -63,8 +65,8 @@ public class TradeTypeController {
      * @return List<TradeType>
      */
     @PostMapping("/queryAll")
-    public Object queryAll() {
-        return BaseOutput.successData(tradeTypeService.listByExample(null));
+    public Object queryAll(@RequestBody TradeTypeQuery query) {
+        return BaseOutput.successData(tradeTypeMapper.selectByQuery(query));
     }
 
     /**

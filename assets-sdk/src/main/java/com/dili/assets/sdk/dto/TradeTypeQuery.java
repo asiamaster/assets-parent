@@ -33,4 +33,7 @@ public class TradeTypeQuery extends Tablepar {
     private String keyword;
     /** BETWEEN */
     private List<LocalDateTime> createdTime;
+
+    /** 过磅场景 */
+    private Integer scene;
 }

@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -54,6 +55,7 @@ public class BoothRentServiceImpl extends BaseServiceImpl<BoothRent, Long> imple
                 BoothRent query = new BoothRent();
                 query.setAssetsId(input.getAssetsId());
                 List<BoothRent> boothRents = this.listByExample(query);
+                List<BoothRent> temp = new ArrayList<>();
                 // 如果没有租赁信息则直接保存
                 if (CollUtil.isEmpty(boothRents)) {
                     save(input);
@@ -68,6 +70,7 @@ public class BoothRentServiceImpl extends BaseServiceImpl<BoothRent, Long> imple
                         if (DateUtil.isIn(boothRent.getStart(), input.getStart(), input.getEnd())) {
                             canSave = false;
                             if (boothRent.getNumber() != null) {
+                                temp.add(boothRent);
                                 max += boothRent.getNumber();
                             }
                             continue;
@@ -77,6 +80,7 @@ public class BoothRentServiceImpl extends BaseServiceImpl<BoothRent, Long> imple
                         if (DateUtil.isIn(boothRent.getEnd(), input.getStart(), input.getEnd())) {
                             canSave = false;
                             if (boothRent.getNumber() != null) {
+                                temp.add(boothRent);
                                 max += boothRent.getNumber();
                             }
                             continue;
@@ -85,6 +89,7 @@ public class BoothRentServiceImpl extends BaseServiceImpl<BoothRent, Long> imple
                         if (DateUtil.isIn(input.getStart(), boothRent.getStart(), boothRent.getEnd())) {
                             canSave = false;
                             if (boothRent.getNumber() != null) {
+                                temp.add(boothRent);
                                 max += boothRent.getNumber();
                             }
                             continue;
@@ -94,6 +99,7 @@ public class BoothRentServiceImpl extends BaseServiceImpl<BoothRent, Long> imple
                         if (DateUtil.isIn(input.getEnd(), boothRent.getStart(), boothRent.getEnd())) {
                             canSave = false;
                             if (boothRent.getNumber() != null) {
+                                temp.add(boothRent);
                                 max += boothRent.getNumber();
                             }
                         }
@@ -101,7 +107,7 @@ public class BoothRentServiceImpl extends BaseServiceImpl<BoothRent, Long> imple
 
                     // 如果是冷库则求租赁最大值
                     if (input.getType() == 2) {
-                        for (BoothRent boothRent : boothRents) {
+                        for (BoothRent boothRent : temp) {
                             if (boothRent.getNumber() != null && boothRent.getNumber() > max) {
                                 max = boothRent.getNumber();
                             }

@@ -51,6 +51,9 @@ public class TradeType extends BaseDomain implements Serializable {
     @Column(name = "push", nullable = false)
     private Integer push;
 
+    @Column(name = "scene", nullable = false)
+    private Integer scene;
+
     @Column(name = "creator_id")
     private Long creatorId;
 

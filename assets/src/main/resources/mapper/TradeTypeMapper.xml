@@ -10,6 +10,8 @@
                         property="code"/>
                 <result column="push" jdbcType="TINYINT"
                         property="push"/>
+                <result column="scene" jdbcType="VARCHAR"
+                        property="scene"/>
                 <result column="creator_id" jdbcType="BIGINT"
                         property="creatorId"/>
                 <result column="creator_user" jdbcType="VARCHAR"
@@ -22,6 +24,9 @@
     <sql id="Example_Where_Clause">
         <where>
 
+                        <if test="scene != null">
+                            and JSON_CONTAINS(scene, JSON_ARRAY(#{scene}))
+                        </if>
                         <if test="keyword != null">
                             and name like
                             concat('%', #{keyword}, '%')
@@ -49,6 +54,7 @@
                     name,
                     code,
                     push,
+                    scene,
                     creator_id,
                     creator_user,
                     created_time,
