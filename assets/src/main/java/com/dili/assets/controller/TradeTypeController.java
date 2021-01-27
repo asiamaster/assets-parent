@@ -65,7 +65,7 @@ public class TradeTypeController {
      * @return List<TradeType>
      */
     @PostMapping("/queryAll")
-    public Object queryAll(@RequestBody TradeTypeQuery query) {
+    public Object queryAll(@RequestBody(required = false) TradeTypeQuery query) {
         return BaseOutput.successData(tradeTypeMapper.selectByQuery(query));
     }
 
