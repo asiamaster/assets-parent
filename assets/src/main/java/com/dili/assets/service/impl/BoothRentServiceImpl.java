@@ -70,7 +70,6 @@ public class BoothRentServiceImpl extends BaseServiceImpl<BoothRent, Long> imple
                         if (DateUtil.isIn(boothRent.getStart(), input.getStart(), input.getEnd())) {
                             canSave = false;
                             if (boothRent.getNumber() != null) {
-                                temp.add(boothRent);
                                 max += boothRent.getNumber();
                             }
                             continue;
@@ -80,7 +79,6 @@ public class BoothRentServiceImpl extends BaseServiceImpl<BoothRent, Long> imple
                         if (DateUtil.isIn(boothRent.getEnd(), input.getStart(), input.getEnd())) {
                             canSave = false;
                             if (boothRent.getNumber() != null) {
-                                temp.add(boothRent);
                                 max += boothRent.getNumber();
                             }
                             continue;
@@ -89,7 +87,6 @@ public class BoothRentServiceImpl extends BaseServiceImpl<BoothRent, Long> imple
                         if (DateUtil.isIn(input.getStart(), boothRent.getStart(), boothRent.getEnd())) {
                             canSave = false;
                             if (boothRent.getNumber() != null) {
-                                temp.add(boothRent);
                                 max += boothRent.getNumber();
                             }
                             continue;
@@ -99,17 +96,7 @@ public class BoothRentServiceImpl extends BaseServiceImpl<BoothRent, Long> imple
                         if (DateUtil.isIn(input.getEnd(), boothRent.getStart(), boothRent.getEnd())) {
                             canSave = false;
                             if (boothRent.getNumber() != null) {
-                                temp.add(boothRent);
                                 max += boothRent.getNumber();
-                            }
-                        }
-                    }
-
-                    // 如果是冷库则求租赁最大值
-                    if (input.getType() == 2) {
-                        for (BoothRent boothRent : temp) {
-                            if (boothRent.getNumber() != null && boothRent.getNumber() > max) {
-                                max = boothRent.getNumber();
                             }
                         }
                     }

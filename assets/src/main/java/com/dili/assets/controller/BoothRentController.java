@@ -125,7 +125,6 @@ public class BoothRentController {
                     if (DateUtil.isIn(boothRent.getStart(), input.getStart(), input.getEnd())) {
                         canSave = false;
                         if (boothRent.getNumber() != null) {
-                            temp.add(boothRent);
                             max += boothRent.getNumber();
                         }
                         continue;
@@ -135,7 +134,6 @@ public class BoothRentController {
                     if (DateUtil.isIn(boothRent.getEnd(), input.getStart(), input.getEnd())) {
                         canSave = false;
                         if (boothRent.getNumber() != null) {
-                            temp.add(boothRent);
                             max += boothRent.getNumber();
                         }
                         continue;
@@ -144,7 +142,6 @@ public class BoothRentController {
                     if (DateUtil.isIn(input.getStart(), boothRent.getStart(), boothRent.getEnd())) {
                         canSave = false;
                         if (boothRent.getNumber() != null) {
-                            temp.add(boothRent);
                             max += boothRent.getNumber();
                         }
                         continue;
@@ -154,22 +151,17 @@ public class BoothRentController {
                     if (DateUtil.isIn(input.getEnd(), boothRent.getStart(), boothRent.getEnd())) {
                         canSave = false;
                         if (boothRent.getNumber() != null) {
-                            temp.add(boothRent);
                             max += boothRent.getNumber();
                         }
                     }
                 }
 
-                for (BoothRent boothRent : temp) {
-                    if (boothRent.getNumber() != null && boothRent.getNumber() > max) {
-                        max = boothRent.getNumber();
-                    }
-                }
 
                 if (canSave) {
                     return BaseOutput.success().setData(assets.getNumber());
                 } else {
-                    return BaseOutput.success().setData(assets.getNumber() - max);
+                    double number = assets.getNumber() - max;
+                    return BaseOutput.success().setData(number < 0 ? 0 : number);
                 }
 
             }
