@@ -1,6 +1,9 @@
 package com.dili.assets.controller;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.date.DateField;
+import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
 import com.dili.assets.domain.Assets;
 import com.dili.assets.domain.BoothRent;
@@ -105,7 +108,6 @@ public class BoothRentController {
             query.setAssetsId(input.getAssetsId());
 
             Assets assets = assetsService.get(input.getAssetsId());
-            List<BoothRent> temp = new ArrayList<>();
 
             if (assets == null) {
                 return BaseOutput.failure("资产不存在");
@@ -115,49 +117,25 @@ public class BoothRentController {
             if (CollUtil.isEmpty(boothRents) || (input.getStart() == null || input.getEnd() == null)) {
                 return BaseOutput.success().setData(assets.getNumber());
             } else {
-                // 是否能保存
-                boolean canSave = true;
-                // 取交叉时间段最大值
+
                 Double max = 0D;
-                for (BoothRent boothRent : boothRents) {
-                    // 判断开始时间
 
-                    if (DateUtil.isIn(boothRent.getStart(), input.getStart(), input.getEnd())) {
-                        canSave = false;
-                        if (boothRent.getNumber() != null) {
-                            max += boothRent.getNumber();
+                long between = DateUtil.between(input.getStart(), input.getEnd(), DateUnit.DAY);
+                for (int i = 0; i <= between; i++) {
+                    DateTime dateTime = DateUtil.offsetDay(input.getStart(), i);
+                    double temp = 0;
+                    for (BoothRent boothRent : boothRents) {
+                        if (DateUtil.isIn(dateTime, boothRent.getStart(), boothRent.getEnd())) {
+                            temp += boothRent.getNumber();
                         }
-                        continue;
                     }
-                    // 判断结束时间
-
-                    if (DateUtil.isIn(boothRent.getEnd(), input.getStart(), input.getEnd())) {
-                        canSave = false;
-                        if (boothRent.getNumber() != null) {
-                            max += boothRent.getNumber();
-                        }
-                        continue;
-                    }
-
-                    if (DateUtil.isIn(input.getStart(), boothRent.getStart(), boothRent.getEnd())) {
-                        canSave = false;
-                        if (boothRent.getNumber() != null) {
-                            max += boothRent.getNumber();
-                        }
-                        continue;
-                    }
-                    // 判断结束时间
-
-                    if (DateUtil.isIn(input.getEnd(), boothRent.getStart(), boothRent.getEnd())) {
-                        canSave = false;
-                        if (boothRent.getNumber() != null) {
-                            max += boothRent.getNumber();
-                        }
+                    if (temp > max) {
+                        max = temp;
                     }
                 }
 
 
-                if (canSave) {
+                if (max == 0D) {
                     return BaseOutput.success().setData(assets.getNumber());
                 } else {
                     double number = assets.getNumber() - max;
