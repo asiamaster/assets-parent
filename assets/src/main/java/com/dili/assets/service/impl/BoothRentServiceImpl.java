@@ -1,6 +1,8 @@
 package com.dili.assets.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
 import com.dili.assets.domain.Assets;
 import com.dili.assets.domain.BoothRent;
@@ -55,7 +57,6 @@ public class BoothRentServiceImpl extends BaseServiceImpl<BoothRent, Long> imple
                 BoothRent query = new BoothRent();
                 query.setAssetsId(input.getAssetsId());
                 List<BoothRent> boothRents = this.listByExample(query);
-                List<BoothRent> temp = new ArrayList<>();
                 // 如果没有租赁信息则直接保存
                 if (CollUtil.isEmpty(boothRents)) {
                     save(input);
@@ -69,35 +70,23 @@ public class BoothRentServiceImpl extends BaseServiceImpl<BoothRent, Long> imple
 
                         if (DateUtil.isIn(boothRent.getStart(), input.getStart(), input.getEnd())) {
                             canSave = false;
-                            if (boothRent.getNumber() != null) {
-                                max += boothRent.getNumber();
-                            }
                             continue;
                         }
                         // 判断结束时间
 
                         if (DateUtil.isIn(boothRent.getEnd(), input.getStart(), input.getEnd())) {
                             canSave = false;
-                            if (boothRent.getNumber() != null) {
-                                max += boothRent.getNumber();
-                            }
                             continue;
                         }
 
                         if (DateUtil.isIn(input.getStart(), boothRent.getStart(), boothRent.getEnd())) {
                             canSave = false;
-                            if (boothRent.getNumber() != null) {
-                                max += boothRent.getNumber();
-                            }
                             continue;
                         }
                         // 判断结束时间
 
                         if (DateUtil.isIn(input.getEnd(), boothRent.getStart(), boothRent.getEnd())) {
                             canSave = false;
-                            if (boothRent.getNumber() != null) {
-                                max += boothRent.getNumber();
-                            }
                         }
                     }
 
@@ -105,6 +94,24 @@ public class BoothRentServiceImpl extends BaseServiceImpl<BoothRent, Long> imple
                         save(input);
                     } else {
                         if (input.getType() == 2) {
+                            // 开始和结束时间相差天数
+                            long between = DateUtil.between(input.getStart(), input.getEnd(), DateUnit.DAY);
+
+                            // 计算每天最大值
+                            for (int i = 0; i <= between; i++) {
+                                DateTime dateTime = DateUtil.offsetDay(input.getStart(), i);
+                                double temp = 0;
+                                // 每天有多个取总和
+                                for (BoothRent boothRent : boothRents) {
+                                    if (DateUtil.isIn(dateTime, boothRent.getStart(), boothRent.getEnd())) {
+                                        temp += boothRent.getNumber();
+                                    }
+                                }
+                                // 取最大值
+                                if (temp > max) {
+                                    max = temp;
+                                }
+                            }
                             if (input.getNumber() > (assets.getNumber() - max)) {
                                 throw new BusinessException("2501", "数量不足");
                             } else {

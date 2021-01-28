@@ -118,17 +118,26 @@ public class BoothRentController {
                 return BaseOutput.success().setData(assets.getNumber());
             } else {
 
+                /*
+                 * 计算规则：
+                 * 计算每一天已租赁数量的取最大值，同一天有多个交集取总和计算最大值
+                 */
                 Double max = 0D;
 
+                // 开始和结束时间相差天数
                 long between = DateUtil.between(input.getStart(), input.getEnd(), DateUnit.DAY);
+
+                // 计算每天最大值
                 for (int i = 0; i <= between; i++) {
                     DateTime dateTime = DateUtil.offsetDay(input.getStart(), i);
                     double temp = 0;
+                    // 每天有多个取总和
                     for (BoothRent boothRent : boothRents) {
                         if (DateUtil.isIn(dateTime, boothRent.getStart(), boothRent.getEnd())) {
                             temp += boothRent.getNumber();
                         }
                     }
+                    // 取最大值
                     if (temp > max) {
                         max = temp;
                     }
