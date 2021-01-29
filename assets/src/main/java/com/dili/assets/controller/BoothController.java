@@ -1,6 +1,7 @@
 package com.dili.assets.controller;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.json.JSONUtil;
@@ -94,6 +95,21 @@ public class BoothController {
      */
     @RequestMapping("update")
     public BaseOutput update(@RequestBody Assets booth) {
+
+        var query = new Assets();
+        query.setName(booth.getName());
+        query.setBusinessType(booth.getBusinessType());
+        query.setIsDelete(YesOrNoEnum.NO.getCode());
+        query.setMarketId(booth.getMarketId());
+        var check = boothService.listByExample(query);
+        if (CollUtil.isNotEmpty(check)) {
+            for (Assets assets : check) {
+                if (!assets.getId().equals(booth.getId())) {
+                    return BaseOutput.failure("5000", "资产编号重复");
+                }
+            }
+        }
+
         boothService.updateSelective(booth);
         AssetsPOJO pojo = new AssetsPOJO();
         BeanUtil.copyProperties(booth, pojo);

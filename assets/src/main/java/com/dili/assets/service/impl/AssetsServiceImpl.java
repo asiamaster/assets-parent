@@ -3,7 +3,6 @@ package com.dili.assets.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.db.Session;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.dili.assets.domain.AreaMarket;
@@ -20,7 +19,6 @@ import com.dili.assets.service.AssetsService;
 import com.dili.assets.service.DistrictService;
 import com.dili.commons.glossary.YesOrNoEnum;
 import com.dili.ss.base.BaseServiceImpl;
-import com.dili.ss.domain.BaseOutput;
 import com.dili.ss.domain.BasePage;
 import com.dili.ss.dto.DTOUtils;
 import com.dili.ss.dto.IDTO;
@@ -31,7 +29,6 @@ import com.dili.uap.sdk.domain.DataDictionaryValue;
 import com.dili.uap.sdk.domain.Department;
 import com.dili.uap.sdk.rpc.DataDictionaryRpc;
 import com.dili.uap.sdk.rpc.DepartmentRpc;
-import com.dili.uap.sdk.session.SessionContext;
 import org.javers.core.Javers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,7 +76,9 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
     public void saveBooth(Assets booth) {
         var query = new Assets();
         query.setName(booth.getName());
+        query.setBusinessType(booth.getBusinessType());
         query.setIsDelete(YesOrNoEnum.NO.getCode());
+        query.setMarketId(booth.getMarketId());
         var check = this.listByExample(query);
         if (CollUtil.isNotEmpty(check)) {
             throw new BusinessException("5000", "资产编号重复");
