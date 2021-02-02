@@ -35,6 +35,13 @@ public class Subject extends BaseDomain {
      */
     @Column(name = "`path`")
     private String path;
+
+    /**
+     * 创建人
+     */
+    @Column(name = "`market_id`")
+    private Long marketId;
+
     /**
      * 创建人
      */
@@ -167,5 +174,13 @@ public class Subject extends BaseDomain {
 
     public void setMemo(String memo) {
         this.memo = memo;
+    }
+
+    public Long getMarketId() {
+        return marketId;
+    }
+
+    public void setMarketId(Long marketId) {
+        this.marketId = marketId;
     }
 }

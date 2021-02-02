@@ -11,6 +11,7 @@
         <result column="parent" jdbcType="BIGINT" property="parent"/>
         <result column="path" jdbcType="VARCHAR" property="path"/>
         <result column="memo" jdbcType="VARCHAR" property="memo"/>
+        <result column="market_id" jdbcType="BIGINT" property="marketId"/>
         <result column="creator_id" jdbcType="BIGINT" property="creatorId"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime"/>
@@ -19,7 +20,7 @@
         <!--
           WARNING - @mbg.generated
         -->
-        id, name, state, parent, memo, path, creator_id, create_time,
+        id, name, state, parent, memo, path, creator_id, market_id, create_time,
         modify_time
     </sql>
     <select id="selectBy" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -76,7 +77,7 @@
     </update>
 
     <select id="listSubject" parameterType="com.dili.assets.domain.query.SubjectQuery" resultMap="BaseResultMap">
-        select id, name, state, parent, path, memo, creator_id, create_time,
+        select id, name, state, parent, market_id, path, memo, creator_id, create_time,
         modify_time from subject
         <where>
             `state`!=3
@@ -85,6 +86,9 @@
             </if>
             <if test="state !=null and state !=''">
                 and `state`=#{state}
+            </if>
+            <if test="marketId !=null">
+                and `market_id`=#{marketId}
             </if>
             <if test="parent !=null">
                 and `parent`=#{parent}
