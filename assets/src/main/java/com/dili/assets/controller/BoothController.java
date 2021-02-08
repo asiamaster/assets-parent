@@ -72,7 +72,6 @@ public class BoothController {
      */
     @RequestMapping("search")
     public BaseOutput<List<AssetsDTO>> search(@RequestBody BoothQuery query) {
-        query.setIsDelete(YesOrNoEnum.NO.getCode());
         return BaseOutput.success().setData(boothService.search(query));
     }
 
