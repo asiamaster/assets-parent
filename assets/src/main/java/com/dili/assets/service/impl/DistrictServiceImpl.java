@@ -80,20 +80,7 @@ public class DistrictServiceImpl extends BaseServiceImpl<District, Long> impleme
         }
         input.setIsDelete(StateEnum.NO.getCode());
         this.insert(input);
-        try {
-            ConfigQuery query = new ConfigQuery();
-            query.setMarketId(input.getMarketId());
-            query.setName(AREA_DEFAULT_MCH);
-            List<Config> configs = configMapper.selectByQuery(query);
-            if (CollUtil.isEmpty(configs)) {
-                AreaMarket areaMarket = new AreaMarket();
-                areaMarket.setMarket(input.getMarketId());
-                areaMarket.setArea(input.getId());
-                areaMarketService.insert(areaMarket);
-            }
-        } catch (Exception e) {
-            log.error("保存商户区域报错", e);
-        }
+        saveAreaMarket(input);
     }
 
     @Override
@@ -188,14 +175,33 @@ public class DistrictServiceImpl extends BaseServiceImpl<District, Long> impleme
                 }
                 if (numbers.length > 0) {
                     String number = StringUtils.trimToNull(numbers[i]);
-                    district.setNumber(StringUtils.trimToNull(numbers[i]));
+                    district.setNumber(number);
                 }
                 district.setDepartmentId(parent.getDepartmentId());
                 district.setKind(parent.getKind());
                 district.setMarketId(parent.getMarketId());
 
                 this.saveOrUpdate(district);
+
+                saveAreaMarket(district);
             }
+        }
+    }
+
+    private void saveAreaMarket(District district) {
+        try {
+            ConfigQuery query = new ConfigQuery();
+            query.setMarketId(district.getMarketId());
+            query.setName(AREA_DEFAULT_MCH);
+            List<Config> configs = configMapper.selectByQuery(query);
+            if (CollUtil.isEmpty(configs)) {
+                AreaMarket areaMarket = new AreaMarket();
+                areaMarket.setMarket(district.getMarketId());
+                areaMarket.setArea(district.getId());
+                areaMarketService.insert(areaMarket);
+            }
+        } catch (Exception e) {
+            log.error("保存商户区域报错", e);
         }
     }
 
