@@ -9,12 +9,14 @@ import com.dili.assets.domain.query.BoothQuery;
 import com.dili.assets.glossary.StateEnum;
 import com.dili.assets.mapper.ConfigMapper;
 import com.dili.assets.mapper.DistrictMapper;
+import com.dili.assets.sdk.dto.AreaMarketQuery;
 import com.dili.assets.sdk.dto.ConfigQuery;
 import com.dili.assets.service.AreaMarketService;
 import com.dili.assets.service.AssetsService;
 import com.dili.assets.service.DistrictService;
 import com.dili.commons.glossary.YesOrNoEnum;
 import com.dili.ss.base.BaseServiceImpl;
+import com.dili.ss.domain.BaseOutput;
 import com.dili.ss.exception.BusinessException;
 import com.dili.uap.sdk.domain.Firm;
 import com.dili.uap.sdk.rpc.DataDictionaryRpc;
@@ -188,17 +190,35 @@ public class DistrictServiceImpl extends BaseServiceImpl<District, Long> impleme
         }
     }
 
+    /**
+     * 新增区域自动关联商户
+     */
     private void saveAreaMarket(District district) {
         try {
             ConfigQuery query = new ConfigQuery();
             query.setMarketId(district.getMarketId());
             query.setName(AREA_DEFAULT_MCH);
             List<Config> configs = configMapper.selectByQuery(query);
+            // 如果没有配置则自动写入主商户
             if (CollUtil.isEmpty(configs)) {
                 AreaMarket areaMarket = new AreaMarket();
                 areaMarket.setMarket(district.getMarketId());
                 areaMarket.setArea(district.getId());
                 areaMarketService.insert(areaMarket);
+            } else {
+                // 如果配置了不自动写入商户,但是新增子区域时则自动继承父区域的商户
+                if (district.getParentId() != 0) {
+                    AreaMarketQuery areaMarketQuery = new AreaMarketQuery();
+                    areaMarketQuery.setArea(district.getParentId());
+                    List<AreaMarket> areaMarkets = areaMarketService.queryAll(areaMarketQuery).getData();
+                    if (CollUtil.isNotEmpty(areaMarkets)) {
+                        AreaMarket parentAreaMarket = areaMarkets.get(0);
+                        AreaMarket areaMarket = new AreaMarket();
+                        areaMarket.setMarket(parentAreaMarket.getMarket());
+                        areaMarket.setArea(district.getId());
+                        areaMarketService.insert(areaMarket);
+                    }
+                }
             }
         } catch (Exception e) {
             log.error("保存商户区域报错", e);

@@ -100,6 +100,8 @@ public class BoothController {
         query.setBusinessType(booth.getBusinessType());
         query.setIsDelete(YesOrNoEnum.NO.getCode());
         query.setMarketId(booth.getMarketId());
+        query.setArea(booth.getArea());
+        query.setSecondArea(booth.getSecondArea());
         var check = boothService.listByExample(query);
         if (CollUtil.isNotEmpty(check)) {
             for (Assets assets : check) {
