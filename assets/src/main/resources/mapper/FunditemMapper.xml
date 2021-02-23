@@ -35,5 +35,6 @@
         <if test="_parameter != null">
             <include refid="Example_Where_Clause"/>
         </if>
+        order by id desc
     </select>
 </mapper>
