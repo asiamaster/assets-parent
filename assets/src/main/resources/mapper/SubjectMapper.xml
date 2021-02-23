@@ -87,9 +87,9 @@
             <if test="state !=null and state !=''">
                 and `state`=#{state}
             </if>
-            <if test="marketId !=null">
-                and `market_id`=#{marketId}
-            </if>
+<!--            <if test="marketId !=null">-->
+<!--                and `market_id`=#{marketId}-->
+<!--            </if>-->
             <if test="parent !=null">
                 and `parent`=#{parent}
             </if>
