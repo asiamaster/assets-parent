@@ -68,7 +68,7 @@ public class FunditemController {
     @PostMapping("/add")
     public Object add(@RequestBody Funditem funditem) {
         Funditem query = new Funditem();
-        query.setName(funditem.getName());
+        query.setName(funditem.getName().trim());
         List<Funditem> nameCheck = funditemService.listByExample(query);
         if (CollUtil.isNotEmpty(nameCheck)) {
             return BaseOutput.failure("5000", "资金项已存在");
