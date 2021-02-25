@@ -71,7 +71,7 @@ public class FunditemController {
         query.setName(funditem.getName());
         List<Funditem> nameCheck = funditemService.listByExample(query);
         if (CollUtil.isNotEmpty(nameCheck)) {
-            return BaseOutput.failure("5000", "资金项重复");
+            return BaseOutput.failure("5000", "资金项已存在");
         }
         funditemService.saveFunditem(funditem);
         return BaseOutput.success();
