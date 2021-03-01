@@ -15,6 +15,8 @@
 */
 package com.dili.assets.service.impl;
 
+import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONUtil;
 import com.dili.assets.domain.Funditem;
 import com.dili.commons.glossary.EnabledStateEnum;
 import com.dili.ss.domain.BaseOutput;
@@ -88,8 +90,17 @@ public class FunditemServiceImpl extends BaseServiceImpl<Funditem, Long> impleme
     }
 
     @Override
-    public BaseOutput updateFunditem(Funditem funditem) {
-        this.updateSelective(funditem);
+    public BaseOutput updateFunditem(Funditem dto) {
+        Funditem funditem = this.get(dto.getId());
+        JSONArray jsonArray = JSONUtil.parseArray(funditem.getMarketId());
+        Integer marketId = Integer.valueOf(dto.getMarketId());
+        if(jsonArray.contains(marketId)){
+           jsonArray.remove(marketId);
+        }else{
+            jsonArray.add(marketId);
+        }
+        funditem.setMarketId(jsonArray.toString());
+        this.updateExact(funditem);
         return BaseOutput.success();
     }
 }
