@@ -118,7 +118,7 @@ public class DistrictController {
         try {
             DistrictQuery countInput = new DistrictQuery();
             countInput.setMarketId(input.getMarketId());
-            if (input != null && input.getIsDelete() == null) {
+            if (input.getIsDelete() == null) {
                 input.setIsDelete(StateEnum.NO.getCode());
                 countInput.setIsDelete(StateEnum.NO.getCode());
             }
@@ -130,6 +130,12 @@ public class DistrictController {
             if (input.getDepartmentId() == null && StrUtil.isBlank(input.getDeps())) {
                 input.setMetadata(IDTO.AND_CONDITION_EXPR, "department_id is null");
                 countInput.setMetadata(IDTO.AND_CONDITION_EXPR, "department_id is null");
+            }
+
+            if (StrUtil.isNotBlank(input.getDepartmentId())) {
+                input.setMetadata(IDTO.AND_CONDITION_EXPR, "department_id in (" + input.getDepartmentId() + ")");
+                countInput.setMetadata(IDTO.AND_CONDITION_EXPR, "department_id in (" + input.getDepartmentId() + ")");
+                input.setDepartmentId(null);
             }
             input.setDeps(null);
             int count = districtService.listByExample(countInput).size();

@@ -44,7 +44,7 @@ public class DistrictDTO extends BaseDomain {
     /**
      * 部门
      */
-    private Long departmentId;
+    private String departmentId;
     /**
      * 负责人
      */

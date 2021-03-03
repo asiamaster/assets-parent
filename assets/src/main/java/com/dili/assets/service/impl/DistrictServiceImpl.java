@@ -1,6 +1,7 @@
 package com.dili.assets.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.nacos.api.config.ConfigService;
 import com.dili.assets.domain.AreaMarket;
 import com.dili.assets.domain.Config;
@@ -17,6 +18,7 @@ import com.dili.assets.service.DistrictService;
 import com.dili.commons.glossary.YesOrNoEnum;
 import com.dili.ss.base.BaseServiceImpl;
 import com.dili.ss.domain.BaseOutput;
+import com.dili.ss.dto.IDTO;
 import com.dili.ss.exception.BusinessException;
 import com.dili.uap.sdk.domain.Firm;
 import com.dili.uap.sdk.rpc.DataDictionaryRpc;
@@ -71,14 +73,16 @@ public class DistrictServiceImpl extends BaseServiceImpl<District, Long> impleme
         input.setIsDelete(StateEnum.NO.getCode());
 
         cond = new District();
-        cond.setDepartmentId(input.getDepartmentId());
+        if (StrUtil.isNotBlank(input.getDepartmentId())) {
+            cond.setMetadata(IDTO.AND_CONDITION_EXPR, "department_id in (" + input.getDepartmentId() + ")");
+        }
         cond.setName(input.getName());
         cond.setIsDelete(StateEnum.NO.getCode());
         cond.setMarketId(input.getMarketId());
         districts = this.listByExample(cond);
 
         if (CollUtil.isNotEmpty(districts)) {
-            throw new BusinessException("1", "该部门下区域已存在");
+            throw new BusinessException("1", "名称与存在");
         }
         input.setIsDelete(StateEnum.NO.getCode());
         this.insert(input);
@@ -97,23 +101,25 @@ public class DistrictServiceImpl extends BaseServiceImpl<District, Long> impleme
         }
 
         cond = new District();
-        cond.setDepartmentId(input.getDepartmentId());
+        if (StrUtil.isNotBlank(input.getDepartmentId())) {
+            cond.setMetadata(IDTO.AND_CONDITION_EXPR, "department_id in (" + input.getDepartmentId() + ")");
+        }
         cond.setName(input.getName());
         cond.setIsDelete(StateEnum.NO.getCode());
         cond.setMarketId(input.getMarketId());
         districts = this.listByExample(cond);
 
         if (CollUtil.isNotEmpty(districts) && !districts.get(0).getId().equals(input.getId())) {
-            throw new BusinessException("1", "该部门下区域已存在");
+            throw new BusinessException("1", "名称已存在");
         }
-        this.updateSelective(input);
+        this.update(input);
     }
 
     @Override
     public void division(Long parentId, String[] names, String[] notes, String[] numbers) {
         List<Integer> duplicate = Arrays.stream(names).collect(Collectors.toMap(e -> e, e -> 1, Integer::sum)).values().stream().filter(e -> e > 1).collect(Collectors.toList());
         if (CollUtil.isNotEmpty(duplicate)) {
-            throw new BusinessException("1", "区域已存在");
+            throw new BusinessException("1", "名称已存在");
         }
         List<Integer> duplicateNumber = Arrays.stream(numbers).collect(Collectors.toMap(e -> e, e -> 1, Integer::sum)).values().stream().filter(e -> e > 1).collect(Collectors.toList());
         if (CollUtil.isNotEmpty(duplicateNumber)) {
@@ -122,22 +128,15 @@ public class DistrictServiceImpl extends BaseServiceImpl<District, Long> impleme
         District parent = this.get(parentId);
         for (String name : names) {
             District cond = new District();
+            if (StrUtil.isNotBlank(parent.getDepartmentId())) {
+                cond.setMetadata(IDTO.AND_CONDITION_EXPR, "department_id in (" + parent.getDepartmentId() + ")");
+            }
             cond.setName(name);
             cond.setIsDelete(StateEnum.NO.getCode());
             cond.setMarketId(parent.getMarketId());
             List<District> districts = this.listByExample(cond);
             if (CollUtil.isNotEmpty(districts)) {
-                throw new BusinessException("1", "区域已存在");
-            }
-            cond = new District();
-            cond.setDepartmentId(parent.getDepartmentId());
-            cond.setName(name);
-            cond.setIsDelete(StateEnum.NO.getCode());
-            cond.setMarketId(parent.getMarketId());
-            districts = this.listByExample(cond);
-
-            if (CollUtil.isNotEmpty(districts)) {
-                throw new BusinessException("1", "该部门下区域已存在");
+                throw new BusinessException("1", "名称已存在");
             }
         }
 
@@ -149,17 +148,6 @@ public class DistrictServiceImpl extends BaseServiceImpl<District, Long> impleme
             List<District> districts = this.listByExample(cond);
             if (CollUtil.isNotEmpty(districts)) {
                 throw new BusinessException("1", "编号已存在");
-            }
-
-            cond = new District();
-            cond.setDepartmentId(parent.getDepartmentId());
-            cond.setNumber(s);
-            cond.setIsDelete(StateEnum.NO.getCode());
-            cond.setMarketId(parent.getMarketId());
-            districts = this.listByExample(cond);
-
-            if (CollUtil.isNotEmpty(districts)) {
-                throw new BusinessException("1", "该部门下编号已存在");
             }
         }
         for (int i = 0; i < names.length; i++) {

@@ -48,7 +48,7 @@ public class District extends BaseDomain {
      * 部门
      */
     @Column(name = "`department_id`")
-    private Long departmentId;
+    private String departmentId;
     /**
      * 负责人
      */
@@ -168,14 +168,14 @@ public class District extends BaseDomain {
     /**
      * 部门
      */
-    public Long getDepartmentId() {
+    public String getDepartmentId() {
         return this.departmentId;
     }
 
     /**
      * 部门
      */
-    public void setDepartmentId(Long departmentId) {
+    public void setDepartmentId(String departmentId) {
         this.departmentId = departmentId;
     }
 
