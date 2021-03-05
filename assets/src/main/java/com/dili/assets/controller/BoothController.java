@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.LocalDateTimeUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -110,8 +111,10 @@ public class BoothController {
                 }
             }
         }
-
-        boothService.updateSelective(booth);
+        if(StrUtil.isBlank(booth.getDepartmentId())){
+            booth.setDepartmentId(null);
+        }
+        boothService.update(booth);
         AssetsPOJO pojo = new AssetsPOJO();
         BeanUtil.copyProperties(booth, pojo);
         javers.commit("assets", pojo);

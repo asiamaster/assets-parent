@@ -23,7 +23,6 @@ public class Assets extends BaseDomain {
     /**
      * 摊位名称
      */
-    @Like()
     @Column(name = "`name`")
     private String name;
     /**
@@ -36,6 +35,12 @@ public class Assets extends BaseDomain {
      */
     @Column(name = "`unit`")
     private String unit;
+
+    /**
+     * 等级
+     */
+    @Column(name = "`level`")
+    private String level;
     /**
      * 区域
      */
@@ -383,6 +388,14 @@ public class Assets extends BaseDomain {
     /** 业务类型;1:摊位，2:冷库，3:公寓 */
     public void setBusinessType(Integer businessType){
         this.businessType = businessType;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
     }
 
     public String getUser() {

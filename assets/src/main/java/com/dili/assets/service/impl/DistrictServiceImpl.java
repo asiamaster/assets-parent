@@ -112,6 +112,9 @@ public class DistrictServiceImpl extends BaseServiceImpl<District, Long> impleme
         if (CollUtil.isNotEmpty(districts) && !districts.get(0).getId().equals(input.getId())) {
             throw new BusinessException("1", "名称已存在");
         }
+        if(StrUtil.isBlank(input.getDepartmentId())){
+            input.setDepartmentId(null);
+        }
         this.update(input);
     }
 

@@ -13,6 +13,8 @@
                 <result column="scene"
                         jdbcType="VARCHAR"
                         property="scene"/>
+                <result column="market_id" jdbcType="BIGINT"
+                        property="marketId" />
                 <result column="creator_id" jdbcType="BIGINT"
                         property="creatorId"/>
                 <result column="creator_user" jdbcType="VARCHAR"
@@ -27,6 +29,9 @@
 
                         <if test="scene != null">
                             and JSON_CONTAINS(scene, JSON_ARRAY(#{scene}))
+                        </if>
+                        <if test="marketId != null">
+                            and market_id = #{marketId}
                         </if>
                         <if test="keyword != null">
                             and name like
@@ -56,6 +61,7 @@
                     code,
                     push,
                     scene,
+                    market_id,
                     creator_id,
                     creator_user,
                     created_time,

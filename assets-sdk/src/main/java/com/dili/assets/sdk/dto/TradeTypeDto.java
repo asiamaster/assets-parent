@@ -43,6 +43,9 @@ public class TradeTypeDto extends BaseDomain implements Serializable {
     /** 是否推送 */
     private Integer push;
 
+    /** 市场 */
+    private Long marketId;
+
     /** 创建人 */
     private Long creatorId;
 

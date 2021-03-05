@@ -31,6 +31,10 @@ public class AssetsDTO extends BaseDomain {
      */
     private String unit;
     /**
+     * 等级
+     */
+    private String level;
+    /**
      * 区域
      */
     private Integer area;
@@ -337,6 +341,14 @@ public class AssetsDTO extends BaseDomain {
      */
     public void setModifyTime(Date modifyTime) {
         this.modifyTime = modifyTime;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
     }
 
     /** 业务类型;1:摊位，2:冷库，3:公寓 */

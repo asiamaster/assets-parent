@@ -36,4 +36,7 @@ public class TradeTypeQuery extends Tablepar {
 
     /** 过磅场景 */
     private Integer scene;
+
+    /** 市场 */
+    private Long marketId;
 }
