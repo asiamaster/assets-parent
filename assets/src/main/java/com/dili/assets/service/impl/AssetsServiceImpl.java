@@ -20,6 +20,7 @@ import com.dili.assets.service.DistrictService;
 import com.dili.commons.glossary.YesOrNoEnum;
 import com.dili.ss.base.BaseServiceImpl;
 import com.dili.ss.domain.BasePage;
+import com.dili.ss.domain.EasyuiPageOutput;
 import com.dili.ss.dto.DTOUtils;
 import com.dili.ss.dto.IDTO;
 import com.dili.ss.exception.BusinessException;
@@ -29,6 +30,7 @@ import com.dili.uap.sdk.domain.DataDictionaryValue;
 import com.dili.uap.sdk.domain.Department;
 import com.dili.uap.sdk.rpc.DataDictionaryRpc;
 import com.dili.uap.sdk.rpc.DepartmentRpc;
+import lombok.val;
 import org.javers.core.Javers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -94,71 +96,43 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
     @Override
     public String listForPage(BoothQuery input) {
         try {
-            var countInput = new BoothQuery();
             if (input == null) {
                 input = new BoothQuery();
             }
-            BeanUtil.copyProperties(input, countInput);
             if (input.getStartTime() != null) {
                 input.setStartTime(DateUtils.formatDate2DateTimeStart(input.getStartTime()));
-                countInput.setStartTime(DateUtils.formatDate2DateTimeStart(input.getStartTime()));
             }
             if (input.getEndTime() != null) {
                 input.setEndTime(DateUtils.formatDate2DateTimeEnd(input.getEndTime()));
-                countInput.setEndTime(DateUtils.formatDate2DateTimeEnd(input.getEndTime()));
-            }
-            if (input.getDepartmentId() == null && StrUtil.isNotBlank(input.getDeps())) {
-                input.setMetadata(IDTO.AND_CONDITION_EXPR, "(department_id in (" + input.getDeps() + ") or department_id is null)");
-                countInput.setMetadata(IDTO.AND_CONDITION_EXPR, "(department_id in (" + input.getDeps() + ") or department_id is null)");
             }
 
-            if (input.getDepartmentId() == null && StrUtil.isBlank(input.getDeps())) {
-                input.setMetadata(IDTO.AND_CONDITION_EXPR, "department_id is null");
-                countInput.setMetadata(IDTO.AND_CONDITION_EXPR, "department_id is null");
-            }
+            String condition = "";
             if (input.getArea() != null) {
-                input.setMetadata(IDTO.AND_CONDITION_EXPR, "(area = " + input.getArea() + " or second_area = " + input.getArea() + " )");
-                countInput.setMetadata(IDTO.AND_CONDITION_EXPR, "(area = " + input.getArea() + " or second_area = " + input.getArea() + " )");
+                final District district = districtService.get(input.getArea().longValue());
+                if (district.getParentId() != 0) {
+                    input.setSecondArea(input.getArea());
+                    input.setArea(null);
+                } else {
+                    condition = "(area = " + input.getArea() + " and second_area is null)";
+                    input.setArea(null);
+                }
             }
 
-            input.setDeps(null);
-            input.setArea(null);
-            countInput.setArea(null);
-            countInput.setDeps(null);
-            countInput.setParentId(null);
-            countInput.setPage(null);
-            countInput.setRows(null);
-            long count = this.listByExample(countInput).size();
-            boolean expand = false;
-            if (input.getId() != null) {
-                input.setId(null);
+            if (input.getDepartmentId() == null && StrUtil.isNotBlank(input.getDeps())) {
+                if (StrUtil.isNotBlank(condition)) {
+                    condition = condition + " and " + "(department_id in (" + input.getDeps() + ") or department_id is null)";
+                } else {
+                    condition = "(department_id in (" + input.getDeps() + ") or department_id is null)";
+                }
+                input.setDeps(null);
             }
-            BasePage<Assets> boothBasePage = this.listPageByExample(input);
-            var booths = boothBasePage.getDatas();
-            if (input.getParentId() == null) {
-                count = boothBasePage.getTotalItem();
-            }
-            input.setMetadata(JSON.parseObject("{\"area\":\"{\\\"provider\\\":\\\"districtProvider\\\",\\\"index\\\":20,\\\"field\\\":\\\"area\\\"}\",\"unit\":\"{\\\"provider\\\":\\\"dataDictionaryValueProvider\\\",\\\"index\\\":10,\\\"field\\\":\\\"unit\\\"}\",\"createTime\":\"{\\\"provider\\\":\\\"datetimeProvider\\\",\\\"index\\\":50,\\\"field\\\":\\\"createTime\\\"}\",\"departmentId\":\"{\\\"provider\\\":\\\"departmentProvider\\\",\\\"index\\\":40,\\\"field\\\":\\\"departmentId\\\"}\",\"state\":\"{\\\"provider\\\":\\\"boothStateProvider\\\",\\\"index\\\":60,\\\"field\\\":\\\"state\\\"}\",\"user\":\"{\\\"provider\\\":\\\"dataDictionaryValueProvider\\\",\\\"index\\\":30,\\\"field\\\":\\\"user\\\"}\"}"));
-            var results = ValueProviderUtils.buildDataByProvider(input, booths);
 
-
-            var result = new ArrayList();
-
-            for (var district : results) {
-                var json = JSON.parseObject(JSON.toJSONString(district));
-                json.put("status", json.getString("state"));
-                json.put("state", "open");
-                result.add(json);
+            if (StrUtil.isNotBlank(condition)) {
+                input.setMetadata(IDTO.AND_CONDITION_EXPR, condition);
             }
-            var resultJsonStr = JSONObject.toJSONString(result);
-            if (expand) {
-                return resultJsonStr;
-            }
-            var obj = new JSONObject();
-            obj.put("rows", JSON.parseArray(resultJsonStr));
-            obj.put("total", count);
-            obj.put("footer", JSON.parseArray("[{\"name\":\"总数:" + count + "\",\"iconCls\":\"icon-sum\"}]"));
-            return obj.toJSONString();
+
+            EasyuiPageOutput easyuiPageOutput = this.listEasyuiPageByExample(input, true);
+            return easyuiPageOutput.toString();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -254,7 +228,6 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
         }
 
         if (CollUtil.isNotEmpty(list)) {
-            List<Department> departmentList = departmentRpc.listByExample(DTOUtils.newDTO(Department.class)).getData();
             DataDictionaryValue dataDictionaryValue = DTOUtils.newDTO(DataDictionaryValue.class);
             dataDictionaryValue.setDdCode("unit");
             dataDictionaryValue.setFirmId(query.getMarketId());
@@ -267,13 +240,6 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
                 AssetsDTO dto = new AssetsDTO();
                 BeanUtil.copyProperties(obj, dto);
 
-                // 转换部门
-                if (dto.getDepartmentId() != null) {
-                    if (CollUtil.isNotEmpty(departmentList)) {
-                        departmentList.stream().filter(it -> it.getId().intValue() == dto.getDepartmentId())
-                                .findFirst().ifPresent(it -> dto.setDepartmentName(it.getName()));
-                    }
-                }
                 // 转换单位
                 if (CollUtil.isNotEmpty(dataDictionaryValues)) {
                     dataDictionaryValues.stream().filter(it -> it.getCode().equals(dto.getUnit()))

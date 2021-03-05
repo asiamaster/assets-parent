@@ -29,7 +29,7 @@ public class AssetsPOJO {
     private Integer type ;
     /** 所属部门 */
     @Column(name = "`department_id`")
-    private Integer departmentId ;
+    private String departmentId ;
     /** 市场 */
     @Column(name = "`market_id`")
     private Long marketId ;
@@ -136,11 +136,11 @@ public class AssetsPOJO {
         this.type = type;
     }
     /** 所属部门 */
-    public Integer getDepartmentId(){
+    public String getDepartmentId(){
         return this.departmentId;
     }
     /** 所属部门 */
-    public void setDepartmentId(Integer departmentId){
+    public void setDepartmentId(String departmentId){
         this.departmentId = departmentId;
     }
     /** 市场 */

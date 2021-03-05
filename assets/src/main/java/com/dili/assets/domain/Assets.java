@@ -55,7 +55,7 @@ public class Assets extends BaseDomain {
      * 所属部门
      */
     @Column(name = "`department_id`")
-    private Integer departmentId;
+    private String departmentId;
     /**
      * 市场
      */
@@ -224,14 +224,14 @@ public class Assets extends BaseDomain {
     /**
      * 所属部门
      */
-    public Integer getDepartmentId() {
+    public String getDepartmentId() {
         return this.departmentId;
     }
 
     /**
      * 所属部门
      */
-    public void setDepartmentId(Integer departmentId) {
+    public void setDepartmentId(String departmentId) {
         this.departmentId = departmentId;
     }
 
