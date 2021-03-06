@@ -3,8 +3,6 @@ package com.dili.assets.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.dili.assets.domain.AreaMarket;
 import com.dili.assets.domain.Assets;
 import com.dili.assets.domain.District;
