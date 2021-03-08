@@ -40,6 +40,9 @@
             <if test="name !=null and name !=''">
                 and `name`=#{name}
             </if>
+            <if test="marketId !=null and marketId !=''">
+                and (`market_id`=#{marketId} or `market_id` = 1)
+            </if>
         </where>
     </select>
     <update id="updateBy" parameterType="com.dili.assets.domain.Subject">

@@ -82,25 +82,10 @@ public class SubjectServiceImpl extends BaseServiceImpl<Subject, Long> implement
         getActualDao().batchUpdate(ids, value);
     }
 
-    /**
-     * 验证添加层级是否大于3级，由于没有level字段，只有根据父品类path字段来判断
-     *
-     * @return
-     */
-    private boolean checkLevel(Category p) {
-        if (p == null) {
-            return true;
-        }
-        if (p.getPath() == null) {
-            return true;
-        }
-        return p.getPath().split(",").length < 3;
-    }
-
     private boolean nameExists(Subject c) {
         Subject condition = new Subject();
         condition.setName(c.getName());
-        //condition.setParent(c.getParent());
+        condition.setMarketId(c.getMarketId());
         List<Subject> list = getActualDao().exists(condition);
         if (list == null || list.size() == 0) {
             return false;
