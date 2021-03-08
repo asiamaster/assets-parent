@@ -1,21 +1,18 @@
 package com.dili.assets.provider;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.tomcat.util.buf.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.dili.ss.dto.DTOUtils;
 import com.dili.ss.metadata.FieldMeta;
 import com.dili.ss.metadata.ValuePair;
 import com.dili.ss.metadata.ValueProvider;
 import com.dili.uap.sdk.domain.DataDictionaryValue;
-import com.dili.uap.sdk.domain.UserTicket;
 import com.dili.uap.sdk.rpc.DataDictionaryRpc;
-import com.dili.uap.sdk.session.SessionContext;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 
 @Component
