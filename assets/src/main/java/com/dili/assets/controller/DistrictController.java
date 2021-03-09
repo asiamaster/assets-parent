@@ -177,9 +177,6 @@ public class DistrictController {
     @RequestMapping("search")
     public BaseOutput<List<District>> search(@RequestBody DistrictQuery input) {
         try {
-            if (input.getIsDelete() == null) {
-                input.setIsDelete(StateEnum.NO.getCode());
-            }
             if (input.getDepartmentId() == null && StrUtil.isNotBlank(input.getDeps())) {
                 input.setMetadata(IDTO.AND_CONDITION_EXPR, "(department_id in (" + input.getDeps() + ") or department_id is null)");
                 input.setDeps(null);
