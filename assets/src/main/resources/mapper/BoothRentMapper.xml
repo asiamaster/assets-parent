@@ -19,7 +19,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, freeze, order_id, booth_id, start, end
+    id, freeze, order_id, booth_id, user, start, end
   </sql>
   <select id="selectBy" parameterType="java.lang.Long" resultMap="BaseResultMap">
     <!--
