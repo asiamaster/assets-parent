@@ -35,6 +35,9 @@ public class DepartmentProvider implements ValueProvider {
         if (val == null) {
             return null;
         }
+        if(StrUtil.isBlank(val.toString())){
+            return null;
+        }
         DepartmentDto query = DTOUtils.newInstance(DepartmentDto.class);
         query.setIds(StrUtil.split(val.toString(), ','));
         List<Department> departmentList = departmentRpc.listByExample(query).getData();
