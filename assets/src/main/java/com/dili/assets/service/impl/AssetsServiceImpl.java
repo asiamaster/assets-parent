@@ -118,9 +118,9 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
 
             if (input.getDepartmentId() == null && StrUtil.isNotBlank(input.getDeps())) {
                 if (StrUtil.isNotBlank(condition)) {
-                    condition = condition + " and " + "(department_id in (" + input.getDeps() + ") or department_id is null)";
+                    condition = condition + " and " + "(concat(',',department_id, ',') regexp concat(',',replace('" + input.getDeps() + "',',',',|,'),',') = 1  or department_id is null)";
                 } else {
-                    condition = "(department_id in (" + input.getDeps() + ") or department_id is null)";
+                    condition = "(concat(',',department_id, ',') regexp concat(',',replace('" + input.getDeps() + "',',',',|,'),',') = 1  or department_id is null)";
                 }
                 input.setDeps(null);
             }
