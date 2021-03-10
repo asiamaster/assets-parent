@@ -197,6 +197,11 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
         query.setPage(1);
         query.setRows(100);
 
+        if (query.getDepartmentId() == null && StrUtil.isNotBlank(query.getDeps())) {
+            query.setMetadata(IDTO.AND_CONDITION_EXPR, "(concat(',',department_id, ',') regexp concat(',',replace('" + query.getDeps() + "',',',',|,'),',') = 1  or department_id is null)");
+            query.setDeps(null);
+        }
+
         var list = listPageByExample(query).getDatas();
         if (query.isOnlyFirstArea() && query.getArea() != null && query.getSecondArea() == null) {
             list = list.stream().filter(it -> it.getSecondArea() == null).collect(Collectors.toList());
