@@ -109,9 +109,9 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
 
             if (input.getDepartmentId() == null && StrUtil.isNotBlank(input.getDeps())) {
                 if (StrUtil.isNotBlank(condition)) {
-                    condition = condition + " and " + "(concat(',',department_id, ',') regexp concat(',',replace('" + input.getDeps() + "',',',',|,'),',') = 1  or department_id is null)";
+                    condition = condition + " and " + "(concat(',',department_id, ',') regexp concat(',',replace('" + input.getDeps() + "',',',',|,'),',') = 1  or department_id is null or department_id = '')";
                 } else {
-                    condition = "(concat(',',department_id, ',') regexp concat(',',replace('" + input.getDeps() + "',',',',|,'),',') = 1  or department_id is null)";
+                    condition = "(concat(',',department_id, ',') regexp concat(',',replace('" + input.getDeps() + "',',',',|,'),',') = 1  or department_id is null or department_id = '')";
                 }
                 input.setDeps(null);
             }
@@ -198,7 +198,7 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
         query.setRows(100);
 
         if (query.getDepartmentId() == null && StrUtil.isNotBlank(query.getDeps())) {
-            query.setMetadata(IDTO.AND_CONDITION_EXPR, "(concat(',',department_id, ',') regexp concat(',',replace('" + query.getDeps() + "',',',',|,'),',') = 1  or department_id is null)");
+            query.setMetadata(IDTO.AND_CONDITION_EXPR, "(concat(',',department_id, ',') regexp concat(',',replace('" + query.getDeps() + "',',',',|,'),',') = 1  or department_id is null or department_id = '')");
             query.setDeps(null);
         }
 

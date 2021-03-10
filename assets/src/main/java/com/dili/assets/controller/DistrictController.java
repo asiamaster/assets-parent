@@ -123,8 +123,8 @@ public class DistrictController {
                 countInput.setIsDelete(StateEnum.NO.getCode());
             }
             if (input.getDepartmentId() == null && StrUtil.isNotBlank(input.getDeps())) {
-                input.setMetadata(IDTO.AND_CONDITION_EXPR, "(concat(',',department_id, ',') regexp concat(',',replace('" + input.getDeps() + "',',',',|,'),',') = 1 or department_id is null)");
-                countInput.setMetadata(IDTO.AND_CONDITION_EXPR, "(concat(',',department_id, ',') regexp concat(',',replace('" + input.getDeps() + "',',',',|,'),',') = 1 or department_id is null)");
+                input.setMetadata(IDTO.AND_CONDITION_EXPR, "(concat(',',department_id, ',') regexp concat(',',replace('" + input.getDeps() + "',',',',|,'),',') = 1 or department_id is null or department_id = '')");
+                countInput.setMetadata(IDTO.AND_CONDITION_EXPR, "(concat(',',department_id, ',') regexp concat(',',replace('" + input.getDeps() + "',',',',|,'),',') = 1 or department_id is null or department_id = '')");
             }
 
             if (input.getDepartmentId() == null && StrUtil.isBlank(input.getDeps())) {
@@ -178,7 +178,7 @@ public class DistrictController {
     public BaseOutput<List<District>> search(@RequestBody DistrictQuery input) {
         try {
             if (input.getDepartmentId() == null && StrUtil.isNotBlank(input.getDeps())) {
-                input.setMetadata(IDTO.AND_CONDITION_EXPR, "(concat(',',department_id, ',') regexp concat(',',replace('" + input.getDeps() + "',',',',|,'),',') = 1 or department_id is null)");
+                input.setMetadata(IDTO.AND_CONDITION_EXPR, "(concat(',',department_id, ',') regexp concat(',',replace('" + input.getDeps() + "',',',',|,'),',') = 1 or department_id is null or department_id = '')");
                 input.setDeps(null);
             }
             List<DistrictDTO> result = new ArrayList<>();
