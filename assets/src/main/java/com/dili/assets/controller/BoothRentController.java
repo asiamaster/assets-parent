@@ -188,13 +188,13 @@ public class BoothRentController {
                 if (assets != null) {
                     assets.setUser(it.getUser());
                     assets.setState(2);
-                    assetsService.saveOrUpdate(assets);
+                    assetsService.update(assets);
                 }
             });
         }
 
         // unUsed
-        List<Long> ids = rentsUsed.stream().map(BoothRent::getId).collect(Collectors.toList());
+        List<Long> ids = rentsUsed.stream().map(BoothRent::getAssetsId).collect(Collectors.toList());
         assetsService.updateStateByIdIn(ids);
     }
 
