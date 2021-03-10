@@ -194,8 +194,7 @@ public class BoothRentController {
         }
 
         // unUsed
-        List<BoothRent> unUsed = this.boothRentService.selectUnUsed();
-        List<Long> ids = unUsed.stream().map(BoothRent::getId).collect(Collectors.toList());
+        List<Long> ids = rentsUsed.stream().map(BoothRent::getId).collect(Collectors.toList());
         assetsService.updateStateByIdIn(ids);
     }
 

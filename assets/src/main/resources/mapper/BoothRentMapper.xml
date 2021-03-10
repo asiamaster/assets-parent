@@ -60,11 +60,4 @@
     from `booth_rent`
     WHERE NOW() BETWEEN `start` AND `end` GROUP BY booth_id
   </select>
-
-  <select id="selectUnUsed" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List"/>
-    from `booth_rent`
-    WHERE NOW() NOT BETWEEN `start` AND `end` GROUP BY booth_id
-  </select>
 </mapper>

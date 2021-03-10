@@ -122,7 +122,7 @@
     update `assets`
     set user = null,state = 1
     where
-    id in
+    id not in
     <foreach collection="idList" item="item" open="(" close=")" separator=",">
       #{item,jdbcType=NUMERIC}
     </foreach>

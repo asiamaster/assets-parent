@@ -78,14 +78,11 @@ public class QueryServiceImpl extends BaseServiceImpl<Query, Long> implements Qu
 
     @Override
     public BaseOutput saveQuery(Query query) {
-        QueryQuery queryQuery = new QueryQuery();
+        Query queryQuery = new Query();
         queryQuery.setModel(query.getModel());
         queryQuery.setCreatorId(query.getCreatorId());
-        List<Query> data = this.queryAll(queryQuery).getData();
-        if (CollUtil.isNotEmpty(data)) {
-            Query domain = data.get(0);
-            query.setId(domain.getId());
-        }
+        this.deleteByExample(queryQuery);
+
         this.saveOrUpdate(query);
         return BaseOutput.success();
     }
