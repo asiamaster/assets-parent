@@ -59,9 +59,6 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
     private Javers javers;
 
     @Autowired
-    private DepartmentRpc departmentRpc;
-
-    @Autowired
     private DistrictService districtService;
 
     @Autowired
@@ -106,14 +103,8 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
 
             String condition = "";
             if (input.getArea() != null) {
-                final District district = districtService.get(input.getArea().longValue());
-                if (district.getParentId() != 0) {
-                    input.setSecondArea(input.getArea());
-                    input.setArea(null);
-                } else {
-                    condition = "(area = " + input.getArea() + " and second_area is null)";
-                    input.setArea(null);
-                }
+                condition = "(area = " + input.getArea() + " or second_area = " + input.getArea() + " )";
+                input.setArea(null);
             }
 
             if (input.getDepartmentId() == null && StrUtil.isNotBlank(input.getDeps())) {
