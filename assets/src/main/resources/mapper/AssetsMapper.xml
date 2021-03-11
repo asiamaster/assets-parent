@@ -21,6 +21,8 @@
     <result column="user" jdbcType="VARCHAR" property="user" />
     <result column="floor" jdbcType="VARCHAR" property="floor" />
     <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="self" jdbcType="INTEGER" property="self" />
+    <result column="sale" jdbcType="INTEGER" property="sale" />
     <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
     <result column="split_notes" jdbcType="VARCHAR" property="splitNotes" />
     <result column="sort" jdbcType="VARCHAR" property="sort" />
@@ -35,7 +37,7 @@
       WARNING - @mbg.generated
     -->
     id, name, number, unit, area,floor,user,kind, second_area, type, corner, department_id, market_id, parent_id, notes, state,
-    is_delete, split_notes, sort, creator_id, create_time, modify_time, business_type, level
+    is_delete, split_notes, sort, creator_id, create_time, modify_time, business_type, level, self, sale
   </sql>
   <select id="selectBy" parameterType="java.lang.Long" resultMap="BaseResultMap">
     <!--

@@ -66,6 +66,16 @@ public class AssetsDTO extends BaseDomain {
      * 状态
      */
     private Integer state;
+
+    /**
+     * 是否折扣
+     */
+    private Integer sale;
+
+    /**
+     * 是否自助
+     */
+    private Integer self;
     /**
      * 是否删除
      */
@@ -438,6 +448,22 @@ public class AssetsDTO extends BaseDomain {
 
     public void setKind(Integer kind) {
         this.kind = kind;
+    }
+
+    public Integer getSale() {
+        return sale;
+    }
+
+    public void setSale(Integer sale) {
+        this.sale = sale;
+    }
+
+    public Integer getSelf() {
+        return self;
+    }
+
+    public void setSelf(Integer self) {
+        this.self = self;
     }
 
     // ==========================字段转义==================================== //

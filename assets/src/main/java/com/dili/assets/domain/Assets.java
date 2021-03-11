@@ -81,6 +81,19 @@ public class Assets extends BaseDomain {
      */
     @Column(name = "`state`")
     private Integer state;
+
+    /**
+     * 是否自助
+     */
+    @Column(name = "`self`")
+    private Integer self;
+
+    /**
+     * 折扣
+     */
+    @Column(name = "`sale`")
+    private Integer sale;
+
     /**
      * 是否转角
      */
@@ -420,5 +433,21 @@ public class Assets extends BaseDomain {
 
     public void setKind(Integer kind) {
         this.kind = kind;
+    }
+
+    public Integer getSelf() {
+        return self;
+    }
+
+    public void setSelf(Integer self) {
+        this.self = self;
+    }
+
+    public Integer getSale() {
+        return sale;
+    }
+
+    public void setSale(Integer sale) {
+        this.sale = sale;
     }
 }
