@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dili.assets.mapper.AssetsManageMapper">
+
+    <select id="getFloorPlanHistory" parameterType="com.dili.assets.domain.FloorPlan"
+            resultType="com.dili.assets.domain.FloorPlan">
+        SELECT
+        p.create_time,p.modify_time,p.district_id,p.plan_version,p.ref_id,p.update_notes,p.regional_category
+        FROM floor_plan p
+        WHERE p.item_state=1
+        <if test="districtId != null">
+            and p.district_id = #{districtId}
+        </if>
+        <if test="refId != null">
+            and p.ref_id = #{refId}
+        </if>
+        <if test="regionalCategory != null">
+            and p.regional_category = #{regionalCategory}
+        </if>
+        GROUP BY p.plan_version,p.ref_id,p.regional_category
+        order by p.plan_version
+    </select>
+
+    <update id="batchUpdateRefIdByUpdate" parameterType="java.util.List">
+        UPDATE floor_plan
+        SET ref_id =
+        <foreach collection="list" item="newRef" index="index"
+                 separator=" " open="case ref_id" close="end">
+            when #{newRef.id} then #{newRef.newRefId}
+        </foreach>
+        WHERE item_state=0
+        and ref_id
+        <foreach collection="list" open=" IN (" close=")" item="oldRef" separator=",">
+            #{oldRef.id}
+        </foreach>
+    </update>
+</mapper>
