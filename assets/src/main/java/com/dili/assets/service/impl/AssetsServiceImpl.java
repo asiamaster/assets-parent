@@ -173,6 +173,8 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
                 booth.setCreatorId(parent.getCreatorId());
                 booth.setCorner(parent.getCorner());
                 booth.setBusinessType(parent.getBusinessType());
+                booth.setSale(YesOrNoEnum.NO.getCode());
+                booth.setSelf(YesOrNoEnum.NO.getCode());
                 saveBooth(booth);
                 AssetsPOJO pojo = new AssetsPOJO();
                 BeanUtil.copyProperties(booth, pojo);
