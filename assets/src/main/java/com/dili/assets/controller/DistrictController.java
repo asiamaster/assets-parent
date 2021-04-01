@@ -181,6 +181,10 @@ public class DistrictController {
                 input.setMetadata(IDTO.AND_CONDITION_EXPR, "(concat(',',department_id, ',') regexp concat(',',replace('" + input.getDeps() + "',',',',|,'),',') = 1 or department_id is null or department_id = '')");
                 input.setDeps(null);
             }
+            if (StrUtil.isNotBlank(input.getDepartmentId())) {
+                input.setMetadata(IDTO.AND_CONDITION_EXPR, "department_id in (" + input.getDepartmentId() + ")");
+                input.setDepartmentId(null);
+            }
             List<DistrictDTO> result = new ArrayList<>();
             List<District> districts = districtService.listByExample(input);
             if (CollUtil.isNotEmpty(districts)) {
