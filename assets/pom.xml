@@ -109,6 +109,11 @@
             </exclusion>
         </exclusions>
     </dependency>
+        <dependency>
+            <groupId>org.ssssssss</groupId>
+            <artifactId>magic-api-spring-boot-starter</artifactId>
+            <version>1.1.0</version>
+        </dependency>
         <!-- spring boot 基类 -->
         <dependency>
             <groupId>com.dili</groupId>

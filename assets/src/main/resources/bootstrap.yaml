@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: assets-service
+  cloud:
+    nacos:
+      config:
+        enabled: true
+        group: MICROSERVICE
+        namespace: 54c39cfe-d1c4-4022-a94b-a3486c5927fc
+        server-addr: nacos.diligrp.com:8848
+      discovery:
+        register-enabled: false
+  jackson:
+    time-zone: GMT+8
+  profiles:
+    active: ${build.profile.id}
+
+magic-api:
+  resource:
+    type: database # 配置存储在数据库中
+    tableName: magic_api_file # 数据库中的表名
+    prefix: /magic-api # key前缀
+    readonly: false # 是否是只读模式
+  web: /magic/web
