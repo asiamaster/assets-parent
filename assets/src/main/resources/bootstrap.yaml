@@ -9,7 +9,7 @@ spring:
         namespace: 54c39cfe-d1c4-4022-a94b-a3486c5927fc
         server-addr: nacos.diligrp.com:8848
       discovery:
-        register-enabled: false
+        register-enabled: true
   jackson:
     time-zone: GMT+8
   profiles:
