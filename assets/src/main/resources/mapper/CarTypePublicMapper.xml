@@ -156,7 +156,7 @@
 			and LOCATE(#{businessCode},ctb.tag)
 		  </if>
 	   </where>
-	      order by ct.number
+	      order by ctb.modify_time DESC,ct.number
   </select>
   <!-- 通过id获取公共车型 -->
   <select id="getCarTypePublicById" resultType="java.util.Map">
