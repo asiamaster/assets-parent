@@ -49,4 +49,6 @@ public class CusCategoryQuery {
     private Integer state;
 
     private String keycode;
+
+    private Long id;
 }

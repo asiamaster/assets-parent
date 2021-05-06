@@ -21,6 +21,10 @@ public class CusCategoryDTO extends BaseDomain {
      */
     private String name;
     /**
+     * 别名
+     */
+    private String alias;
+    /**
      * 拼音
      */
     private String pingying;

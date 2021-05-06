@@ -9,21 +9,18 @@ import com.dili.assets.common.PinyinUtil;
 import com.dili.assets.domain.Category;
 import com.dili.assets.domain.CategoryNew;
 import com.dili.assets.domain.CusCategory;
-import com.dili.assets.mapper.CategoryMapper;
 import com.dili.assets.mapper.CusCategoryMapper;
-import com.dili.assets.sdk.dto.CusCategoryQuery;
+import com.dili.assets.sdk.dto.CusCategoryDTO;
 import com.dili.assets.service.CusCategoryService;
 import com.dili.ss.domain.BaseOutput;
-import com.dili.ss.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.ssssssss.magicapi.provider.MagicAPIService;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -40,78 +37,64 @@ public class CusCategoryController {
     CusCategoryMapper cusCategoryMapper;
 
     @Autowired
-    private CategoryMapper categoryMapper;
+    private MagicAPIService magicAPIService;
+
 
     /**
      * 获取品类列表
      */
     @RequestMapping(value = "/getTree")
-    public BaseOutput<List<CusCategory>> getTree(@RequestBody(required = false) CusCategoryQuery input) {
-        List<CusCategory> list = cusCategoryMapper.listCategory(input);
-        return BaseOutput.success().setData(list);
+    public BaseOutput<List<CusCategoryDTO>> getTree(@RequestBody(required = false) Map<String, Object> map) {
+        return BaseOutput.success().setData(magicAPIService.execute("post", "/api/getCategoryTree", map));
     }
 
     /**
      * 获取单个品类
      */
     @RequestMapping(value = "/get")
-    public BaseOutput<Category> get(@RequestBody Long id) {
-        CusCategory category = cusCategoryService.get(id);
-        return BaseOutput.success().setData(category);
+    public BaseOutput<CusCategoryDTO> get(@RequestBody Map<String, Object> map) {
+        return BaseOutput.success().setData(magicAPIService.execute("post", "/api/getCategoryById", map));
     }
 
     /**
      * 新增品类
      */
     @RequestMapping(value = "/save")
-    public BaseOutput save(@RequestBody CusCategory input) {
-        try {
-            if (input.getId() != null) {
-                cusCategoryService.updateCategory(input);
-            } else {
-                cusCategoryService.saveCategory(input);
-            }
-        } catch (BusinessException e) {
-            return BaseOutput.failure(e.getMessage());
-        } catch (Exception e) {
-            return BaseOutput.failure("保存失败");
+    public Object save(@RequestBody Map<String, Object> map) {
+        if (map.containsKey("id") && map.get("id") != null) {
+            return magicAPIService.execute("post", "/api/updateCategory", map);
         }
-        return BaseOutput.success().setData(input.getId());
+        return magicAPIService.execute("post", "/api/saveCategory", map);
     }
 
     /**
      * 删除品类
      */
     @RequestMapping(value = "/batchUpdate")
-    public BaseOutput batchUpdate(@RequestParam("id") Long id, @RequestParam("value") Integer value) {
-        cusCategoryService.batchUpdate(id, value);
-        return BaseOutput.success();
+    public Object batchUpdate(@RequestParam("id") Long id, @RequestParam("value") Integer value, @RequestParam("marketId") Long marketId) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", id);
+        map.put("value", value);
+        map.put("marketId", marketId);
+        return magicAPIService.execute("post", "/api/batchUpdate", map);
     }
 
     /**
      * 根据市场清空品类
      */
     @RequestMapping(value = "/getByKeycode")
-    public BaseOutput<CusCategory> getByKeycode(@RequestBody(required = false) CusCategoryQuery input) {
-        if (input == null || input.getMarketId() == null) {
-            return BaseOutput.failure("未知市场或参数");
-        }
-        // 查询自定义品类
-        List<CusCategory> cusList = cusCategoryMapper.listCategory(input);
-        if (CollUtil.isNotEmpty(cusList)) {
-            return BaseOutput.success().setData(cusList.get(0));
-        } else {
-            return BaseOutput.success();
-        }
+    public BaseOutput<CusCategory> getByKeycode(@RequestBody(required = false) Map<String, Object> map) {
+        return BaseOutput.success().setData(magicAPIService.execute("post", "/api/getByKeycode", map));
     }
 
     /**
      * del
+     *
      * @param marketId
      * @return
      */
     @RequestMapping(value = "/delByMarket")
-    public BaseOutput delByMarket(@RequestBody Long marketId){
+    public BaseOutput delByMarket(@RequestBody Long marketId) {
         CusCategory example = new CusCategory();
         example.setMarketId(marketId);
         cusCategoryService.deleteByExample(example);
@@ -128,7 +111,7 @@ public class CusCategoryController {
             return BaseOutput.success("已有数据无法导入");
         }
         Long id = 3675L;
-        List<Category> categories = categoryMapper.listCategory(null);
+        List<Category> categories = null;
         List<CategoryNew> categoryNews = JSON.parseArray(JSON.toJSONString(categories), CategoryNew.class);
         Optional<CategoryNew> first = categoryNews.stream().filter(it -> it.getId().equals(id)).findFirst();
 

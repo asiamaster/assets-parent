@@ -15,11 +15,6 @@ import java.util.Map;
 @FeignClient(name = "assets-service", url = "${AssetsRpc.url:}")
 public interface AssetsRpc {
 
-    /**
-     * 获取客户列表信息
-     */
-    @RequestMapping(value = "/api/category/getTree", method = RequestMethod.POST)
-    BaseOutput<List<CategoryDTO>> list(CategoryDTO categoryDTO);
 
     /**
      * 获取客户列表信息
@@ -27,11 +22,6 @@ public interface AssetsRpc {
     @RequestMapping(value = "/api/cusCategory/getTree", method = RequestMethod.POST)
     BaseOutput<List<CusCategoryDTO>> listCusCategory(CusCategoryQuery query);
 
-    /**
-     * 新增品类
-     */
-    @RequestMapping(value = "/api/category/save", method = RequestMethod.POST)
-    BaseOutput save(CategoryDTO dto);
 
     /**
      * 新增品类
@@ -42,14 +32,8 @@ public interface AssetsRpc {
     /**
      * 获取单个品类
      */
-    @RequestMapping(value = "/api/category/get", method = RequestMethod.POST)
-    BaseOutput<CategoryDTO> get(Long id);
-
-    /**
-     * 获取单个品类
-     */
     @RequestMapping(value = "/api/cusCategory/get", method = RequestMethod.POST)
-    BaseOutput<CusCategoryDTO> getCusCategory(Long id);
+    BaseOutput<CusCategoryDTO> getCusCategory(CusCategoryQuery query);
 
     /**
      * 根据市场清空品类
@@ -57,17 +41,12 @@ public interface AssetsRpc {
     @RequestMapping(value = "/api/cusCategory/delByMarket", method = RequestMethod.POST)
     BaseOutput<CusCategoryDTO> delByMarket(Long marketId);
 
-    /**
-     * 删除品类
-     */
-    @RequestMapping(value = "/api/category/batchUpdate", method = RequestMethod.POST)
-    BaseOutput batchUpdate(@RequestParam("id") Long id, @RequestParam("value") Integer value);
 
     /**
      * 删除品类
      */
     @RequestMapping(value = "/api/cusCategory/batchUpdate", method = RequestMethod.POST)
-    BaseOutput batchCusCategoryUpdate(@RequestParam("id") Long id, @RequestParam("value") Integer value);
+    BaseOutput batchCusCategoryUpdate(@RequestParam("id") Long id, @RequestParam("value") Integer value, @RequestParam("marketId") Long marketId);
 
     /**
      * 新增摊位
