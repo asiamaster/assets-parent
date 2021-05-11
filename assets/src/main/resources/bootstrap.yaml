@@ -26,11 +26,11 @@ magic-api:
     readonly: false # 是否是只读模式
   web: /magic/web
 
-logging:
-  level:
-    org:
-      springframework:
-        jdbc:
-          core:
-            JdbcTemplate: DEBUG #打印SQL
-            StatementCreatorUtils: TRACE  #打印SQL参数
+#logging:
+#  level:
+#    org:
+#      springframework:
+#        jdbc:
+#          core:
+#            JdbcTemplate: DEBUG #打印SQL
+#            StatementCreatorUtils: TRACE  #打印SQL参数
