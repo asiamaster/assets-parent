@@ -217,7 +217,14 @@
 				and te.`code` = #{businessCode}
 			</if>
 			<if test="keyword != null and keyword != ''">
-				and (ct.name like '%${keyword}%' or cp.code like '%${keyword}%')
+		        <choose>
+					<when test="marketId == 8">
+						and (ct.name like '%${keyword}%' or ct.number like '%${keyword}%' or cp.code like '%${keyword}%'
+					</when>
+					<otherwise>
+						and (ct.name like '%${keyword}%' or cp.code like '%${keyword}%')
+					</otherwise>
+				</choose>
 			</if>
 			<if test="id != null">
 				and cp.id = #{id}
