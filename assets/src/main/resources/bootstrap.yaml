@@ -20,6 +20,7 @@ magic-api:
     type: database # 配置存储在数据库中
     tableName: magic_api_file # 数据库中的表名
     prefix: /magic-api # key前缀
-    readonly: false # 是否是只读模式
   web: /magic/web
   editor-config: classpath:./conf/magic-editor-config.js
+  sql-column-case: camel #启用驼峰命名转换
+  refresh-interval: 0  #不启用刷新
