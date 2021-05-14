@@ -219,7 +219,7 @@
 			<if test="keyword != null and keyword != ''">
 		        <choose>
 					<when test="marketId == 8">
-						and (ct.name like '%${keyword}%' or ct.number like '%${keyword}%' or cp.code like '%${keyword}%'
+						and (ct.name like '%${keyword}%' or ct.number like '%${keyword}%' or cp.code like '%${keyword}%')
 					</when>
 					<otherwise>
 						and (ct.name like '%${keyword}%' or cp.code like '%${keyword}%')
