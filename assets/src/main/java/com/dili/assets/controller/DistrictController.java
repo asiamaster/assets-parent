@@ -133,8 +133,8 @@ public class DistrictController {
             }
 
             if (StrUtil.isNotBlank(input.getDepartmentId())) {
-                input.setMetadata(IDTO.AND_CONDITION_EXPR, "department_id in (" + input.getDepartmentId() + ")");
-                countInput.setMetadata(IDTO.AND_CONDITION_EXPR, "department_id in (" + input.getDepartmentId() + ")");
+                input.setMetadata(IDTO.AND_CONDITION_EXPR, "(concat(',',department_id, ',') regexp concat(',',replace('" + input.getDepartmentId() + "',',',',|,'),',') = 1)");
+                countInput.setMetadata(IDTO.AND_CONDITION_EXPR, "(concat(',',department_id, ',') regexp concat(',',replace('" + input.getDepartmentId() + "',',',',|,'),',') = 1)");
                 input.setDepartmentId(null);
             }
             input.setDeps(null);
@@ -182,7 +182,7 @@ public class DistrictController {
                 input.setDeps(null);
             }
             if (StrUtil.isNotBlank(input.getDepartmentId())) {
-                input.setMetadata(IDTO.AND_CONDITION_EXPR, "department_id in (" + input.getDepartmentId() + ")");
+                input.setMetadata(IDTO.AND_CONDITION_EXPR, "(concat(',',department_id, ',') regexp concat(',',replace('" + input.getDepartmentId() + "',',',',|,'),',') = 1)");
                 input.setDepartmentId(null);
             }
             List<DistrictDTO> result = new ArrayList<>();
