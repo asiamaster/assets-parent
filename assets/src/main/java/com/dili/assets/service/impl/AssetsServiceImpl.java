@@ -76,7 +76,9 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
         query.setBusinessType(booth.getBusinessType());
         query.setIsDelete(YesOrNoEnum.NO.getCode());
         query.setMarketId(booth.getMarketId());
-        query.setArea(booth.getArea());
+        if (booth.getSecondArea() == null) {
+            query.setArea(booth.getArea());
+        }
         query.setSecondArea(booth.getSecondArea());
         var check = this.listByExample(query);
         if (CollUtil.isNotEmpty(check)) {
