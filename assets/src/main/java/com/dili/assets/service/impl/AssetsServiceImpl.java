@@ -82,7 +82,11 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
         query.setSecondArea(booth.getSecondArea());
         var check = this.listByExample(query);
         if (CollUtil.isNotEmpty(check)) {
-            throw new BusinessException("5000", "资产编号重复");
+            check.forEach(it -> {
+                if (it.getSecondArea() == null) {
+                    throw new BusinessException("5000", "资产编号重复");
+                }
+            });
         }
 
         booth.setIsDelete(YesOrNoEnum.NO.getCode());
