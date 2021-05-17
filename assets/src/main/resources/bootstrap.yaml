@@ -24,3 +24,4 @@ magic-api:
   editor-config: classpath:./conf/magic-editor-config.js
   sql-column-case: camel #启用驼峰命名转换
   refresh-interval: 0  #不启用刷新
+  support-cross-domain: false
