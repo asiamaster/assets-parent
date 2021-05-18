@@ -23,5 +23,8 @@ magic-api:
   web: /magic/web
   editor-config: classpath:./conf/magic-editor-config.js
   sql-column-case: camel #启用驼峰命名转换
-  refresh-interval: 0  #不启用刷新
   support-cross-domain: false
+  response-code-config:
+    success: 200 #执行成功的code值
+    invalid: 400 #参数验证未通过的code值
+    exception: 500 #执行出现异常的code值
