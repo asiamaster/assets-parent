@@ -19,8 +19,6 @@ import lombok.Data;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import com.dili.ss.domain.BaseDomain;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.alibaba.fastjson.annotation.JSONField;
 import javax.persistence.*;
 import java.io.Serializable;
 

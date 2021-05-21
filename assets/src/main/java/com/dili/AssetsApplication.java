@@ -21,7 +21,7 @@ import tk.mybatis.spring.annotation.MapperScan;
 @DTOScan(value={"com.dili.ss", "com.dili.assets.domain"})
 @EnableDiscoveryClient
 @RestfulScan({"com.dili.assets.rpc","com.dili.uap.sdk.rpc"})
-public class AssetsApplication extends SpringBootServletInitializer {
+public class AssetsApplication {
 
     @LoadBalanced
     @Bean

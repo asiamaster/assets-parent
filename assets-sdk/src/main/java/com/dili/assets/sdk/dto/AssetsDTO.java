@@ -84,6 +84,9 @@ public class AssetsDTO extends BaseDomain {
     private String user ;
     /** 楼层 */
     private String floor ;
+
+    /** 楼层 */
+    private Long floorId ;
     /** 性质 */
     private Integer kind ;
     /**
@@ -464,6 +467,14 @@ public class AssetsDTO extends BaseDomain {
 
     public void setSelf(Integer self) {
         this.self = self;
+    }
+
+    public Long getFloorId() {
+        return floorId;
+    }
+
+    public void setFloorId(Long floorId) {
+        this.floorId = floorId;
     }
 
     // ==========================字段转义==================================== //

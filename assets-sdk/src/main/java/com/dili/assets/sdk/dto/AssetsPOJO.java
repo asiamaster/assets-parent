@@ -51,6 +51,9 @@ public class AssetsPOJO {
     /** 楼层 */
     @Column(name = "`floor`")
     private String floor ;
+    /** 楼层 */
+    @Column(name = "`floor_id`")
+    private Long floorId ;
     /** 性质 */
     @Column(name = "`kind`")
     private Integer kind ;
@@ -270,5 +273,13 @@ public class AssetsPOJO {
     /** 业务类型;1:摊位，2:冷库，3:公寓 */
     public void setBusinessType(Integer businessType){
         this.businessType = businessType;
+    }
+
+    public Long getFloorId() {
+        return floorId;
+    }
+
+    public void setFloorId(Long floorId) {
+        this.floorId = floorId;
     }
 }

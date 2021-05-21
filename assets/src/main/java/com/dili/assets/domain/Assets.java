@@ -112,6 +112,11 @@ public class Assets extends BaseDomain {
     @Like()
     @Column(name = "`floor`")
     private String floor ;
+
+    /** 楼层 */
+    @Column(name = "`floor_id`")
+    private String floorId ;
+
     /** 性质 */
     @Column(name = "`kind`")
     private Integer kind ;
@@ -449,5 +454,13 @@ public class Assets extends BaseDomain {
 
     public void setSale(Integer sale) {
         this.sale = sale;
+    }
+
+    public String getFloorId() {
+        return floorId;
+    }
+
+    public void setFloorId(String floorId) {
+        this.floorId = floorId;
     }
 }
