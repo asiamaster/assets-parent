@@ -221,6 +221,9 @@
 					<when test="marketId == 8">
 						and (ct.name like '%${keyword}%' or ct.number like '%${keyword}%' or cp.code like '%${keyword}%')
 					</when>
+					<when test="marketId == 5">
+						and (ct.name like '${keyword}%' or cp.code like '${keyword}')
+					</when>
 					<otherwise>
 						and (ct.name like '%${keyword}%' or cp.code like '%${keyword}%')
 					</otherwise>
