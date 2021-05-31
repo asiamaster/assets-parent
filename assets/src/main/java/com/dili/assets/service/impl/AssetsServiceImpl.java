@@ -17,18 +17,13 @@ import com.dili.assets.service.AssetsService;
 import com.dili.assets.service.DistrictService;
 import com.dili.commons.glossary.YesOrNoEnum;
 import com.dili.ss.base.BaseServiceImpl;
-import com.dili.ss.domain.BasePage;
 import com.dili.ss.domain.EasyuiPageOutput;
 import com.dili.ss.dto.DTOUtils;
 import com.dili.ss.dto.IDTO;
 import com.dili.ss.exception.BusinessException;
-import com.dili.ss.metadata.ValueProviderUtils;
 import com.dili.ss.util.DateUtils;
 import com.dili.uap.sdk.domain.DataDictionaryValue;
-import com.dili.uap.sdk.domain.Department;
 import com.dili.uap.sdk.rpc.DataDictionaryRpc;
-import com.dili.uap.sdk.rpc.DepartmentRpc;
-import lombok.val;
 import org.javers.core.Javers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -82,6 +77,9 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
         query.setSecondArea(booth.getSecondArea());
         var check = this.listByExample(query);
         if (CollUtil.isNotEmpty(check)) {
+            if (query.getArea() == null) {
+                throw new BusinessException("5000", "资产编号重复");
+            }
             check.forEach(it -> {
                 if (it.getSecondArea() == null) {
                     throw new BusinessException("5000", "资产编号重复");

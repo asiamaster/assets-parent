@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
+import com.dili.assets.distributedlock.RedissLockUtil;
 import com.dili.assets.domain.Assets;
 import com.dili.assets.domain.BoothRent;
 import com.dili.assets.glossary.RentEnum;
@@ -12,13 +13,12 @@ import com.dili.assets.service.AssetsService;
 import com.dili.assets.service.BoothRentService;
 import com.dili.ss.base.BaseServiceImpl;
 import com.dili.ss.exception.BusinessException;
-import com.dili.ss.redis.service.RedisDistributedLock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 由MyBatis Generator工具自动生成
@@ -36,16 +36,14 @@ public class BoothRentServiceImpl extends BaseServiceImpl<BoothRent, Long> imple
     @Autowired
     private AssetsService assetsService;
 
-    private
-
-    @Autowired
-    RedisDistributedLock redisDistributedLock;
 
     @Override
     @Transactional
     public void add(BoothRent input) {
-        if (redisDistributedLock.tryGetLock(key, key, 180L)) {
-            try {
+        boolean res = false;
+        try {
+            res = RedissLockUtil.tryLock(key, TimeUnit.SECONDS, 3, 10);
+            if (res) {
                 // 查询摊位信息
                 Assets assets = assetsService.get(input.getAssetsId());
                 if (input.getType() == 2) {
@@ -122,15 +120,13 @@ public class BoothRentServiceImpl extends BaseServiceImpl<BoothRent, Long> imple
                         }
                     }
                 }
-            } finally {
-                //完成后释放锁
-                if (redisDistributedLock.exists(key)) {
-                    redisDistributedLock.releaseLock(key, key);
-                }
+            } else {
+                throw new BusinessException("5000", "系统错误");
             }
-
-        } else {
-            throw new BusinessException("5000", "系统错误");
+        } finally {
+            if (res) {
+                RedissLockUtil.unlock(key);
+            }
         }
     }
 

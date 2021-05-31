@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 由MyBatis Generator工具自动生成
@@ -95,23 +96,28 @@ public class BoothController {
      */
     @RequestMapping("update")
     public BaseOutput update(@RequestBody Assets booth) {
-
         var query = new Assets();
         query.setName(booth.getName());
         query.setBusinessType(booth.getBusinessType());
         query.setIsDelete(YesOrNoEnum.NO.getCode());
         query.setMarketId(booth.getMarketId());
-        query.setArea(booth.getArea());
+        if (booth.getSecondArea() == null) {
+            query.setArea(booth.getArea());
+        }
         query.setSecondArea(booth.getSecondArea());
         var check = boothService.listByExample(query);
-        if (CollUtil.isNotEmpty(check)) {
-            for (Assets assets : check) {
-                if (!assets.getId().equals(booth.getId())) {
+        final List<Assets> collect = check.stream().filter(it -> !it.getId().equals(booth.getId())).collect(Collectors.toList());
+        if (CollUtil.isNotEmpty(collect)) {
+            if (query.getArea() == null) {
+                return BaseOutput.failure("5000", "资产编号重复");
+            }
+            for (Assets assets : collect) {
+                if (assets.getSecondArea() == null) {
                     return BaseOutput.failure("5000", "资产编号重复");
                 }
             }
         }
-        if(StrUtil.isBlank(booth.getDepartmentId())){
+        if (StrUtil.isBlank(booth.getDepartmentId())) {
             booth.setDepartmentId(null);
         }
         boothService.update(booth);

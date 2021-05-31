@@ -16,6 +16,12 @@ spring:
   profiles:
     active: ${build.profile.id}
 
+
+
+redisson:
+  address: redis://${spring.redis.host}:6379
+  password:
+
 magic-api:
   resource:
     type: database # 配置存储在数据库中
@@ -25,6 +31,8 @@ magic-api:
   editor-config: classpath:./conf/magic-editor-config.js
   sql-column-case: camel #启用驼峰命名转换
   support-cross-domain: false
+  cluster-config:
+    enable: true
   response-code-config:
     success: 200 #执行成功的code值
     invalid: 400 #参数验证未通过的code值
