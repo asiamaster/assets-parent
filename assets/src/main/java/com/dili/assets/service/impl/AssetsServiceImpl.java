@@ -2,6 +2,7 @@ package com.dili.assets.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
 import com.dili.assets.domain.AreaMarket;
 import com.dili.assets.domain.Assets;
@@ -286,7 +287,8 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
         var ref = new Object() {
             Double number = 0D;
         };
-        booths.forEach(obj -> ref.number += obj.getNumber());
+
+        booths.forEach(obj -> ref.number = NumberUtil.add(ref.number, obj.getNumber()));
         return booth.getNumber() - ref.number;
     }
 
