@@ -36,7 +36,8 @@
     from city
     where id = #{id,jdbcType=BIGINT}
   </select>
-  <update id="updateBy" parameterType="com.dili.assets.domain.City">
+
+    <update id="updateBy" parameterType="com.dili.assets.domain.City">
     <!--
       WARNING - @mbg.generated
     -->
@@ -84,4 +85,238 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <select id="listByFirstLevelTypeKeywords" resultType="com.dili.assets.domain.City">
+    SELECT
+      id, CREATED, MODIFIED, name, parent_id, short_name, level_type, city_code, merger_name,
+      lng, lat, pinyin, short_py, yn
+    FROM
+      city
+    WHERE
+        parent_id
+            IN
+                (
+                  SELECT
+                     id
+                  FROM
+                    city
+                  WHERE
+                    parent_id
+                        IN
+                            (
+                              SELECT
+                                c.id
+                              FROM
+                                city c
+                                  INNER JOIN
+                                    (
+                                    SELECT
+                                      id
+                                    FROM
+                                      city
+                                    WHERE
+                                      NAME LIKE concat( #{firstKeyword}, '%' )
+                                       OR short_name LIKE concat( #{firstKeyword}, '%' )
+                                       OR pinyin LIKE concat( #{firstKeyword}, '%' )
+                                       OR city_code LIKE concat( #{firstKeyword}, '%' )
+                                       OR short_py LIKE concat( #{firstKeyword}, '%' )
+                                    ) cid ON c.id = cid.id
+                              WHERE
+                                c.level_type = 1
+                            )
+                )
+    UNION
+      SELECT
+        c.id, c.CREATED, c.MODIFIED, c.name, c.parent_id, c.short_name, c.level_type, c.city_code, c.merger_name,
+        c.lng, c.lat, c.pinyin, c.short_py, c.yn
+      FROM
+        city c
+          INNER JOIN (
+          SELECT
+            id
+          FROM
+            city
+          WHERE
+            NAME LIKE concat( #{firstKeyword}, '%' )
+             OR short_name LIKE concat( #{firstKeyword}, '%' )
+             OR pinyin LIKE concat( #{firstKeyword}, '%' )
+             OR city_code LIKE concat( #{firstKeyword}, '%' )
+             OR short_py LIKE concat(#{firstKeyword}, '%' )) cid ON c.id = cid.id
+      WHERE
+        c.level_type = 0
+        AND c.id &gt;= 10000000
+    ORDER BY  id
+  </select>
+  <select id="listBySecondLevelTypeKeywords" resultType="com.dili.assets.domain.City">
+    SELECT
+      id, CREATED, MODIFIED, name, parent_id, short_name, level_type, city_code, merger_name,
+      lng, lat, pinyin, short_py, yn
+    FROM
+        city
+    WHERE
+        parent_id
+    IN
+        (
+        SELECT
+           id
+         FROM
+           city
+         WHERE
+           (
+               `name` LIKE concat(#{secondKeyword}, '%' )
+               OR short_name LIKE concat( #{secondKeyword}, '%' )
+               OR pinyin LIKE concat( #{secondKeyword}, '%' )
+               OR city_code LIKE concat( #{secondKeyword}, '%' )
+               OR short_py LIKE concat(#{secondKeyword}, '%' )
+             )
+           AND level_type = 2
+        )
+    <if test="null != cityIds and cityIds.size()>0">
+      AND id IN
+      <foreach collection="cityIds" index="index" item="item" open="(" separator="," close=")">
+        #{item}
+      </foreach>
+    </if>
+    UNION
+    SELECT
+      id, CREATED, MODIFIED, name, parent_id, short_name, level_type, city_code, merger_name,
+      lng, lat, pinyin, short_py, yn
+    FROM
+        city
+    WHERE
+      id &gt;= 10000000 AND
+      parent_id
+      IN
+      (
+        SELECT
+            id
+        FROM
+            city
+        WHERE
+          (
+          `name` LIKE concat(#{secondKeyword}, '%' )
+          OR short_name LIKE concat( #{secondKeyword}, '%' )
+          OR pinyin LIKE concat( #{secondKeyword}, '%' )
+          OR city_code LIKE concat( #{secondKeyword}, '%' )
+          OR short_py LIKE concat(#{secondKeyword}, '%' )
+          )
+          AND level_type = 1
+      )
+    <if test="null != cityIds and cityIds.size()>0">
+      AND id IN
+      <foreach collection="cityIds" index="index" item="item" open="(" separator="," close=")">
+        #{item}
+      </foreach>
+    </if>
+    ORDER BY id
+  </select>
+  <select id="listByThirdLevelTypeKeywords" resultType="com.dili.assets.domain.City">
+
+    SELECT
+      c.id,
+      c.CREATED,
+      c.MODIFIED,
+      c.NAME,
+      c.parent_id,
+      c.short_name,
+      c.level_type,
+      c.city_code,
+      c.merger_name,
+      c.lng,
+      c.lat,
+      c.pinyin,
+      c.short_py,
+      c.yn
+    FROM
+      city c
+        INNER JOIN (
+        SELECT
+          id
+        FROM
+          city
+        WHERE
+          `name` LIKE concat( #{thirdKeyword}, '%' )
+           OR short_name LIKE concat( #{thirdKeyword}, '%' )
+           OR pinyin LIKE concat( #{thirdKeyword}, '%' )
+           OR city_code LIKE concat( #{thirdKeyword}, '%' )
+           OR short_py LIKE concat( #{thirdKeyword}, '%' )) cid ON cid.id = c.id
+    WHERE
+      c.level_type = 3
+    <if test="null != cityIds and cityIds.size()>0">
+      AND c.id IN
+      <foreach collection="cityIds" index="index" item="item" open="(" separator="," close=")">
+        #{item}
+      </foreach>
+    </if>
+    UNION
+    SELECT
+      c.id,
+      c.CREATED,
+      c.MODIFIED,
+      c.NAME,
+      c.parent_id,
+      c.short_name,
+      c.level_type,
+      c.city_code,
+      c.merger_name,
+      c.lng,
+      c.lat,
+      c.pinyin,
+      c.short_py,
+      c.yn
+    FROM
+      city c
+        INNER JOIN (
+        SELECT
+          id
+        FROM
+          city
+        WHERE
+           NAME LIKE concat( #{thirdKeyword}, '%' )
+           OR short_name LIKE concat( #{thirdKeyword}, '%' )
+           OR pinyin LIKE concat( #{thirdKeyword}, '%' )
+           OR city_code LIKE concat( #{thirdKeyword}, '%' )
+           OR short_py LIKE concat( #{thirdKeyword}, '%' )) cid ON c.id = cid.id
+    WHERE
+      c.level_type = 2
+      AND c.id &gt;= 10000000
+    <if test="null != cityIds and cityIds.size()>0">
+      AND c.id IN
+      <foreach collection="cityIds" index="index" item="item" open="(" separator="," close=")">
+        #{item}
+      </foreach>
+    </if>
+    ORDER BY
+      id
+  </select>
+  <select id="listByAllLevelTypeKeywords" resultType="com.dili.assets.domain.City">
+    SELECT
+      id, CREATED, MODIFIED, name, parent_id, short_name, level_type, city_code, merger_name,
+      lng, lat, pinyin, short_py, yn
+    FROM
+      city
+    WHERE
+         (NAME LIKE concat( #{allLevelKeyword}, '%' )
+         OR short_name LIKE concat( #{allLevelKeyword}, '%' )
+         OR pinyin LIKE concat( #{allLevelKeyword}, '%' )
+         OR city_code LIKE concat( #{allLevelKeyword}, '%' )
+         OR short_py LIKE concat( #{allLevelKeyword}, '%' ) )
+    ORDER BY
+    id
+  </select>
+  <select id="listByParentIds" resultType="com.dili.assets.domain.City">
+    SELECT
+      id, CREATED, MODIFIED, name, parent_id, short_name, level_type, city_code, merger_name,
+      lng, lat, pinyin, short_py, yn
+    FROM
+        city
+    WHERE
+    <if test="null != firstLevelCityIds and firstLevelCityIds.size()>0">
+      parent_id IN
+      <foreach collection="firstLevelCityIds" index="index" item="item" open="(" separator="," close=")">
+        #{item}
+      </foreach>
+    </if>
+
+  </select>
 </mapper>
