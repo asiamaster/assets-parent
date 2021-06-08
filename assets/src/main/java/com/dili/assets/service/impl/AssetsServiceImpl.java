@@ -102,6 +102,10 @@ public class AssetsServiceImpl extends BaseServiceImpl<Assets, Long> implements 
             if (input.getStartTime() != null) {
                 input.setStartTime(DateUtils.formatDate2DateTimeStart(input.getStartTime()));
             }
+            if (StrUtil.isNotEmpty(input.getName())) {
+                input.setKeyword(input.getName());
+                input.setName(null);
+            }
             if (input.getEndTime() != null) {
                 input.setEndTime(DateUtils.formatDate2DateTimeEnd(input.getEndTime()));
             }
