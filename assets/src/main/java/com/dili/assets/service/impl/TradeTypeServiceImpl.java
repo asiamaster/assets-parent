@@ -61,12 +61,14 @@ public class TradeTypeServiceImpl extends BaseServiceImpl<TradeType, Long> imple
     public BaseOutput saveTradeType(TradeType tradeType) {
         TradeType query = new TradeType();
         query.setName(tradeType.getName());
+        query.setMarketId(tradeType.getMarketId());
         if (CollUtil.isNotEmpty(this.listByExample(query))) {
             return BaseOutput.failure("类型名称重复");
         }
 
         query = new TradeType();
         query.setCode(tradeType.getCode());
+        query.setMarketId(tradeType.getMarketId());
         if (CollUtil.isNotEmpty(this.listByExample(query))) {
             return BaseOutput.failure("类型编码重复");
         }
