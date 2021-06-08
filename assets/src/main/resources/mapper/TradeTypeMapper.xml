@@ -34,10 +34,10 @@
                             and market_id = #{marketId}
                         </if>
                         <if test="keyword != null">
-                            and name like
+                            and (name like
                             concat('%', #{keyword}, '%')
                             or code like
-                            concat('%', #{keyword}, '%')
+                            concat('%', #{keyword}, '%'))
                         </if>
                                 <if test="createdTime != null">
                                     and created_time between
