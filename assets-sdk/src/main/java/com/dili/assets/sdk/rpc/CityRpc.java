@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.dili.assets.sdk.dto.CityDto;
 import com.dili.assets.sdk.dto.CityQueryDto;
 import com.dili.ss.domain.BaseOutput;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * 城市信息接口
@@ -38,6 +39,6 @@ public interface CityRpc {
      * @param id 城市id
      */
     @RequestMapping(value = "/api/city/getById", method = RequestMethod.POST)
-    BaseOutput<CityDto> getById(Long id);
+    BaseOutput<CityDto> getById(@RequestParam("id") Long id);
 
 }
