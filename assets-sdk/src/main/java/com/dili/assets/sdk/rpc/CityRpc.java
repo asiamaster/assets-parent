@@ -35,9 +35,9 @@ public interface CityRpc {
 
     /**
      * 获取城市信息列表
-     * @param cityDto
+     * @param id 城市id
      */
     @RequestMapping(value = "/api/city/getById", method = RequestMethod.POST)
-    BaseOutput<CityDto> getById(CityDto cityDto);
+    BaseOutput<CityDto> getById(Long id);
 
 }
