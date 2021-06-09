@@ -32,4 +32,12 @@ public interface CityRpc {
      */
     @RequestMapping(value = "/api/city/list", method = RequestMethod.POST)
     BaseOutput<List<CityDto>> list(CityDto cityDto);
+
+    /**
+     * 获取城市信息列表
+     * @param cityDto
+     */
+    @RequestMapping(value = "/api/city/getById", method = RequestMethod.POST)
+    BaseOutput<CityDto> getById(CityDto cityDto);
+
 }

@@ -10,10 +10,7 @@ import com.dili.ss.dto.IDTO;
 import com.dili.ss.util.BeanConver;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,4 +75,15 @@ public class CityController {
         return BaseOutput.success().setData(cities);
     }
 
+    /**
+     * 根据id查询城市接口
+     *
+     * @param id
+     * @return
+     */
+    @PostMapping("/getById")
+    public BaseOutput<City> getById(@RequestParam("id") Long id) {
+        City city = cityService.get(id);
+        return BaseOutput.success().setData(city);
+    }
 }
