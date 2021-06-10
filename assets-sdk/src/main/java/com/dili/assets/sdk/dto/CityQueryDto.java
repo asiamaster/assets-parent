@@ -29,7 +29,15 @@ public class CityQueryDto extends CityDto {
     private String keyword;
 
     @Transient
-    private Integer countryFilterType;
+    private Integer countryQueryType;
+
+    public Integer getCountryQueryType() {
+        return countryQueryType;
+    }
+
+    public void setCountryQueryType(Integer countryQueryType) {
+        this.countryQueryType = countryQueryType;
+    }
 
     public List<Long> getIdList() {
         return idList;
@@ -55,11 +63,4 @@ public class CityQueryDto extends CityDto {
         this.keyword = keyword;
     }
 
-    public Integer getCountryFilterType() {
-        return countryFilterType;
-    }
-
-    public void setCountryFilterType(Integer countryFilterType) {
-        this.countryFilterType = countryFilterType;
-    }
 }
